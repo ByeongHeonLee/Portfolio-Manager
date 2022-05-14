@@ -130,11 +130,11 @@ function BoardPage(props) {
             />
             <br /><br />
 
-            <Button type="primary" href="/board">
-                취소
+            <Button type="primary" size="large" href="/board" style={{border: '1px solid #d7d7da', backgroundColor:'white', color: 'Black'}}>
+                <Icon type='menu-fold'/>목록
             </Button>
-            <Button type="primary" style={{marginLeft: '2px'}} onClick={onSubmit}>
-                등록
+            <Button type="primary" size="large" style={{marginLeft: '2px', border: '1px solid #d7d7da', backgroundColor:'white', color: 'Black'}} onClick={onSubmit}>
+                <Icon type='upload'/>등록
             </Button>
 
         </Form>

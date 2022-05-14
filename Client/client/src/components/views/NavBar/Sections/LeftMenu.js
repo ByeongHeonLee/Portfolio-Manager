@@ -1,5 +1,6 @@
 import React from 'react';
 import { Menu } from 'antd';
+import './Navbar.css'
 // const SubMenu = Menu.SubMenu;
 // const MenuItemGroup = Menu.ItemGroup;
 
@@ -9,7 +10,7 @@ function LeftMenu(props) {
     {/* <Menu.Item key="mail">
       <a href="/">Home</a>
     </Menu.Item> */}
-       <Menu.Item key="board">
+       <Menu.Item key="board" style={{color: 'black'}}>
           <a href="/board">토론게시판</a>
         </Menu.Item>
         <Menu.Item key="sim">

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { FaCode } from "react-icons/fa";
+import { Icon } from 'antd'
 import './LandingPage.css'
 
 function LandingPage() {
@@ -24,7 +24,7 @@ function LandingPage() {
                             value={Search} placeholder="종목 이름 또는 코드를 입력하세요" box-sizing="border-box" class="searchTerm" onChange={handleChangeSearch}>
                         </input>
                         <button type="submit" class="searchButton">
-                            검색<i class="fa fa-search"></i>
+                            <Icon type='search'/>
                         </button>       
                     </div>
                 </div>

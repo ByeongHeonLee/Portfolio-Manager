@@ -1,8 +1,9 @@
 import Axios from 'axios'
 import React, { useState } from 'react'
-import { Button, Input } from 'antd';
+import { Icon, Button, Input } from 'antd';
 import { useSelector } from 'react-redux'
 import SingleComment from './SingleComment'
+import ReplyComment from './ReplyComment'
 
 const { TextArea } = Input;
 
@@ -25,17 +26,18 @@ function Comment(props) {
             writer: user.userData._id,
             postId: postId
         }
-
-        Axios.post('/api/comment/saveComment', variables)
-        .then(response => {
-            if(response.data.success){
-                console.log(response.data.result)
-                setcommentValue("")
-                props.refreshFunction(response.data.result)
-            } else {
-                alert( '댓글 저장 실패.')
-            }
-        })
+        if(variables.content !== ""){
+            Axios.post('/api/comment/saveComment', variables)
+            .then(response => {
+                if(response.data.success){
+                    console.log(response.data.result)
+                    setcommentValue("")
+                    props.refreshFunction(response.data.result)
+                } else {
+                    alert( '댓글 저장 실패.')
+                }
+            })
+        }
     }
 
   return (
@@ -47,33 +49,36 @@ function Comment(props) {
       {/*Comment lists*/}                                                        
       
       {props.commentLists && props.commentLists.map((comment, index) => (
-                //(!comment.responseTo &&
+                (!comment.responseTo &&
                     <React.Fragment key={index}>
                         <SingleComment comment={comment} postId={postId} refreshFunction={props.refreshFunction} />                                        
+                        <ReplyComment commentLists={props.commentLists} postId={postId} parentCommentId={comment._id} refreshFunction={props.refreshFunction} />
                     </React.Fragment>
-                //)   
+                )   
                 
       ))}
       
+      <br />
 
-{/* <ReplyComment CommentLists={props.CommentLists} postId={props.postId} parentCommentId={comment._id} refreshFunction={props.refreshFunction} /> */}
 
 
 
       {/* Root Comment form */}
 
       <form style={{ display: 'flex' }} onSubmit={onSubmit}>
-          <TextArea
+          <textarea
             style={{ width: '60%', borderRadius: '5px' }}
             onChange={handleClick}
             value={commentValue}
             placeholder="댓글을 작성해주세요"
           />
           <br />
-          <button style={{ width: '10%', height: '52px' }} onClick={onSubmit} >등록</button>
+          <Button style={{ width: '4%', fontSize: '1.5rem', height: '52px', border: 1, backgroundColor:'rgb(0, 0, 0)', color: 'white' }} onClick={onSubmit}><Icon type='message' style={{width: '100%'}}/> </Button>
       </form>
     </div>
   )
 }
 
 export default Comment
+
+// style={{ border: 0, backgroundColor:'gray', color: 'Black', left: '50%'}}><Icon type='left'/>

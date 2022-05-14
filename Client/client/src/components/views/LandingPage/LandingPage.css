@@ -27,7 +27,7 @@ body{
 }
 
 .searchButton {
-  width: 50px;
+  width: 80px;
   height: 80px;
   border: 1px solid #000000;
   background: #000000;
@@ -35,7 +35,7 @@ body{
   color: #fff;
   border-radius: 0 5px 5px 0;
   cursor: pointer;
-  font-size: 20px;
+  font-size: 30px;
 }
 
 /*Resize the wrap to see the search bar change!*/

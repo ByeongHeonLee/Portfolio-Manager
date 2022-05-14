@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import Axios from 'axios'
-import { Avatar ,List, Typography, Button } from 'antd'
+import { Avatar ,List, Typography, Button, Icon } from 'antd'
 import moment from 'moment';
 import Comment from './Comment'
+import LikeDislikes from './LikeDislikes';
 import './BoardPage.css'
 
 const { Title } = Typography;
@@ -46,10 +47,12 @@ function Postdetailpage(props) {
     if(PostDetail.writer) {
         if(PostDetail.filePath){
             return (
-                        <div style={{ width: '100%', margin: '3rem 4rem' }}>
-                            <Title level={2}>{PostDetail.title}</Title>
-                            <List.Item>
-                                <List.Item.Meta
+                        <div style={{ width: '100%', margin: '3rem 4rem'}}>
+                            <Title level={1}>{PostDetail.title}</Title>
+                            <List.Item
+                                actions={[ <LikeDislikes post userId={localStorage.getItem('userId')}
+                                postId={postId}/> ]}>
+                                <List.Item.Meta 
                                     avatar={<Avatar src={PostDetail.writer && PostDetail.writer.image} />} 
                                     title={PostDetail.writer.name}
                                     description={moment(PostDetail.updatedAt).calendar('')}
@@ -61,17 +64,24 @@ function Postdetailpage(props) {
                             <p style={{ fontSize: '2.3rem' }}>
                                 {PostDetail.description}
                             </p>
-
-                            <Button type="primary" size="large" href="/board" style={{left: '50%'}}>목록</Button>
+                            <br /><br /><br />
+                            <br /><br /><br />
+                            <Button type="primary" size="large" href="/board" style={{ border: '1px solid #d7d7da', backgroundColor:'white', color: 'Black', left: '50%'}}><Icon type='menu-fold'/>목록</Button>
+                            <br />
+                            
                             <Comment commentLists={Comments} postId={PostDetail._id} refreshFunction={refreshFunction}/>
                         </div>
                     )
         } else {
             return (
                 <div style={{ width: '100%', margin: '3rem 4rem' }}>
-                    <Title level={2}>{PostDetail.title}</Title>
-                    <List.Item>
+                    
+                    <Title level={1}>{PostDetail.title}</Title>
+                    <List.Item
+                        actions={[ <LikeDislikes post userId={localStorage.getItem('userId')}
+                        postId={postId}/>]}>
                         <List.Item.Meta 
+                            avatar={<Avatar src={PostDetail.writer && PostDetail.writer.image} />}
                             title={PostDetail.writer.name}
                             description={moment(PostDetail.updatedAt).calendar('')}
                         />
@@ -82,8 +92,10 @@ function Postdetailpage(props) {
                     <p style={{ fontSize: '2.3rem' }}>
                         {PostDetail.description}
                     </p>
- 
-                    <Button type="primary" size="large" href="/board" style={{left: '50%'}}>목록</Button>
+                    <br /><br /><br />
+                    <br /><br /><br />
+                    <Button type="primary" size="large" href="/board" style={{ border: '1px solid #d7d7da', backgroundColor:'white', color: 'Black', left: '50%'}}><Icon type='menu-fold'/>목록</Button>
+                    <br/>
                     <Comment commentLists={Comments} postId={PostDetail._id} refreshFunction={refreshFunction}/>
                 </div>
             )

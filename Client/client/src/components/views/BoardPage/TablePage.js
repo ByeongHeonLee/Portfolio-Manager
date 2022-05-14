@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Table, Card, Typography, Button, Row, Col, Avatar } from 'antd';
+import { Icon, Table, Card, Typography, Button } from 'antd';
 import Axios from 'axios';
 import moment from 'moment';
 
@@ -125,7 +125,7 @@ function TablePage() {
       <Title level={2}>종목 토론 게시판</Title>
       <hr />
       <Table dataSource={data} columns={columns} />
-      <Button type="primary" size="large" href="/board/post">글쓰기</Button>
+      <Button type="primary" size="large" href="/board/post" style={{ border: '1px solid #d7d7da', backgroundColor:'white', color: 'Black'}}><Icon type='edit'/>글쓰기</Button>
     
     </div>
     
