@@ -1,0 +1,8 @@
+@import url('https://fonts.googleapis.com/css?family=Archivo+Black');
+
+p {
+    font-size: 2.3em;
+    line-height: 1.55em;
+    color: rgb(0, 0, 0);
+    font-family: 'Archivo Black', Helvetica, sans-serif;
+}
