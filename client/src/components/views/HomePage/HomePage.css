@@ -1,0 +1,39 @@
+@import url('https://fonts.googleapis.com/css?family=Archivo+Black');
+
+
+h1 {
+    font-size: 3.0em;
+    line-height: 1.55em;
+    margin-bottom: 10px;
+    color: #666;
+}
+
+p {
+    font-size: 1.4em;
+    line-height: 1.35em;
+    color: #414141;
+    margin-bottom: 15px;
+}
+
+#content {
+    display: block;
+    padding: 10px 15px;
+}
+
+#fullimg {
+    display: block;
+    width: 100%;
+    height: 360px;
+    background: url('https://img.lovepik.com/photo/50055/7601.jpg_wh860.jpg') no-repeat;
+    background-size: 100%;
+}
+
+#head {
+    display: block;
+    float: left;
+    color: #000000;
+    font-size: 3.1em;
+    line-height: 80px;
+    font-family: 'Archivo Black', Helvetica, sans-serif;
+}
+
