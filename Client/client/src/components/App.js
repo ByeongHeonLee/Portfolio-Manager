@@ -12,6 +12,11 @@ import BoardPage from './views/BoardPage/BoardPage';
 import TablePage from './views/BoardPage/TablePage';
 import SimulatePage from './views/SimulatePage/SimulatePage';
 import Postdetailpage from './views/BoardPage/PostDetailpage';
+import MyaccountPage from './views/MyaccountPage/MyaccountPage';
+import KosPage from './views/KosPage/KosPage';
+//import Percent from './views/Percent/Percent';
+import NewsPage from './views/NewsPage/NewsPage';
+
 import './App.css'
 
 //null   Anyone Can go inside
@@ -32,6 +37,9 @@ function App() {
           <Route exact path="/simulate" component={Auth(SimulatePage, true)} />
           <Route exact path="/login" component={Auth(LoginPage, false)} />
           <Route exact path="/register" component={Auth(RegisterPage, false)} />
+          <Route exact path="/myAccount" component={Auth(MyaccountPage, true)} />
+          <Route exact path="/kos" component={Auth(KosPage, null)} />
+          <Route exact path="/news" component={Auth(NewsPage, null)} />
         </Switch>
       </div>
     </Suspense>

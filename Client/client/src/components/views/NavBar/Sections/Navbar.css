@@ -67,6 +67,16 @@
   padding: 14px 24px !important;
 }
 
+  
+.ant-menu-horizontal > .ant-menu-item:hover, 
+.ant-menu-horizontal > .ant-menu-item-active
+{
+  border-bottom: 2px solid #000000;
+}
+.ant-menu-horizontal > .ant-menu-item a:hover {
+  color: #000000;
+} 
+
 @media (max-width: 767px) {
   .menu__mobile-button {
     display: inline-block !important;
@@ -89,17 +99,11 @@
   .menu__logo a {
     padding: 10px 20px;
   }
-  /* .ant-menu-horizontal .ant-menu-item:hover, 
-  .ant-menu-horizontal .ant-menu-submenu:hover,
-  .ant-menu-horizontal .ant-menu-item-active,
-  .ant-menu-horizontal .ant-menu-submenu-active,
-  .ant-menu-horizontal .ant-menu-item-open,
-  .ant-menu-horizontal .ant-menu-submenu-open,
-  .ant-menu-horizontal .ant-menu-item-selected,
-  .ant-menu-horizontal .ant-menu-submenu-selected {
-    border-bottom: 2px solid #000000;
+
+  .ant-menu-item:hover {
+
+    color: black;
+  
   }
-  .ant-menu-horizontal .ant-menu-item a:hover {
-    color: #000000;
-  } */
+
 }

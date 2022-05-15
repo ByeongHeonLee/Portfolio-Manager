@@ -51,7 +51,7 @@ function RegisterPage(props) {
       }}
       validationSchema={Yup.object().shape({
         name: Yup.string()
-          .required('이름을 입력하시오.'),
+          .required('유저네임을 입력하시오.'),
         email: Yup.string()
           .email('이메일 형식이 올바르지 않습니다.')
           .required('이메일을 입력하시오.'),
@@ -102,11 +102,11 @@ function RegisterPage(props) {
             <Title level={2}>회원가입</Title>
             <Form style={{ minWidth: '375px' }} {...formItemLayout} onSubmit={handleSubmit} >
 
-            <Form.Item required label="Name" hasFeedback>
+            <Form.Item required label="User Name" hasFeedback>
                 <Input
                   id="name"
                   prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                  placeholder="Enter your name"
+                  placeholder="Enter User name"
                   type="text"
                   value={values.name}
                   onChange={handleChange}

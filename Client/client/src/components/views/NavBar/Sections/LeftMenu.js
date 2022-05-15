@@ -10,7 +10,13 @@ function LeftMenu(props) {
     {/* <Menu.Item key="mail">
       <a href="/">Home</a>
     </Menu.Item> */}
-       <Menu.Item key="board" style={{color: 'black'}}>
+        <Menu.Item key="kos">
+          <a href="/kos">한국증시</a>
+        </Menu.Item>
+        <Menu.Item key="news">
+          <a href="/news">오늘의소식</a>
+        </Menu.Item>
+        <Menu.Item key="board">
           <a href="/board">토론게시판</a>
         </Menu.Item>
         <Menu.Item key="sim">

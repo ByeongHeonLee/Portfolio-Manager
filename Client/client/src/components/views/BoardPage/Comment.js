@@ -80,5 +80,3 @@ function Comment(props) {
 }
 
 export default Comment
-
-// style={{ border: 0, backgroundColor:'gray', color: 'Black', left: '50%'}}><Icon type='left'/>

@@ -5,7 +5,6 @@ import { Avatar ,List, Typography, Button, Icon } from 'antd'
 import moment from 'moment';
 import Comment from './Comment'
 import LikeDislikes from './LikeDislikes';
-import './BoardPage.css'
 
 
 const { Title } = Typography;
@@ -108,7 +107,8 @@ function Postdetailpage(props) {
                             <br /><br /><br />
                             <br /><br /><br />
                             <Button type="primary" size="large" href="/board" style={{ border: '1px solid #d7d7da', backgroundColor:'white', color: 'Black', left: '42%'}}><Icon type='menu-fold'/>목록</Button>
-                            {user.userData._id === PostDetail.writer._id &&
+                            
+                            {user.userData && user.userData._id === PostDetail.writer._id &&
                                 <Button type="primary" size="large" style={{ border: '1px solid #d7d7da', backgroundColor:'white', color: 'Black', left: '42.2%'}} onClick={onPostDelete}><Icon type='delete'/>삭제</Button>
                             }
                             <br />
@@ -138,7 +138,7 @@ function Postdetailpage(props) {
                     <br /><br /><br />
                     <br /><br /><br />
                     <Button type="primary" size="large" href="/board" style={{ border: '1px solid #d7d7da', backgroundColor:'white', color: 'Black', left: '42%'}}><Icon type='menu-fold'/>목록</Button>
-                    {user.userData._id === PostDetail.writer._id &&
+                    {user.userData && user.userData._id === PostDetail.writer._id &&
                         <Button type="primary" size="large" style={{ border: '1px solid #d7d7da', backgroundColor:'white', color: 'Black', left: '42.2%'}} onClick={onPostDelete}><Icon type='delete'/>삭제</Button>
                     }
                     
