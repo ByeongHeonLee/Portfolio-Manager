@@ -1,11 +1,11 @@
 import Axios from 'axios'
 import React, { useState } from 'react'
-import { Icon, Button, Input } from 'antd';
+import { Icon, Button } from 'antd';
 import { useSelector } from 'react-redux'
 import SingleComment from './SingleComment'
 import ReplyComment from './ReplyComment'
 
-const { TextArea } = Input;
+// const { TextArea } = Input;
 
 function Comment(props) {
 
@@ -43,7 +43,7 @@ function Comment(props) {
   return (
     <div>
       <br />
-      <p>댓글</p>
+      <p style={{fontSize: '1.5rem', fontWeight: 'bolder'}}><Icon type="aliwangwang" />  댓글</p>
       <hr />
 
       {/*Comment lists*/}                                                        
@@ -73,7 +73,7 @@ function Comment(props) {
             placeholder="댓글을 작성해주세요"
           />
           <br />
-          <Button style={{ width: '4%', fontSize: '1.5rem', height: '52px', border: 1, backgroundColor:'rgb(0, 0, 0)', color: 'white' }} onClick={onSubmit}><Icon type='message' style={{width: '100%'}}/> </Button>
+          <Button style={{ width: '4%', fontSize: '1.5rem', height: '52px', border: 1, backgroundColor:'rgb(0, 0, 0)', color: 'white' }} onClick={onSubmit}><Icon type='message'/> </Button>
       </form>
     </div>
   )

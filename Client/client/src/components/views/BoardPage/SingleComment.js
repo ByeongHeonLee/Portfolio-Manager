@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import Axios from 'axios'
-import { Icon, Comment, Button, Avatar, Input } from 'antd'
+import { Icon, Comment, Button, Avatar, message } from 'antd'
 import { useSelector } from 'react-redux'
 import LikeDislikes from './LikeDislikes'
 //const { TextArea } = Input;
@@ -19,9 +19,36 @@ function SingleComment(props) {
         setCommentValue(event.currentTarget.value)
     }
 
+    
+    const onCommentDelete = () => {
+
+        const variables = {
+            content: props.comment.content,
+            writer: user.userData._id,
+            postId: props.postId,
+            responseTo: props.comment.responseTo
+        }
+        
+        if(window.confirm('정말 삭제하시겠습니까?') === true){
+            Axios.post('/api/comment/DeleteComment', variables)
+            .then(response => {
+                if(response.data.success) {
+                    message.success("삭제하였습니다.")
+                    window.location.reload()
+                } else {
+                    alert('삭제에 실패하였습니다.')
+                }
+            })
+        } else {
+            return false;
+        }
+        
+    }
+
+
     const onSubmit = (event) => {
         event.preventDefault();
-        //아무것도 입력안했을때 등록안되게끔 해줘야할듯
+        
         const variables = {
             content: CommentValue,
             writer: user.userData._id,
@@ -35,6 +62,7 @@ function SingleComment(props) {
                 if(response.data.success){
                     console.log(response.data.result)
                     setCommentValue("")
+                    window.location.reload()
                     // setOpenReply(!OpenReply)
                     props.refreshFunction(response.data.result)
                 } else {
@@ -45,9 +73,14 @@ function SingleComment(props) {
           
     }
 
+
     const actions = [
-        <LikeDislikes userId={localStorage.getItem('userId')} commentId={props.comment._id}/>
-        ,<span  style={{marginLeft: '-690px'}} onClick={onClickReplyOpen} key="comment-basic-reply-to">답글 달기</span>
+        <LikeDislikes userId={localStorage.getItem('userId')} commentId={props.comment._id}/>,
+        <span style={{marginLeft: '-690px'}} onClick={onClickReplyOpen} key="comment-basic-reply-to">답글 달기</span>,
+        (
+            props.comment.writer._id === user.userData._id &&
+            <Button type="primary" size='small' style={{ border: '1px solid #d7d7da', backgroundColor:'white', color: 'Black', marginLeft: '-600px'}} onClick={onCommentDelete}><Icon type='delete'/></Button>
+        )
     ]
 
     
@@ -69,7 +102,7 @@ function SingleComment(props) {
                     </p>
                 }
             />
-            
+
             {OpenReply && 
                 <form style={{ display: 'flex' }} onSubmit={onSubmit}>
                     <textarea

@@ -34,4 +34,32 @@ router.post('/getComments', (req, res) => {
     })
 })
 
+router.post('/DeleteComment', (req, res) => {
+
+    let variable = {}
+
+    if(req.body.responseTo === null){
+        variable = { 
+            writer: req.body.writer,
+            postId: req.body.postId,
+            content: req.body.content
+        }
+    } else {
+        variable = { 
+            writer: req.body.writer,
+            postId: req.body.postId,
+            responseTo: req.body.responseTo,
+            content: req.body.content 
+        }
+    }
+    
+    Comment.findOneAndDelete(variable)
+    .exec((err, result) => {
+        if(err) return res.status(400).json({ success: false, err })
+        res.status(200).json({ success: true })
+    })
+})
+
+
+
 module.exports = router;

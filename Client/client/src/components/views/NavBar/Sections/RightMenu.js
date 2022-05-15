@@ -26,7 +26,7 @@ function RightMenu(props) {
           <a href="/login">로그인</a>
         </Menu.Item>
         <Menu.Item key="app">
-          <a href="/register" style={{color: 'black'}}>회원가입</a>
+          <a href="/register">회원가입</a>
         </Menu.Item>
       </Menu>
     )

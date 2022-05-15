@@ -69,7 +69,31 @@ router.post("/getPostDetail", (req, res) => {
     })
 });
 
+router.post('/DeletePost', (req, res) => {
 
+    let variable = {
+        writer: req.body.writer,
+        title: req.body.title,
+        description: req.body.description,
+        filePath: req.body.filePath,
+        views: req.body.views
+    }
+
+    Board.findOneAndDelete(variable)
+    .exec((err, result) => {
+        if(err) return res.status(400).json({ success: false, err })
+        res.status(200).json({ success: true })
+    })
+})
+
+
+// router.post('/upViews', (req, res) => {
+//     console.log( req.body.postId )
+//     Board.findOneAndUpdate({_id: req.body.postId }, { views: 1 }, (err, doc) => {
+//         if(err) return res.status(400).json({ success: false, err })
+//         res.status(200).json({ success: true })
+//     })
+// })
 
 
 //=================================

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { Icon, Table, Card, Typography, Button } from 'antd';
+import { Icon, Table, Typography, Button } from 'antd';
 import Axios from 'axios';
 import moment from 'moment';
 
 const { Title } = Typography;
-const { Meta } = Card;
+// const { Meta } = Card;
 //글목록 테이블 페이지임.
 function TablePage() {
   
@@ -40,7 +40,7 @@ function TablePage() {
       width: '40%',
       render: (text, record) => {
         return <a href={`/board/${record._id}`}>{record.title}</a>
-      }
+        }
     },
     {
       title: '글쓴이',
