@@ -1,15 +1,25 @@
 //코스피 코스닥 주가정보 페이지
-//ex)시총순위 나열
 
-import React from 'react'
+import { React, useState } from "react";
+import TextField from "@mui/material/TextField";
+import List from "./Components/KosPage"
+import "./App.css";
 
-function KosPage() {
+function App() {
   return (
-    <div>
-        <span style={{ fontSize: '2rem' }}>KOSPI    KOSDAQ</span>
-      
+    <div className="main">
+      <h1>KOSPI Search</h1>
+      <div className="search">
+        <TextField
+          id="outlined-basic"
+          variant="outlined"
+          fullWidth
+          label="Search"
+        />
+      </div>
+      <List />
     </div>
-  )
+  );
 }
 
 export default KosPage
