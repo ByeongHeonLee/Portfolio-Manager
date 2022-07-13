@@ -11,7 +11,7 @@ function LeftMenu(props) {
       <a href="/">Home</a>
     </Menu.Item> */}
         <Menu.Item key="kos">
-          <a href="/kos">증권정보</a>
+          <a href="/kos">한국증시</a>
         </Menu.Item>
         <Menu.Item key="news">
           <a href="/news">오늘의소식</a>
