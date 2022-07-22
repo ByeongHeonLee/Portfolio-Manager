@@ -9,11 +9,13 @@
   },
   "scripts": {
     "start": "node server/index.js",
+    "build": "python client/src/components/views/KosPage/data/krx_stock_info.py",
     "backend": "nodemon server/index.js",
     "frontend": "npm run start --prefix client",
-    "dev": "concurrently \"npm run backend\" \"npm run start --prefix client\""
+    "dev": "concurrently \"npm run build\" \"npm run backend\" \"npm run start --prefix client\"",
+    "heroku-postbuild": "npm run dev"
   },
-  "author": "John ahn",
+  "author": "Lee",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^3.0.6",
