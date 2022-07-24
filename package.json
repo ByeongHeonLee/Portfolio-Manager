@@ -9,15 +9,16 @@
   },
   "scripts": {
     "start": "node server/index.js",
-    "build": "python client/src/components/views/KosPage/data/krx_stock_info.py",
     "backend": "nodemon server/index.js",
     "frontend": "npm run start --prefix client",
-    "dev": "concurrently \"npm run build\" \"npm run backend\" \"npm run start --prefix client\"",
+    "dev": "concurrently \"npm run backend\" \"npm run frontend\"",
+    "heroku-prebuild": "",
     "heroku-postbuild": "npm run dev"
   },
   "author": "Lee",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.27.2",
     "bcrypt": "^3.0.6",
     "body-parser": "^1.18.3",
     "cookie-parser": "^1.4.3",
