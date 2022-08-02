@@ -107,7 +107,8 @@ router.get("/auth", auth, (req, res) => {
         isAuth: true,
         email: req.user.email,
         name: req.user.name,
-        lastname: req.user.lastname,
+        sns: req.user.sns,
+        //lastname: req.user.lastname,
         role: req.user.role,
         image: req.user.image,
     });
@@ -132,11 +133,23 @@ router.post("/login", (req, res) => {
                 loginSuccess: false,
                 message: "Auth failed, email not found"
             });
+        if(!req.body.sns){
+            user.comparePassword(req.body.password, (err, isMatch) => {
+                if (!isMatch)
+                    return res.json({ loginSuccess: false, message: "Wrong password" });
 
-        user.comparePassword(req.body.password, (err, isMatch) => {
-            if (!isMatch)
-                return res.json({ loginSuccess: false, message: "Wrong password" });
-
+                user.generateToken((err, user) => {
+                    if (err) return res.status(400).send(err);
+                    res.cookie("w_authExp", user.tokenExp);
+                    res
+                        .cookie("w_auth", user.token)
+                        .status(200)
+                        .json({
+                            loginSuccess: true, userId: user._id
+                        });
+                });
+            });
+        } else {
             user.generateToken((err, user) => {
                 if (err) return res.status(400).send(err);
                 res.cookie("w_authExp", user.tokenExp);
@@ -147,7 +160,7 @@ router.post("/login", (req, res) => {
                         loginSuccess: true, userId: user._id
                     });
             });
-        });
+        } 
     });
 });
 

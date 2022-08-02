@@ -42,15 +42,18 @@
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
-
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
-
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
+    <script src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.0.js" type="text/javascript" charset="utf-8"></script>
+    <!-- <p>
+      <div id="naverIdLogin"></div>
+    </p>
+    <script type="text/javascript">
+      var naverLogin = new naver.LoginWithNaverId( {
+          clientId: "iPWtavszxbcjYZ943T0O",
+          callbackUrl: "http://localhost:3000/oauth/callback/naver",
+          isPopup: false, /* 팝업을 통한 연동처리 여부 */
+          loginButton: {color: "green", type: 3, height: 47} /* 로그인 버튼의 타입을 지정 */
+      } ); /* 설정정보를 초기화하고 연동을 준비 */
+      naverLogin.init();
+    </script> -->
   </body>
 </html>

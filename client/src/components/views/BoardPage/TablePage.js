@@ -8,10 +8,9 @@ const { Title } = Typography;
 //글목록 테이블 페이지임.
 function TablePage() {
   
- const [Post, setPost] = useState([])
+  const [Post, setPost] = useState([])
 
-  useEffect(() => {
-    
+  useEffect(() => { 
     Axios.get('/api/users/getPosts')
     .then(response => {
       if(response.data.success) {
@@ -20,8 +19,7 @@ function TablePage() {
       } else {
         alert('게시글 가져오기를 실패하였습니다.')
       }
-    })
-  
+    })  
   }, [])
 
   const columns = [
@@ -69,14 +67,14 @@ function TablePage() {
         key: index.toString(),
         number: `${index+1}`,
         title: `${post.title}`,
-        writer: `${post.writer.name}`,
+        writer: `${post.writer?.name}`,
         views: `${post.views}`,
         date: `${moment(post.createdAt).calendar('')}`,
         _id: `${post._id}`,   
     })
   })
   
-
+  
 
 
   
@@ -126,9 +124,7 @@ function TablePage() {
       <hr />
       <Table dataSource={data} columns={columns} />
       <Button type="primary" size="large" href="/board/post" style={{ border: '1px solid #d7d7da', backgroundColor:'white', color: 'Black'}}><Icon type='edit'/>글쓰기</Button>
-    
-    </div>
-    
+    </div>  
   )
 }
 

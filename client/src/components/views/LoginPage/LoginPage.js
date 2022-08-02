@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { withRouter } from "react-router-dom";
 import { loginUser } from "../../../_actions/user_actions";
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { Form, Icon, Input, Button, Checkbox, Typography } from 'antd';
 import { useDispatch } from "react-redux";
+import { KAKAO_AUTH_URL, NAVER_CLIENT_ID, NAVER_CALLBACK_URL } from "../../views/Sns/Snskey"
+import './Loginbtn.css';
 
 const { Title } = Typography;
 
@@ -18,22 +20,49 @@ function LoginPage(props) {
   const handleRememberMe = () => {
     setRememberMe(!rememberMe)
   };
+  const naverRef = useRef();
+  useEffect(() => {
+      const naverScript = document.createElement("script");
+      naverScript.src = "https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.0.js";
+      naverScript.type = "text/javascript";
+      document.head.appendChild(naverScript);
 
-  const initialEmail = localStorage.getItem("rememberMe") ? localStorage.getItem("rememberMe") : '';
+      naverScript.onload = () => {
+          const naverLogin = new window.naver.LoginWithNaverId({
+              clientId: NAVER_CLIENT_ID,
+              callbackUrl: NAVER_CALLBACK_URL,
+              callbackHandle: true,
+              isPopup: false,
+              loginButton: {
+                  color: "green",
+                  type: 3,
+                  height: 55,
+              }
+          });
+          naverLogin.init();
+          naverLogin.logout(); //네이버 로그인이 계속 유지되는 경우가 있음, 초기화시 로그아웃
+      }
+  }, [])
+
+  const handleClick = () => {
+      naverRef.current.children[0].click();
+  }
+
+  //const initialEmail = localStorage.getItem("rememberMe") ? localStorage.getItem("rememberMe") : '';
 
   return (
     <Formik
       initialValues={{
-        email: initialEmail,
+        email: '',    //initialEmail
         password: '',
       }}
       validationSchema={Yup.object().shape({
         email: Yup.string()
           .email('이메일 형식이 올바르지 않습니다.')
-          .required('이메일을 입력하시오.'),
+          .required(''),
         password: Yup.string()
           .min(6, '6글자 이상 입력하시오.')
-          .required('비밀번호를 입력하시오.'),
+          .required(''),
       })}
       onSubmit={(values, { setSubmitting }) => {
         setTimeout(() => {
@@ -126,13 +155,20 @@ function LoginPage(props) {
 
               <Form.Item>
                 {/* <Checkbox id="rememberMe" onChange={handleRememberMe} checked={rememberMe} >Remember me</Checkbox> */}
-                <a className="login-form-forgot" href="/reset_user" style={{ float: 'right' }}>
+                {/* <a className="login-form-forgot" href="/reset_user" style={{ float: 'right' }}>
                   비밀번호 찾기
-                  </a>
+                  </a> */}
                 <div>
-                  <Button type="primary" htmlType="submit" className="login-form-button" style={{ minWidth: '100%' }} disabled={isSubmitting} onSubmit={handleSubmit}>
+                  <Button type="primary" htmlType="submit" className="login-form-button" style={{ minWidth: '100%', height: '45px' }} disabled={isSubmitting} onSubmit={handleSubmit}>
                     로그인
-                </Button>
+                  </Button>
+                  <div style={{height: '50px', textAlign: 'center', }}> ――――――――――― or ――――――――――― </div>
+                  <a href={KAKAO_AUTH_URL}>
+                    <div className={"kakao_btn"} />
+                  </a>
+                  <div ref={naverRef} id="naverIdLogin"></div>
+                  <button onClick={handleClick} className={"naver_btn"}>
+                  </button>
                 </div>
                 {/* Or <a href="/register">회원가입</a> */}
               </Form.Item>

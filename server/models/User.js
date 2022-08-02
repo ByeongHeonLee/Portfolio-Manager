@@ -18,9 +18,9 @@ const userSchema = mongoose.Schema({
         type: String,
         minglength: 5
     },
-    lastname: {
-        type:String,
-        maxlength: 50
+    sns: {
+        type:Number,
+        default: 0 //1:카카오, 2:네이버
     },
     role : {
         type:Number,

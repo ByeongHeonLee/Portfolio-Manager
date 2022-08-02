@@ -1,0 +1,24 @@
+
+.kakao_btn{
+    background-image: url("../../../images/kakao_login.png");
+    background-repeat: no-repeat;
+    background-size : cover;
+    margin: 10px auto;
+    /* padding: -10px; */
+    color: transparent;
+    width: 350px;
+    height: 45px;
+}
+
+.naver_btn{
+    background-image: url("../../../images/naver_login.png");
+    background-repeat: no-repeat;
+    background-size : cover;
+    margin: 10px auto;
+    border-radius: 5px;
+    /* padding: -10px; */
+    color: transparent;
+    width: 350px;
+    height: 45px;
+    border: 0px;
+}
