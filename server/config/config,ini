@@ -1,0 +1,10 @@
+[KEY]
+; Authentication Key of 공공 데이터 포털 Open API
+OPEN_API_KEY=uZEPxYU1hcKy6To5Hex%2ByxoSPBqrjzpFi9DeHCmI3b%2FovyQR3HbAcBQQG1RtKJpp5vRJ7ChiL%2B4HqCwEsXjoJQ%3D%3D
+
+
+
+[MONGODB]
+; Mongo DB Connection Information
+MONGODB_IP   = 221.168.49.133
+MONGODB_PORT = 27017 ; Default Port (https://www.mongodb.com/docs/manual/reference/default-mongodb-port/)

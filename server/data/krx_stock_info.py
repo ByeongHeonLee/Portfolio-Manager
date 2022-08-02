@@ -39,16 +39,22 @@
 import requests
 import pprint
 import json
+import configparser
 
 URL = "http://apis.data.go.kr/1160100/service/GetKrxListedInfoService/getItemInfo?serviceKey={0}&pageNo={1}&numOfRows={2}&resultType={3}&basDt={4}&beginBasDt={5}&endBasDt={6}&likeBasDt={7}&likeSrtnCd={8}&isinCd={9}&likeIsinCd={10}&itmsNm={11}&likeItmsNm={12}&crno={13}&corpNm={14}&likeCorpNm={15}"
 
-SERVICE_KEY_1 = "uZEPxYU1hcKy6To5Hex%2ByxoSPBqrjzpFi9DeHCmI3b%2FovyQR3HbAcBQQG1RtKJpp5vRJ7ChiL%2B4HqCwEsXjoJQ%3D%3D"
+# Authentication Key Parsing from config.ini
+config = configparser.ConfigParser()
+config.read('config/config.ini', encoding='utf-8-sig')
+SERVICE_KEY = config['KEY']['OPEN_API_KEY']
+
+# The number of stock items on Korea Stock Exchange Market
 KOSPI_ITEMS  = 941
 KOSDAQ_ITEMS = 1569
 KONEX_ITEMS  = 123
 
-# Setting Input parameters
-serviceKey = SERVICE_KEY_1
+# Setting Input Parameters
+serviceKey = SERVICE_KEY
 pageNo     = ""
 numOfRows  = KOSPI_ITEMS + KOSDAQ_ITEMS + KONEX_ITEMS
 resultType = "json"
