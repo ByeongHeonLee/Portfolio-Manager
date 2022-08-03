@@ -12,9 +12,9 @@
     "backend": "nodemon server/index.js",
     "frontend": "npm run start --prefix client",
     "dev": "concurrently \"npm run backend\" \"npm run start --prefix client\"",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client "
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false pip install && npm install --prefix client && npm run build --prefix client "
   },
-  "author": "John ahn",
+  "author": "Lee Byeong Heon, Lee Seong Hyuk",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^3.0.6",

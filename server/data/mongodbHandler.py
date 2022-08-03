@@ -22,12 +22,11 @@ class MongoDBHandler:
 
         # config.ini 파일에서 MongoDB 접속 정보를 Parsing
         config = configparser.ConfigParser()
-        config.read('config/config.ini', encoding='utf-8-sig')
-        host = config['MONGODB']['MONGODB_IP']
-        port = config['MONGODB']['MONGODB_PORT']
+        config.read("./config.ini", encoding="UTF-8")
 
         # self._client에 MongoClient 객체를 저장 (MongoDB의 모든 Command들은 self._client를 통해 수행됨)
-        self._client = MongoClient(host, int(port))
+        self._client = MongoClient("mongodb+srv://ByeongHeonLee:7760qudgjswkd!@portfolio-dot-com.yaba9.mongodb.net/?retryWrites=true&w=majority")
+        # self._client = MongoClient(config["MONGODB"]["MONGODB_URL"])
 
     def insert_item(self, data, db_name=None, collection_name=None):
         """
