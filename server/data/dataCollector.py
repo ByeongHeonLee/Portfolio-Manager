@@ -1,4 +1,5 @@
 import time
+from pytz import timezone
 
 # Scheduler Modules
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -16,7 +17,7 @@ if __name__ == "__main__":
     # Set Background Scheduler 
     sched = BackgroundScheduler(timezone='Asia/Seoul')
 
-    # Create Mongo DB Connection    
+    # Create Mongo DB Connection
     mongodb = MongoDBHandler()
 
     # 금융위원회_KRX상장종목정보
