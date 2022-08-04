@@ -1,4 +1,5 @@
 import time
+from datetime import datetime
 from pytz import timezone
 
 # Scheduler Modules
@@ -30,5 +31,8 @@ if __name__ == "__main__":
     # Run
     sched.start()
     while True:
+        if datetime.today().minute == 0:
+            print("%s is running..." % __name__)
+            
         time.sleep(1)
         
