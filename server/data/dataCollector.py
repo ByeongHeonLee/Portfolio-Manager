@@ -1,16 +1,16 @@
 import time
 from datetime import datetime
-from pytz import timezone
+from pytz     import timezone
 
 # Scheduler Modules
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.cron         import CronTrigger
 
 # Database Handler Modules
-from mongodbHandler                    import MongoDBHandler   # Mongo DB Handler
+from mongodbHandler import MongoDBHandler   # Mongo DB Handler
 
 # Data Crawler Modules
-from krxListedInfo                     import getKrxListedInfo # 금융위원회_KRX상장종목정보
+from krxListedInfo import getKrxListedInfo # 금융위원회_KRX상장종목정보
 
 # Main logic
 if __name__ == "__main__":
@@ -33,6 +33,6 @@ if __name__ == "__main__":
     while True:
         if datetime.today().minute == 0:
             print("%s is running..." % __name__)
-            
+
         time.sleep(1)
         
