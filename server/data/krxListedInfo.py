@@ -36,17 +36,11 @@
 # 10. crno       (str) : 종목의 법인등록번호
 # 11. corpNm     (str) : 종목의 법인 명칭
 
-import requests
 import json
 import configparser
 
-
+from dataHandler    import get_data
 from datetime       import datetime, timedelta
-
-# Response Code
-SUCCESS                         = "00"
-INVALID_REQUEST_PARAMETER_ERROR = "422"
-DB_ERROR                        = "500"
 
 # # of Maximum Items in Korea Stock Exchange (KOSPI/KOSDAQ/KONEX)
 # http://data.krx.co.kr/contents/MDC/MAIN/main/index.cmd
@@ -93,13 +87,8 @@ def getKrxListedInfo():
         "likeCorpNm" : "",
     }
 
-    # Set URL with Parameters
-    request_url = SERVICE_URL + '?'
-    for k, v in query_params.items():
-        request_url += k + '=' + v + '&'
-    
-    # Request Query
-    response = requests.get(request_url[:-1]) # Eliminate last '&' character 
+    # Get data from SERVICE_URL
+    response = get_data(service_url = SERVICE_URL, params = query_params)
 
     # Parsing query output
     header = json.loads(response.text)["response"]["header"]
@@ -114,15 +103,8 @@ def getKrxListedInfo():
 
     # Logging to Console
     print("Running : krxListedInfo.py")
-    print(f"resultCode : {resultCode}")
-    if resultCode == SUCCESS:
-        print("Request Success")
-    elif resultCode == INVALID_REQUEST_PARAMETER_ERROR:
-        print("[ERROR] Invalid request parameter Error")
-    elif resultCode == DB_ERROR:
-        print("[ERROR] Database Error")
-    else:
-        print("[ERROR] Undefined Response Code")
+    print(f"Result Code : {resultCode}")
+    print(f"Result Message : {resultMsg}")
     
     print(f"basDt : {YESTERDAY}")
     print(f"numOfRows : {numOfRows}")
@@ -151,10 +133,4 @@ def getKrxListedInfo():
 
     #     json_file.write("]") # End of .json file
 
-
     return items
-
-    # Output processing (to Mongo DB)
-    
-
-        
