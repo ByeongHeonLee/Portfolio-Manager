@@ -1,3 +1,4 @@
+from sqlite3 import connect
 from pymongo import MongoClient
 from pymongo.cursor import CursorType
 import configparser
@@ -7,26 +8,21 @@ class MongoDBHandler:
     PyMongo의 Wrapping Class이다. 
     """
     
-    def __init__(self):
+    def __init__(self, connection_url):
         """
         config.ini 파일에서 MongoDB 접속정보를 로딩 한다. 
         접속 정보를 이용해 MongoDB 접속과 명령어 처리에 사용할 self._clinet 객체를 생성하고,
         _db, _collection에는 현재 사용하는 database 및 collection 명을 저장한다.
         
         [Parameters]
-        No Parameters 
+        connection_url : Mongo DB에 접속하기 위한 URL (str)
 
         [Returns]
         No Returns 
         """
 
-        # config.ini 파일에서 MongoDB 접속 정보를 Parsing
-        config = configparser.ConfigParser()
-        config.read("./config.ini", encoding="UTF-8")
-
         # self._client에 MongoClient 객체를 저장 (MongoDB의 모든 Command들은 self._client를 통해 수행됨)
-        self._client = MongoClient("mongodb+srv://ByeongHeonLee:7760qudgjswkd!@portfolio-dot-com.yaba9.mongodb.net/?retryWrites=true&w=majority")
-        # self._client = MongoClient(config["MONGODB"]["MONGODB_URL"])
+        self._client = MongoClient(connection_url)
 
     def insert_item(self, data, db_name=None, collection_name=None):
         """
