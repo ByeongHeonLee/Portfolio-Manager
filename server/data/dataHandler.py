@@ -19,6 +19,14 @@ YESTERDAY = datetime.strftime(datetime.now() - timedelta(1), "%Y%m%d") # Yesterd
 URL_KRX_LISTED_INFO = "http://apis.data.go.kr/1160100/service/GetKrxListedInfoService/getItemInfo"
 URL_CORP_OUTLINE    = "http://apis.data.go.kr/1160100/service/GetCorpBasicInfoService/getCorpOutline"
 
+# * * *   Contants   * * *
+# The number of Maximum Items in Korea Stock Exchange (KOSPI/KOSDAQ/KONEX)
+# http://data.krx.co.kr/contents/MDC/MAIN/main/index.cmd
+KOSPI_ITEMS  = 938
+KOSDAQ_ITEMS = 1575
+KONEX_ITEMS  = 125
+ALL_ITEMS = str(KOSPI_ITEMS + KOSDAQ_ITEMS + KONEX_ITEMS)
+
 def set_query_url(service_url : str, params : dict):
 
     # Set URL with Parameters
@@ -31,6 +39,20 @@ def set_query_url(service_url : str, params : dict):
     # Request Query
     # response = requests.get(request_url[:-1])
     # return response
+
+def merge_by_key(ldata:list, rdata:list, key=None):
+    merged_list = []
+
+    for data in ldata:
+        merged_list.append(data)
+
+    for item in merged_list:
+        for data in rdata:
+            if item[key] == data[key]:
+                for k, v in data.items():
+                    item[k] = v
+
+    return merged_list
 
 def get_krx_listed_info(serviceKey:str, pageNo=1, numOfRows:str="", resultType="json", basDt=YESTERDAY, beginBasDt="", endBasDt="", likeBasDt="", likeSrtnCd="", isinCd="", likeIsinCd="", itmsNm="", likeItmsNm="", crno="", corpNm="", likeCorpNm=""):
     """
@@ -220,12 +242,10 @@ def get_corp_outline(serviceKey:str, pageNo=1, numOfRows="", resultType="json", 
 
     return item 
 
-def get_financial_data_kr():
-    pass
+def get_financial_data_kr(serviceKey:str):
+    list_krx_listed_info = get_krx_listed_info(serviceKey=serviceKey, numOfRows=ALL_ITEMS)
+    list_corp_outline    = get_corp_outline(serviceKey=serviceKey, numOfRows=ALL_ITEMS)
+    return merge_by_key(ldata=list_krx_listed_info, rdata=list_corp_outline, key="crno")
 
 def get_financial_data_us():
     pass
-
-SERVICE_KEY = "uZEPxYU1hcKy6To5Hex%2ByxoSPBqrjzpFi9DeHCmI3b%2FovyQR3HbAcBQQG1RtKJpp5vRJ7ChiL%2B4HqCwEsXjoJQ%3D%3D"
-get_krx_listed_info(SERVICE_KEY)
-# get_corp_outline(SERVICE_KEY, crno="", corpNm="")
