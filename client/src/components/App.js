@@ -7,7 +7,7 @@ import LoginPage from "./views/LoginPage/LoginPage.js";
 import RegisterPage from "./views/RegisterPage/RegisterPage.js";
 import NavBar from "./views/NavBar/NavBar";
 // import Footer from "./views/Footer/Footer"
-import HomePage from './views/HomePage/HomePage';
+// import HomePage from './views/HomePage/HomePage';
 import BoardPage from './views/BoardPage/BoardPage';
 import TablePage from './views/BoardPage/TablePage';
 import SimulatePage from './views/SimulatePage/SimulatePage';
@@ -31,8 +31,8 @@ function App() {
       <NavBar />
       <div style={{ paddingTop: '69px', minHeight: 'calc(100vh - 80px)' }}>
         <Switch>
-          <Route exact path="/home" component={Auth(HomePage, null)} />
-          <Route exact path="/" component={Auth(LandingPage, true)} />
+          {/* <Route exact path="/home" component={Auth(HomePage, null)} /> */}
+          <Route exact path="/" component={Auth(LandingPage, null)} />
           <Route exact path="/board" component={Auth(TablePage, true)} />
           <Route exact path="/board/post" component={Auth(BoardPage, true)} />
           <Route exact path="/board/:postId" component={Auth(Postdetailpage, true)} />
