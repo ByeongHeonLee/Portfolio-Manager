@@ -10,7 +10,7 @@ import requests
 import json
 import configparser
 
-from datetime       import datetime, timedelta
+from datetime   import datetime, timedelta
 
 # * * *   Date String   * * *
 YESTERDAY = datetime.strftime(datetime.now() - timedelta(1), "%Y%m%d") # Yesterday (Format:"YYYYMMDD")
@@ -240,7 +240,19 @@ def get_corp_outline(serviceKey:str, pageNo=1, numOfRows="", resultType="json", 
     print("totalCount : %d" % body["totalCount"])      # 전체 결과 수
     print() # Newline
 
-    return item 
+    return item
+
+def get_stock_index_kr():
+    soup = BeautifulSoup('html', 'html.parser')
+    soup.prettify()
+    soup.find()
+    soup.find_all()
+    soup.get()
+    soup.get_text()
+    soup.select()
+    soup.clear()
+    
+
 
 def get_financial_data_kr(serviceKey:str):
     list_krx_listed_info = get_krx_listed_info(serviceKey=serviceKey, numOfRows=ALL_ITEMS)

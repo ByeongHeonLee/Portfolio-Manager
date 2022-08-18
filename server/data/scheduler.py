@@ -11,7 +11,7 @@ from apscheduler.triggers.cron         import CronTrigger
 from mongodbHandler import MongoDBHandler   # Mongo DB Handler
 
 # Data Crawler Modules
-from dataHandler import get_financial_data_kr
+from server.data.dataHandler import get_financial_data_kr
 
 # Main logic
 if __name__ == "__main__":
