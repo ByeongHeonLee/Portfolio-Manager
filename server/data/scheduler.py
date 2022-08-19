@@ -16,6 +16,8 @@ from server.data.dataHandler import get_financial_data_kr
 # Main logic
 if __name__ == "__main__":
 
+    print("data crawler is running")
+
     # Set Background Scheduler 
     sched = BackgroundScheduler(timezone='Asia/Seoul')
 
@@ -35,7 +37,7 @@ if __name__ == "__main__":
     sched.start()
     while True:
         if datetime.today().minute % 10 == 0 and datetime.today().second == 0:
-            print("data crawler is running...") # Print to console the message every 10 minutes
+            print("data crawler is running") # Print to console the message every 10 minutes
 
         time.sleep(1)
         

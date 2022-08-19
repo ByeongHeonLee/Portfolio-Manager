@@ -243,16 +243,7 @@ def get_corp_outline(serviceKey:str, pageNo=1, numOfRows="", resultType="json", 
     return item
 
 def get_stock_index_kr():
-    soup = BeautifulSoup('html', 'html.parser')
-    soup.prettify()
-    soup.find()
-    soup.find_all()
-    soup.get()
-    soup.get_text()
-    soup.select()
-    soup.clear()
-    
-
+    pass
 
 def get_financial_data_kr(serviceKey:str):
     list_krx_listed_info = get_krx_listed_info(serviceKey=serviceKey, numOfRows=ALL_ITEMS)
