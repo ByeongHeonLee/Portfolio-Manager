@@ -1,3 +1,3 @@
-web: npm run backend
-release: npm run frontend
+web: nodemon server/index.js
+release: npm run start --prefix client
 # worker: python ./server/data/scheduler.py
