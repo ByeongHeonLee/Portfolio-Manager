@@ -5,32 +5,52 @@
 # Author  : Byeong Heon Lee
 # Contact : lww7438@gmail.com
 
+
+
+# Required Modules
 import os
 import requests
 import json
 import configparser
+import pprint
 
 from datetime   import datetime, timedelta
 
-# * * *   Date String   * * *
+
+
+# * * *   Date Strings   * * *
 YESTERDAY = datetime.strftime(datetime.now() - timedelta(1), "%Y%m%d") # Yesterday (Format:"YYYYMMDD")
 
-# * * *   API URL   * * *
-URL_KRX_LISTED_INFO = "http://apis.data.go.kr/1160100/service/GetKrxListedInfoService/getItemInfo"
-URL_CORP_OUTLINE    = "http://apis.data.go.kr/1160100/service/GetCorpBasicInfoService/getCorpOutline"
+
+
+# * * *   API URLs   * * *
+URL_CORP_OUTLINE      = "http://apis.data.go.kr/1160100/service/GetCorpBasicInfoService/getCorpOutline" # 금융위원회_기업기본정보: 기업개요조회
+URL_STOC_ISSU_STAT    = "http://apis.data.go.kr/1160100/service/GetStocIssuInfoService/getStocIssuStat" # 금융위원회_주식발행정보: 주식발행현황조회
+URL_KRX_LISTED_INFO   = "http://apis.data.go.kr/1160100/service/GetKrxListedInfoService/getItemInfo"    # 금융위원회_KRX상장종목정보
+URL_ITEM_BASI_INFO    = "http://apis.data.go.kr/1160100/service/GetStocIssuInfoService/getItemBasiInfo" # 금융위원회_주식발행정보: 종목기본정보조회
+URL_SUMM_FINA_STAT    = "http://apis.data.go.kr/1160100/service/GetFinaStatInfoService/getSummFinaStat" # 금융위원회_기업 재무정보: 요약재무제표조회
+
+
 
 # * * *   Contants   * * *
 # The number of Maximum Items in Korea Stock Exchange (KOSPI/KOSDAQ/KONEX)
 # http://data.krx.co.kr/contents/MDC/MAIN/main/index.cmd
-KOSPI_ITEMS  = 938
-KOSDAQ_ITEMS = 1575
+KOSPI_ITEMS  = 939
+KOSDAQ_ITEMS = 1579
 KONEX_ITEMS  = 125
-ALL_ITEMS = str(KOSPI_ITEMS + KOSDAQ_ITEMS + KONEX_ITEMS)
+ALL_ITEMS = str(KOSPI_ITEMS + KOSDAQ_ITEMS + KONEX_ITEMS+10000)
+
+# The number of Maximum Corporations in Korea
+ALL_CORPS = 999999
+
+
+
+# * * *   Functions   * * *
 
 def set_query_url(service_url : str, params : dict):
 
     # Set URL with Parameters
-    request_url = service_url + '?'
+    request_url = service_url + '?'    
     for k, v in params.items():
         request_url += str(k) + '=' + str(v) + '&'
 
@@ -40,7 +60,7 @@ def set_query_url(service_url : str, params : dict):
     # response = requests.get(request_url[:-1])
     # return response
 
-def merge_by_key(ldata:list, rdata:list, key=None):
+def left_join_by_key(ldata:list, rdata:list, key:str):
     merged_list = []
 
     for data in ldata:
@@ -54,7 +74,154 @@ def merge_by_key(ldata:list, rdata:list, key=None):
 
     return merged_list
 
-def get_krx_listed_info(serviceKey:str, pageNo=1, numOfRows:str="", resultType="json", basDt=YESTERDAY, beginBasDt="", endBasDt="", likeBasDt="", likeSrtnCd="", isinCd="", likeIsinCd="", itmsNm="", likeItmsNm="", crno="", corpNm="", likeCorpNm=""):
+def get_corp_outline(serviceKey:str, pageNo=1, numOfRows=ALL_CORPS, resultType="json", basDt=YESTERDAY, crno:str="", corpNm:str=""):
+    """
+    금융위원회_기업기본정보_기업개요조회 검색 결과를 반환한다.
+    * 금융위원회_기업기본정보_기업개요조회 (https://www.data.go.kr/data/15043184/openapi.do)
+        
+    [Parameters]
+    0. serviceKey (str) : 공공데이터 포털에서 받은 인증키 (Mandatory) 
+    1. pageNo     (int) : 페이지 번호 (Default: 1)
+    2. numOfRows  (str) : 한 페이지 결과 수 (Default: ALL_CORPS (한국 전체 법인 수))
+    3. resultType (str) : 구분 (xml, json) (Default: xml)
+    4. basDt      (str) : 검색값과 기준일자가 일치하는 데이터를 검색 (Default: "")
+    5. crno       (str) : 법인등록번호 (Default: "")
+    6. corpNm     (str) : 법인의 명칭 (Default: "")
+
+    [Returns]
+    item : 한국 주식시장에 상장된 종목들의 기업개요정보 (dict)
+         0. resultCode          (str) : 결과코드
+         1. resultMsg           (str) : 결과메시지
+         2. numOfRows           (int) : 한 페이지 결과 수
+         3. pageNo              (int) : 페이지 번호
+         4. totalCount          (int) : 전체 결과 수
+         5. basDt               (str) : 기준일자 (YYYYMMDD)
+         6. crno                (str) : 법인등록번호
+         7. corpNm              (str) : 법인명
+         8. corpEnsnNm          (str) : 법인영문명
+         9. enpPbanCmpyNm       (str) : 기업공시회사명
+        10. enpRprFnm           (str) : 기업대표자성명
+        11. corpRegMrktDcd      (str) : 법인등록시장구분코드
+        12. corpRegMrktDcdNm    (str) : 법인등록시장구분코드명
+        13. corpDcd             (str) : 법인구분코드
+        14. corpDcdNm           (str) : 법인구분코드명
+        15. bzno                (str) : 사업자등록번호
+        16. enpOzpno            (str) : 기업구우편번호
+        17. enpBsadr            (str) : 기업기본주소
+        18. enpDtadr            (str) : 기업상세주소
+        19. enpHmpgUrl          (str) : 기업홈페이지URL
+        20. enpTlno             (str) : 기업전화번호
+        21. enpFxno             (str) : 기업팩스번호
+        22. sicNm               (str) : 표준산업분류명
+        23. enpEstbDt           (str) : 기업설립일자
+        24. enpStacMm           (str) : 기업결산월
+        25. enpXchgLstgDt       (str) : 기업거래소상장일자
+        26. enpXchgLstgAbolDt   (str) : 기업거래소상장폐지일자
+        27. enpKosdaqLstgDt     (str) : 기업코스닥상장일자
+        28. enpKosdaqLstgAbolDt (str) : 기업코스닥상장폐지일자
+        29. enpKrxLstgDt        (str) : 기업KONEX상장일자
+        30. enpKrxLstgAbolDt    (str) : 기업KONEX상장폐지일자
+        31. smenpYn             (str) : 중소기업여부
+        32. enpMntrBnkNm        (str) : 기업주거래은행명
+        33. enpEmpeCnt          (str) : 기업종업원수
+        34. empeAvgCnwkTermCtt  (str) : 종업원평균근속기간내용
+        35. enpPn1AvgSlryAmt    (str) : 기업1인평균급여금액
+        36. actnAudpnNm         (str) : 회계감사인명
+        37. audtRptOpnnCtt      (str) : 감사보고서의견내용
+        38. enpMainBizNm        (str) : 기업주요사업명
+        39. fssCorpUnqNo        (str) : 금융감독원법인고유번호
+        40. fssCorpChgDtm       (str) : 금융감독원법인변경일시     
+    """
+    
+    # Parameter Setting
+    query_params_corp_outline = {
+        "serviceKey" : serviceKey, # 공공데이터 포털에서 받은 인증키
+        "pageNo"     : pageNo,     # 페이지 번호
+        "numOfRows"  : numOfRows,  # 한 페이지 결과 수
+        "resultType" : resultType, # 구분 (xml, json) (Default: xml)
+        "basDt"      : basDt,      # 검색값과 기준일자가 일치하는 데이터를 검색
+        "crno"       : crno,       # 법인등록번호
+        "corpNm"     : corpNm      # 법인의 명칭
+    }
+
+    # Request
+    response_corp_outline = requests.get(set_query_url(service_url=URL_CORP_OUTLINE, params=query_params_corp_outline))
+
+    # Parsing
+    header = json.loads(response_corp_outline.text)["response"]["header"]
+    body = json.loads(response_corp_outline.text)["response"]["body"]
+    item = body["items"]["item"] # Information of each corporation
+    
+    # Print Result to Console
+    print("Running: Get Corp Outline")
+    print("Result Code : %s" % header["resultCode"])   # 결과코드
+    print("Result Message : %s" % header["resultMsg"]) # 결과메시지 
+    print("numOfRows : %d" % body["numOfRows"])        # 한 페이지 결과 수
+    print("pageNo : %d" % body["pageNo"])              # 페이지번호
+    print("totalCount : %d" % body["totalCount"])      # 전체 결과 수
+    print() # Newline
+
+    return item
+
+def get_stoc_issu_stat(serviceKey:str, pageNo=1, numOfRows=ALL_ITEMS, resultType="json", basDt=YESTERDAY, crno="", stckIssuCmpyNm=""):
+    """
+    금융위원회_주식발행정보: 주식발행현황조회 검색 결과를 반환한다.
+    * 금융위원회_주식발행정보: 주식발행현황조회 (https://www.data.go.kr/tcs/dss/selectApiDataDetailView.do?publicDataPk=15043423)
+        
+    [Parameters]
+    serviceKey     (str) : 공공데이터 포털에서 받은 인증키 (Mandatory)
+    pageNo         (int) : 페이지 번호 (Default: 1)
+    numOfRows      (str) : 한 페이지 결과 수 (Default: ALL_ITEMS (한국시장 전체 종목 수))
+    resultType     (str) : 구분 (xml, json) (Default: xml)
+    basDt          (str) : 검색값과 기준일자가 일치하는 데이터를 검색 (Default: "")
+    crno           (str) : 검색값과 법인등록번호가 일치하는 데이터를 검색 (Default: "")
+    stckIssuCmpyNm (str) : 주식발행회사명이 일치하는 데이터를 검색 (Default: "")
+
+    [Returns]
+    item : 한국 주식시장에 상장된 종목들의 기본정보 (dict)
+        0. resultCode     (str) : 결과코드
+        1. resultMsg      (str) : 결과메시지
+        2. numOfRows      (int) : 한 페이지 결과 수
+        3. pageNo         (int) : 페이지번호
+        4. totalCount     (int) : 전체 결과 수
+        5. basDt          (str) : YYYYMMDD, 조회의 기준일, 통상 거래일
+        6. crno           (str) : 종목의 법인등록번호
+        7. stckIssuCmpyNm (str) : 주식 발행 회사명
+        8. onskTisuCnt    (str) : 보통주 총 발행수
+        9. pfstTisuCnt    (str) : 우선주 총 발행수
+    """
+    
+    # Parameter Setting
+    query_params_stoc_issu_stat = {
+        "serviceKey"     : serviceKey,      # 공공데이터 포털에서 받은 인증키
+        "pageNo"         : pageNo,          # 페이지 번호
+        "numOfRows"      : numOfRows,       # 한 페이지 결과 수
+        "resultType"     : resultType,      # 구분 (xml, json) (Default: xml)
+        "basDt"          : basDt,           # 검색값과 기준일자가 일치하는 데이터를 검색
+        "crno"           : crno,            # 검색값과 법인등록번호가 일치하는 데이터를 검색 
+        "stckIssuCmpyNm" : stckIssuCmpyNm   # 주식발행회사명이 일치하는 데이터를 검색
+    }
+
+    # Request
+    response_stoc_issu_stat = requests.get(set_query_url(service_url=URL_STOC_ISSU_STAT, params=query_params_stoc_issu_stat))
+
+    # Parsing
+    header = json.loads(response_stoc_issu_stat.text)["response"]["header"]
+    body = json.loads(response_stoc_issu_stat.text)["response"]["body"]
+    item = body["items"]["item"] # Information of each stock items
+    
+    # Print Result to Console
+    print("Running: Get Stoc Issu Stat")
+    print("Result Code : %s" % header["resultCode"])   # 결과코드
+    print("Result Message : %s" % header["resultMsg"]) # 결과메시지 
+    print("numOfRows : %d" % body["numOfRows"])        # 한 페이지 결과 수
+    print("pageNo : %d" % body["pageNo"])              # 페이지번호
+    print("totalCount : %d" % body["totalCount"])      # 전체 결과 수
+    print() # Newline
+
+    return item
+
+def get_krx_listed_info(serviceKey:str, pageNo=1, numOfRows=ALL_ITEMS, resultType="json", basDt=YESTERDAY, beginBasDt="", endBasDt="", likeBasDt="", likeSrtnCd="", isinCd="", likeIsinCd="", itmsNm="", likeItmsNm="", crno="", corpNm="", likeCorpNm=""):
     """
     금융위원회_KRX상장종목정보 검색 결과를 반환한다.
     * 금융위원회_KRX상장종목정보 (https://www.data.go.kr/data/15094775/openapi.do)
@@ -62,7 +229,7 @@ def get_krx_listed_info(serviceKey:str, pageNo=1, numOfRows:str="", resultType="
     [Parameters]
     serviceKey (str) : 공공데이터 포털에서 받은 인증키 (Mandatory)
     pageNo     (int) : 페이지 번호 (Default: 1)
-    numOfRows  (str) : 한 페이지 결과 수 (Default: "")
+    numOfRows  (str) : 한 페이지 결과 수 (Default: ALL_ITEMS (한국시장 전체 종목 수))
     resultType (str) : 구분 (xml, json) (Default: xml)
     basDt      (str) : 검색값과 기준일자가 일치하는 데이터를 검색 (Default: "")
     beginBasDt (str) : 기준일자가 검색값보다 크거나 같은 데이터를 검색 (Default: "")
@@ -153,86 +320,133 @@ def get_krx_listed_info(serviceKey:str, pageNo=1, numOfRows:str="", resultType="
 
     return item
 
-def get_corp_outline(serviceKey:str, pageNo=1, numOfRows="", resultType="json", basDt=YESTERDAY, crno:str="", corpNm:str=""):
+def get_item_basi_info(serviceKey:str, pageNo=1, numOfRows=ALL_ITEMS, resultType="json", basDt=YESTERDAY, crno="", corpNm="", stckIssuCmpyNm=""):
     """
-    금융위원회_기업기본정보_기업개요조회 검색 결과를 반환한다.
-    * 금융위원회_기업기본정보_기업개요조회 (https://www.data.go.kr/data/15043184/openapi.do)
+    금융위원회_주식발행정보: 종목기본정보조회 검색 결과를 반환한다.
+    * 금융위원회_KRX상장종목정보 (https://www.data.go.kr/tcs/dss/selectApiDataDetailView.do?publicDataPk=15043423)
+        
+    [Parameters]
+    serviceKey     (str) : 공공데이터 포털에서 받은 인증키 (Mandatory)
+    pageNo         (int) : 페이지 번호 (Default: 1)
+    numOfRows      (str) : 한 페이지 결과 수 (Default: ALL_ITEMS (한국시장 전체 종목 수))
+    resultType     (str) : 구분 (xml, json) (Default: xml)
+    basDt          (str) : 검색값과 기준일자가 일치하는 데이터를 검색 (Default: YESTERDAY)
+    crno           (str) : 검색값과 법인등록번호가 일치하는 데이터를 검색 (Default: "")
+    corpNm         (str) : 검색값과 법인명이 일치하는 데이터를 검색 (Default: "")
+    stckIssuCmpyNm (str) : 주식발행회사명이 검색값을 포함하는 데이터를 검색 (Default: "")
+
+    [Returns]
+    item : 한국 주식시장에 상장된 종목들의 기본정보 (dict)
+        0. resultCode      (str) : 결과코드
+        1. resultMsg       (str) : 결과메시지
+        2. numOfRows       (int) : 한 페이지 결과 수
+        3. pageNo          (int) : 페이지번호
+        4. totalCount      (int) : 전체 결과 수
+        5. basDt           (str) : YYYYMMDD, 조회의 기준일, 통상 거래일
+        6. crno            (str) : 종목의 법인등록번호
+        7. isinCd          (str) : ISIN코드
+        8. stckIssuCmpyNm  (str) : 주식발행회사명
+        9. isinCdNm        (str) : ISIN코드명
+        10. scrsItmsKcd    (str) : 유가증권종목종류코드
+        11. scrsItmsKcdNm  (str) : 유가증권종목종류코드명
+        12. stckParPrc     (str) : 주식액면가
+        13. issuStckCnt    (str) : 발행주식수
+        14. lstgDt         (str) : 상장일자
+        15. lstgAbolDt     (str) : 상장폐지일자
+        16. dpsgRegDt      (str) : 예탁등록일자
+        17. dpsgCanDt      (str) : 예탁취소일자
+        18. issuFrmtClsfNm (str) : 발행형태구분명
+    """
+
+    # Parameter Setting
+    query_params_item_basi_info = {
+        "serviceKey"     : serviceKey,    # 공공데이터 포털에서 받은 인증키
+        "pageNo"         : pageNo,        # 페이지 번호
+        "numOfRows"      : numOfRows,     # 한 페이지 결과 수
+        "resultType"     : resultType,    # 구분 (xml, json) (Default: xml)
+        "basDt"          : basDt,         # 검색값과 기준일자가 일치하는 데이터를 검색
+        "crno"           : crno,          # 법인등록번호
+        "corpNm"         : corpNm,        # 법인의 명칭
+        "stckIssuCmpyNm" : stckIssuCmpyNm # 주식발행회사명
+    }
+
+    # Request
+    response_item_basi_info = requests.get(set_query_url(service_url=URL_ITEM_BASI_INFO, params=query_params_item_basi_info))
+
+    # Parsing
+    header = json.loads(response_item_basi_info.text)["response"]["header"]
+    body = json.loads(response_item_basi_info.text)["response"]["body"]
+    item = body["items"]["item"] # Information of each corporation
+    
+    # Print Result to Console
+    print("Running: Get Item Basi Info")
+    print("Result Code : %s" % header["resultCode"])   # 결과코드
+    print("Result Message : %s" % header["resultMsg"]) # 결과메시지 
+    print("numOfRows : %d" % body["numOfRows"])        # 한 페이지 결과 수
+    print("pageNo : %d" % body["pageNo"])              # 페이지번호
+    print("totalCount : %d" % body["totalCount"])      # 전체 결과 수
+    print() # Newline
+
+    return item
+
+def get_summ_fina_stat(serviceKey:str, pageNo=1, numOfRows=ALL_CORPS, resultType="json", basDt=YESTERDAY, crno="", bizYear=""):
+    """
+    금융위원회_기업 재무정보: 요약재무제표조회 검색 결과를 반환한다.
+    * 금융위원회_기업 재무정보: 요약재무제표조회 (https://www.data.go.kr/tcs/dss/selectApiDataDetailView.do?publicDataPk=15043459)
         
     [Parameters]
     0. serviceKey (str) : 공공데이터 포털에서 받은 인증키 (Mandatory) 
     1. pageNo     (int) : 페이지 번호 (Default: 1)
-    2. numOfRows  (str) : 한 페이지 결과 수 (Default: "")
+    2. numOfRows  (str) : 한 페이지 결과 수 (Default: ALL_CORPS (한국 전체 법인 수))
     3. resultType (str) : 구분 (xml, json) (Default: xml)
-    4. basDt      (str) : 검색값과 기준일자가 일치하는 데이터를 검색 (Default: "")
+    4. basDt      (str) : 검색값과 기준일자가 일치하는 데이터를 검색 (Default: YESTERDAY)
     5. crno       (str) : 법인등록번호 (Default: "")
-    6. corpNm     (str) : 법인의 명칭 (Default: "")
+    6. bizYear    (str) : 사업연도 (Default: "")
 
     [Returns]
     item : 한국 주식시장에 상장된 종목들의 기업개요정보 (dict)
-         0. resultCode          (str) : 결과코드
-         1. resultMsg           (str) : 결과메시지
-         2. numOfRows           (int) : 한 페이지 결과 수
-         3. pageNo              (int) : 페이지 번호
-         4. totalCount          (int) : 전체 결과 수
-         5. basDt               (str) : 기준일자 (YYYYMMDD)
-         6. crno                (str) : 법인등록번호
-         7. corpNm              (str) : 법인명
-         8. corpEnsnNm          (str) : 법인영문명
-         9. enpPbanCmpyNm       (str) : 기업공시회사명
-        10. enpRprFnm           (str) : 기업대표자성명
-        11. corpRegMrktDcd      (str) : 법인등록시장구분코드
-        12. corpRegMrktDcdNm    (str) : 법인등록시장구분코드명
-        13. corpDcd             (str) : 법인구분코드
-        14. corpDcdNm           (str) : 법인구분코드명
-        15. bzno                (str) : 사업자등록번호
-        16. enpOzpno            (str) : 기업구우편번호
-        17. enpBsadr            (str) : 기업기본주소
-        18. enpDtadr            (str) : 기업상세주소
-        19. enpHmpgUrl          (str) : 기업홈페이지URL
-        20. enpTlno             (str) : 기업전화번호
-        21. enpFxno             (str) : 기업팩스번호
-        22. sicNm               (str) : 표준산업분류명
-        23. enpEstbDt           (str) : 기업설립일자
-        24. enpStacMm           (str) : 기업결산월
-        25. enpXchgLstgDt       (str) : 기업거래소상장일자
-        26. enpXchgLstgAbolDt   (str) : 기업거래소상장폐지일자
-        27. enpKosdaqLstgDt     (str) : 기업코스닥상장일자
-        28. enpKosdaqLstgAbolDt (str) : 기업코스닥상장폐지일자
-        29. enpKrxLstgDt        (str) : 기업KONEX상장일자
-        30. enpKrxLstgAbolDt    (str) : 기업KONEX상장폐지일자
-        31. smenpYn             (str) : 중소기업여부
-        32. enpMntrBnkNm        (str) : 기업주거래은행명
-        33. enpEmpeCnt          (str) : 기업종업원수
-        34. empeAvgCnwkTermCtt  (str) : 종업원평균근속기간내용
-        35. enpPn1AvgSlryAmt    (str) : 기업1인평균급여금액
-        36. actnAudpnNm         (str) : 회계감사인명
-        37. audtRptOpnnCtt      (str) : 감사보고서의견내용
-        38. enpMainBizNm        (str) : 기업주요사업명
-        39. fssCorpUnqNo        (str) : 금융감독원법인고유번호
-        40. fssCorpChgDtm       (str) : 금융감독원법인변경일시     
+         0. resultCode    (str) : 결과코드
+         1. resultMsg     (str) : 결과메시지
+         2. numOfRows     (int) : 한 페이지 결과 수
+         3. pageNo        int) : 페이지 번호
+         4. totalCount    (int) : 전체 결과 수
+         5. basDt         (str) : 기준일자 (YYYYMMDD)
+         6. crno          (str) : 법인등록번호
+         7. bizYear       (str) : 사업연도
+         8. fnclDcd       (str) : 재무제표구분코드
+         9. fnclDcdNm     (str) : 재무제표구분코드명
+        10. enpSaleAmt    (str) : 기업매출금액
+        11. enpBzopPft    (str) : 기업영업이익
+        12. iclsPalClcAmt (str) : 포괄손익계산금액
+        13. enpCrtmNpf    (str) : 기업당기순이익
+        14. enpTastAmt    (str) : 기업총자산금액
+        15. enpTdbtAmt    (str) : 기업총부채금액
+        16. enpTcptAmt    (str) : 기업총자본금액
+        17. enpCptlAmt    (str) : 기업자본금액
+        18. fnclDebtRto   (str) : 재무제표부채비율  
     """
-    
+        
     # Parameter Setting
-    query_params_corp_outline = {
+    query_params_summ_fina_stat = {
         "serviceKey" : serviceKey, # 공공데이터 포털에서 받은 인증키
         "pageNo"     : pageNo,     # 페이지 번호
         "numOfRows"  : numOfRows,  # 한 페이지 결과 수
         "resultType" : resultType, # 구분 (xml, json) (Default: xml)
         "basDt"      : basDt,      # 검색값과 기준일자가 일치하는 데이터를 검색
         "crno"       : crno,       # 법인등록번호
-        "corpNm"     : corpNm      # 법인의 명칭
+        "bizYear"    : bizYear     # 사업연도
     }
-
+    
     # Request
-    response_corp_outline = requests.get(set_query_url(service_url=URL_CORP_OUTLINE, params=query_params_corp_outline))
+    response_summ_fina_stat = requests.get(set_query_url(service_url=URL_SUMM_FINA_STAT, params=query_params_summ_fina_stat))
 
     # Parsing
-    header = json.loads(response_corp_outline.text)["response"]["header"]
-    body = json.loads(response_corp_outline.text)["response"]["body"]
+    header = json.loads(response_summ_fina_stat.text)["response"]["header"]
+    body = json.loads(response_summ_fina_stat.text)["response"]["body"]
     item = body["items"]["item"] # Information of each corporation
     
     # Print Result to Console
-    print("Running: Get Corp Outline")
+    print("Running: Get Summ Fina Stat")
     print("Result Code : %s" % header["resultCode"])   # 결과코드
     print("Result Message : %s" % header["resultMsg"]) # 결과메시지 
     print("numOfRows : %d" % body["numOfRows"])        # 한 페이지 결과 수
@@ -248,7 +462,18 @@ def get_stock_index_kr():
 def get_financial_data_kr(serviceKey:str):
     list_krx_listed_info = get_krx_listed_info(serviceKey=serviceKey, numOfRows=ALL_ITEMS)
     list_corp_outline    = get_corp_outline(serviceKey=serviceKey, numOfRows=ALL_ITEMS)
-    return merge_by_key(ldata=list_krx_listed_info, rdata=list_corp_outline, key="crno")
+    return left_join_by_key(ldata=list_krx_listed_info, rdata=list_corp_outline, key="crno")
 
 def get_financial_data_us():
     pass
+
+
+serviceKey="uZEPxYU1hcKy6To5Hex%2ByxoSPBqrjzpFi9DeHCmI3b%2FovyQR3HbAcBQQG1RtKJpp5vRJ7ChiL%2B4HqCwEsXjoJQ%3D%3D" 
+
+# result = get_corp_outline(serviceKey)
+# result = get_stoc_issu_stat(serviceKey)
+# result = get_item_basi_info(serviceKey)
+# result = get_summ_fina_stat(serviceKey=serviceKey)
+
+with open("test.json", "w", encoding="utf-8") as json_file:
+    json_file.write(str(result)) # Start of .json file
