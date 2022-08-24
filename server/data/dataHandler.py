@@ -9,18 +9,18 @@
 
 # Required Modules
 import os
+from tkinter import CURRENT
 import requests
 import json
 import configparser
-import pprint
 
 from datetime   import datetime, timedelta
 
 
 
 # * * *   Date Strings   * * *
-YESTERDAY = datetime.strftime(datetime.now() - timedelta(1), "%Y%m%d") # Yesterday (Format:"YYYYMMDD")
-
+YESTERDAY    = datetime.strftime(datetime.now() - timedelta(1), "%Y%m%d") # Yesterday (Format:"YYYYMMDD")
+CURRENT_YEAR = datetime.strftime(datetime.now(), "%Y")                    # This year (Format:"YYYY")
 
 
 # * * *   API URLs   * * *
@@ -41,7 +41,7 @@ KONEX_ITEMS  = 125
 ALL_ITEMS = str(KOSPI_ITEMS + KOSDAQ_ITEMS + KONEX_ITEMS+10000)
 
 # The number of Maximum Corporations in Korea
-ALL_CORPS = 999999
+ALL_CORPS = str(999999999)
 
 
 
@@ -56,9 +56,21 @@ def set_query_url(service_url : str, params : dict):
 
     return request_url[:-1] # Eliminate last '&' character 
 
-    # Request Query
-    # response = requests.get(request_url[:-1])
-    # return response
+def filter_params(data_list:list, params:list):
+    filtered_list=[]
+
+    for data in data_list:
+        new_dict = dict()
+
+        for k, v in data.items():
+            if k in params:
+                new_dict[k] = v
+            else:
+                continue
+        
+        filtered_list.append(new_dict)
+
+    return filtered_list
 
 def left_join_by_key(ldata:list, rdata:list, key:str):
     merged_list = []
@@ -74,7 +86,7 @@ def left_join_by_key(ldata:list, rdata:list, key:str):
 
     return merged_list
 
-def get_corp_outline(serviceKey:str, pageNo=1, numOfRows=ALL_CORPS, resultType="json", basDt=YESTERDAY, crno:str="", corpNm:str=""):
+def get_corp_outline(serviceKey:str, pageNo='1', numOfRows=ALL_CORPS, resultType="json", basDt=YESTERDAY, crno="", corpNm=""):
     """
     금융위원회_기업기본정보_기업개요조회 검색 결과를 반환한다.
     * 금융위원회_기업기본정보_기업개요조회 (https://www.data.go.kr/data/15043184/openapi.do)
@@ -83,7 +95,7 @@ def get_corp_outline(serviceKey:str, pageNo=1, numOfRows=ALL_CORPS, resultType="
     0. serviceKey (str) : 공공데이터 포털에서 받은 인증키 (Mandatory) 
     1. pageNo     (int) : 페이지 번호 (Default: 1)
     2. numOfRows  (str) : 한 페이지 결과 수 (Default: ALL_CORPS (한국 전체 법인 수))
-    3. resultType (str) : 구분 (xml, json) (Default: xml)
+    3. resultType (str) : 구분 (xml, json) (Default: json)
     4. basDt      (str) : 검색값과 기준일자가 일치하는 데이터를 검색 (Default: "")
     5. crno       (str) : 법인등록번호 (Default: "")
     6. corpNm     (str) : 법인의 명칭 (Default: "")
@@ -138,7 +150,7 @@ def get_corp_outline(serviceKey:str, pageNo=1, numOfRows=ALL_CORPS, resultType="
         "serviceKey" : serviceKey, # 공공데이터 포털에서 받은 인증키
         "pageNo"     : pageNo,     # 페이지 번호
         "numOfRows"  : numOfRows,  # 한 페이지 결과 수
-        "resultType" : resultType, # 구분 (xml, json) (Default: xml)
+        "resultType" : resultType, # 구분 (xml, json) (Default: json)
         "basDt"      : basDt,      # 검색값과 기준일자가 일치하는 데이터를 검색
         "crno"       : crno,       # 법인등록번호
         "corpNm"     : corpNm      # 법인의 명칭
@@ -163,7 +175,7 @@ def get_corp_outline(serviceKey:str, pageNo=1, numOfRows=ALL_CORPS, resultType="
 
     return item
 
-def get_stoc_issu_stat(serviceKey:str, pageNo=1, numOfRows=ALL_ITEMS, resultType="json", basDt=YESTERDAY, crno="", stckIssuCmpyNm=""):
+def get_stoc_issu_stat(serviceKey:str, pageNo='1', numOfRows=ALL_ITEMS, resultType="json", basDt=YESTERDAY, crno="", stckIssuCmpyNm=""):
     """
     금융위원회_주식발행정보: 주식발행현황조회 검색 결과를 반환한다.
     * 금융위원회_주식발행정보: 주식발행현황조회 (https://www.data.go.kr/tcs/dss/selectApiDataDetailView.do?publicDataPk=15043423)
@@ -221,7 +233,7 @@ def get_stoc_issu_stat(serviceKey:str, pageNo=1, numOfRows=ALL_ITEMS, resultType
 
     return item
 
-def get_krx_listed_info(serviceKey:str, pageNo=1, numOfRows=ALL_ITEMS, resultType="json", basDt=YESTERDAY, beginBasDt="", endBasDt="", likeBasDt="", likeSrtnCd="", isinCd="", likeIsinCd="", itmsNm="", likeItmsNm="", crno="", corpNm="", likeCorpNm=""):
+def get_krx_listed_info(serviceKey:str, pageNo='1', numOfRows=ALL_ITEMS, resultType="json", basDt=YESTERDAY, beginBasDt="", endBasDt="", likeBasDt="", likeSrtnCd="", isinCd="", likeIsinCd="", itmsNm="", likeItmsNm="", crno="", corpNm="", likeCorpNm=""):
     """
     금융위원회_KRX상장종목정보 검색 결과를 반환한다.
     * 금융위원회_KRX상장종목정보 (https://www.data.go.kr/data/15094775/openapi.do)
@@ -320,7 +332,7 @@ def get_krx_listed_info(serviceKey:str, pageNo=1, numOfRows=ALL_ITEMS, resultTyp
 
     return item
 
-def get_item_basi_info(serviceKey:str, pageNo=1, numOfRows=ALL_ITEMS, resultType="json", basDt=YESTERDAY, crno="", corpNm="", stckIssuCmpyNm=""):
+def get_item_basi_info(serviceKey:str, pageNo='1', numOfRows=ALL_ITEMS, resultType="json", basDt=YESTERDAY, crno="", corpNm="", stckIssuCmpyNm=""):
     """
     금융위원회_주식발행정보: 종목기본정보조회 검색 결과를 반환한다.
     * 금융위원회_KRX상장종목정보 (https://www.data.go.kr/tcs/dss/selectApiDataDetailView.do?publicDataPk=15043423)
@@ -389,7 +401,7 @@ def get_item_basi_info(serviceKey:str, pageNo=1, numOfRows=ALL_ITEMS, resultType
 
     return item
 
-def get_summ_fina_stat(serviceKey:str, pageNo=1, numOfRows=ALL_CORPS, resultType="json", basDt=YESTERDAY, crno="", bizYear=""):
+def get_summ_fina_stat(serviceKey:str, pageNo='1', numOfRows=ALL_CORPS, resultType="json", crno="", bizYear="2021", type="ALL"):
     """
     금융위원회_기업 재무정보: 요약재무제표조회 검색 결과를 반환한다.
     * 금융위원회_기업 재무정보: 요약재무제표조회 (https://www.data.go.kr/tcs/dss/selectApiDataDetailView.do?publicDataPk=15043459)
@@ -399,9 +411,9 @@ def get_summ_fina_stat(serviceKey:str, pageNo=1, numOfRows=ALL_CORPS, resultType
     1. pageNo     (int) : 페이지 번호 (Default: 1)
     2. numOfRows  (str) : 한 페이지 결과 수 (Default: ALL_CORPS (한국 전체 법인 수))
     3. resultType (str) : 구분 (xml, json) (Default: xml)
-    4. basDt      (str) : 검색값과 기준일자가 일치하는 데이터를 검색 (Default: YESTERDAY)
-    5. crno       (str) : 법인등록번호 (Default: "")
-    6. bizYear    (str) : 사업연도 (Default: "")
+    4. crno       (str) : 법인등록번호 (Default: "")
+    5. bizYear    (str) : 사업연도 (Default: "")
+    6. type       (str) : 재무제표 유형 (전체: "All", 연결: "CONSOLIDATED", 요약: "SEPARATE")
 
     [Returns]
     item : 한국 주식시장에 상장된 종목들의 기업개요정보 (dict)
@@ -432,7 +444,6 @@ def get_summ_fina_stat(serviceKey:str, pageNo=1, numOfRows=ALL_CORPS, resultType
         "pageNo"     : pageNo,     # 페이지 번호
         "numOfRows"  : numOfRows,  # 한 페이지 결과 수
         "resultType" : resultType, # 구분 (xml, json) (Default: xml)
-        "basDt"      : basDt,      # 검색값과 기준일자가 일치하는 데이터를 검색
         "crno"       : crno,       # 법인등록번호
         "bizYear"    : bizYear     # 사업연도
     }
@@ -454,26 +465,71 @@ def get_summ_fina_stat(serviceKey:str, pageNo=1, numOfRows=ALL_CORPS, resultType
     print("totalCount : %d" % body["totalCount"])      # 전체 결과 수
     print() # Newline
 
-    return item
+    
+    # To Distinguish between Types of Financial Statements (ALL, CONSOLIDATED, SEPARATE)
+    result = []
+
+    if type == "CONSOLIDATED":
+        for data in item:
+            if data["fnclDcd"] in ["110", "ifrs_ConsolidatedMember", "999"]:
+                result.append(data)
+                
+    elif type == "SEPARATE":
+        for data in item:
+            if data["fnclDcd"] in ["120", "ifrs_SeparateMember", "999"]:
+                result.append(data)
+
+    else: # Default is "ALL"
+        return item
+    
+    return result
 
 def get_stock_index_kr():
     pass
 
 def get_financial_data_kr(serviceKey:str):
-    list_krx_listed_info = get_krx_listed_info(serviceKey=serviceKey, numOfRows=ALL_ITEMS)
-    list_corp_outline    = get_corp_outline(serviceKey=serviceKey, numOfRows=ALL_ITEMS)
-    return left_join_by_key(ldata=list_krx_listed_info, rdata=list_corp_outline, key="crno")
+    financial_data = []
+    key = "crno"
+
+    # 금융위원회_KRX상장종목정보
+    list_krx_listed_info = get_krx_listed_info(serviceKey=serviceKey)
+    list_krx_listed_info = filter_params(list_krx_listed_info, ["srtnCd", "isinCd", "mrktCtg", "itmsNm", "crno", "corpNm"])
+
+    # 금융위원회_기업기본정보: 기업개요조회
+    list_corp_outline = get_corp_outline(serviceKey=serviceKey)
+    list_corp_outline = filter_params(list_corp_outline, ["crno", "corpNm", "corpEnsnNm", "corpRegMrktDcd", "corpRegMrktDcdNm", "corpDcd", "corpDcdNm", "bzno", "enpHmpgUrl", "sicNm", "enpEstbDt", "smenpYn", "enpEmpeCnt", "empeAvgCnwkTermCtt", "enpPn1AvgSlryAmt"])
+    financial_data.append(left_join_by_key(list_krx_listed_info, list_corp_outline, "crno"))
+
+    # 금융위원회_주식발행정보: 주식발행현황조회
+    list_stoc_issu_stat = get_stoc_issu_stat(serviceKey=serviceKey)
+    list_stoc_issu_stat = filter_params(list_stoc_issu_stat, ["crno", "stckIssuCmpyNm", "onskTisuCnt", "pfstTisuCnt"])
+    financial_data = left_join_by_key(list_krx_listed_info, list_stoc_issu_stat, "crno")
+
+    # 금융위원회_주식발행정보: 종목기본정보조회
+    list_item_basi_info = get_item_basi_info(serviceKey=serviceKey)
+    list_item_basi_info = filter_params(list_item_basi_info, ["crno", "isinCd", "stckIssuCmpyNm", "isinCdNm", "scrsItmsKcd", "scrsItmsKcdNm", "stckParPrc", "issuStckCnt", "lstgDt"])
+    financial_data = left_join_by_key(list_krx_listed_info, list_item_basi_info, "crno")
+
+    # 금융위윈회_기업 재무정보: 요약재무제표조회
+    list_summ_fina_stat = get_summ_fina_stat(serviceKey=serviceKey, type="SEPARATE")
+    list_summ_fina_stat = filter_params(list_summ_fina_stat, ["crno", "bizYear", "fnclDcd", "fnclDcdNm", "enpSaleAmt", "enpBzopPft", "iclsPalClcAmt", "enpCrtmNpf", "enpTastAmt", "enpTdbtAmt", "enpTcptAmt", "enpCptlAmt", "fnclDebtRto"])
+    financial_data = left_join_by_key(list_krx_listed_info, list_summ_fina_stat, "crno")
+
+    return financial_data
 
 def get_financial_data_us():
     pass
 
+def test():
+    serviceKey="<service_key>"
 
-serviceKey="uZEPxYU1hcKy6To5Hex%2ByxoSPBqrjzpFi9DeHCmI3b%2FovyQR3HbAcBQQG1RtKJpp5vRJ7ChiL%2B4HqCwEsXjoJQ%3D%3D" 
+    result = get_krx_listed_info(serviceKey)
+    result = get_corp_outline(serviceKey)
+    result = get_stoc_issu_stat(serviceKey)
+    result = get_item_basi_info(serviceKey)
+    result = get_summ_fina_stat(serviceKey=serviceKey, type="CONSOLIDATED")
+    result = get_financial_data_kr(serviceKey)
 
-# result = get_corp_outline(serviceKey)
-# result = get_stoc_issu_stat(serviceKey)
-# result = get_item_basi_info(serviceKey)
-# result = get_summ_fina_stat(serviceKey=serviceKey)
-
-with open("test.json", "w", encoding="utf-8") as json_file:
-    json_file.write(str(result)) # Start of .json file
+    with open("test.json", "w", encoding="utf-8") as json_file:
+        json_file.write(str(result)) # Start of .json file
+        
