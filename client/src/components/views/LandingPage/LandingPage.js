@@ -15,21 +15,21 @@ function LandingPage() {
   // const searchValue = (event) => {};
 
   return (
-    <>
+    <div>
       <div className="app">
         <h1
           id="head"
-          style={{ fontSize: "4rem", marginTop: "-200px", marginBottom: "5px" }}
+          //style={{ fontSize: "4rem", marginTop: "-200px", marginBottom: "5px" }}
         >
           PortFolio.com
         </h1>
         <span id="fullimg" style={{ height: "400px" }}></span>
-
-        <div className="tc bg-green ma0 pa4 min-vh-100">
-          <Search details={krx_stock_info} />
-        </div>
       </div>
-    </>
+
+      <div className="tc bg-green ma0 pa4 min-vh-100">
+        <Search details={krx_stock_info} />
+      </div>
+    </div>
   );
 }
 
