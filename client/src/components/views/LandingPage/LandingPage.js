@@ -24,10 +24,10 @@ function LandingPage() {
           PortFolio.com
         </h1>
         <span id="fullimg" style={{ height: "400px" }}></span>
-      </div>
 
-      <div className="tc bg-green ma0 pa4 min-vh-100">
-        <Search details={krx_stock_info} />
+        <div className="tc bg-green ma0 pa4 min-vh-100">
+          <Search details={krx_stock_info} />
+        </div>
       </div>
     </>
   );
