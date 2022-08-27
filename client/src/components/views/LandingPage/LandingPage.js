@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, Icon } from "antd";
 import "./LandingPage.css";
 
-import Search from './Search';
+import Search from './KosPage/Search';
 import krx_stock_info from './KosPage/data/krx_stock_info.json';
 
 function LandingPage() {
