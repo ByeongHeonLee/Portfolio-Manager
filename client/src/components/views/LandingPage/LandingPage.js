@@ -2,17 +2,17 @@ import React, { useState } from "react";
 import { Button, Icon } from "antd";
 import "./LandingPage.css";
 
-import Search from '../KosPage/Search';
-import krx_stock_info from '../KosPage/data/krx_stock_info.json';
+import Search from "../KosPage/Search";
+import krx_stock_info from "../KosPage/data/krx_stock_info.json";
 
 function LandingPage() {
-  const [Search, setSearch] = useState("");
+  // const [Search, setSearch] = useState("");
 
-  const handleChangeSearch = (event) => {
-    setSearch(event.currentTarget.value);
-  };
+  // const handleChangeSearch = (event) => {
+  //   setSearch(event.currentTarget.value);
+  // };
 
-  const searchValue = (event) => {};
+  // const searchValue = (event) => {};
 
   return (
     <>
@@ -24,22 +24,10 @@ function LandingPage() {
           PortFolio.com
         </h1>
         <span id="fullimg" style={{ height: "400px" }}></span>
+      </div>
 
-        <div className="tc bg-green ma0 pa4 min-vh-100">
-          <Search details={krx_stock_info} />
-        </div>
-        {/* <div className="wrap" style={{marginTop: '-80px'}}>
-                    <div className="search">
-                        <input type="text" id="searchStocks" autocomplete="off" name="searchStocksName" 
-                            value={Search} placeholder="종목 이름 또는 코드를 입력하세요" box-sizing="border-box" class="searchTerm" onChange={handleChangeSearch}>
-                        </input>
-                        <Button type="primary" class="searchButton" href="/kos"
-                            style={{ width: '80px', height: '80px', border: '1px solid #000000', textAlign: 'center',
-                               color: '#fff', backgroundColor: '#000000', borderRadius: '0 5px 5px 0', cursor: 'pointer', fontSize: '30px'}}>
-                            <Icon type='search' style={{ padding: '23px 0 0 0' }}/>
-                        </Button>       
-                    </div>
-                </div> */}
+      <div className="tc bg-green ma0 pa4 min-vh-100">
+        <Search details={krx_stock_info} />
       </div>
     </>
   );
