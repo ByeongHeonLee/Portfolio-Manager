@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { Button, Icon } from "antd";
 import "./LandingPage.css";
 
-import Search from './KosPage/Search';
-import krx_stock_info from './KosPage/data/krx_stock_info.json';
+import Search from '../KosPage/Search';
+import krx_stock_info from '../KosPage/data/krx_stock_info.json';
 
 function LandingPage() {
   const [Search, setSearch] = useState("");

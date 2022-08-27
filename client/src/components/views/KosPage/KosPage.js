@@ -3,16 +3,16 @@
 
 import React from 'react';
 import Search from './Search';
-const mongoose = require('mongoose')
+// const mongoose = require('mongoose')
 import krx_stock_info from './data/krx_stock_info.json';
 
-mongoose.connect(config.mongoURI_stock_info, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useCreateIndex: true,
-  useFindAndModify:false}
-).then(() => console.log('MongoDB Connected..')
-).catch(err => console.log(err))
+// mongoose.connect(config.mongoURI_stock_info, {
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true,
+//   useCreateIndex: true,
+//   useFindAndModify:false}
+// ).then(() => console.log('MongoDB Connected..')
+// ).catch(err => console.log(err))
 
 function KosPage() {
   return (
