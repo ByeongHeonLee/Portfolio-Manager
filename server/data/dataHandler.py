@@ -41,7 +41,7 @@ KONEX_ITEMS  = 125
 ALL_ITEMS = str(KOSPI_ITEMS + KOSDAQ_ITEMS + KONEX_ITEMS+10000)
 
 # The number of Maximum Corporations in Korea
-ALL_CORPS = str(999999999)
+ALL_CORPS = 999999999
 
 
 
@@ -521,15 +521,16 @@ def get_financial_data_us():
     pass
 
 def test():
-    serviceKey="<service_key>"
+    serviceKey="uZEPxYU1hcKy6To5Hex%2ByxoSPBqrjzpFi9DeHCmI3b%2FovyQR3HbAcBQQG1RtKJpp5vRJ7ChiL%2B4HqCwEsXjoJQ%3D%3D"
 
-    result = get_krx_listed_info(serviceKey)
-    result = get_corp_outline(serviceKey)
-    result = get_stoc_issu_stat(serviceKey)
-    result = get_item_basi_info(serviceKey)
-    result = get_summ_fina_stat(serviceKey=serviceKey, type="CONSOLIDATED")
+    # result = get_krx_listed_info(serviceKey)
+    # result = get_corp_outline(serviceKey)
+    # result = get_stoc_issu_stat(serviceKey)
+    # result = get_item_basi_info(serviceKey)
+    # result = get_summ_fina_stat(serviceKey=serviceKey, type="CONSOLIDATED")
     result = get_financial_data_kr(serviceKey)
 
     with open("test.json", "w", encoding="utf-8") as json_file:
         json_file.write(str(result)) # Start of .json file
         
+test()
