@@ -9,9 +9,12 @@ from apscheduler.triggers.cron         import CronTrigger
 
 # Database Handler Modules
 from mongodbHandler import MongoDBHandler   # Mongo DB Handler
+from influxdbHandler import InfluxDBHandler # Influx DB Handler
+
 
 # Data Crawler Modules
 from server.data.dataHandler import get_financial_data_kr
+from server.data.influxdbHandler import InfluxDBHandler
 
 # Main logic
 if __name__ == "__main__":
@@ -23,6 +26,7 @@ if __name__ == "__main__":
 
     # Create Mongo DB Connection
     mongodb = MongoDBHandler(os.getenv("MONGODB_STOCK_INFO_URI"))
+    influxdb = InfluxDBHandler(os.getenv("INFLUXDB_STOCK_PRICE_URI"), os.getenv("INFLUXDB_TOKEN"), org="lww7438@gmail.com")
 
     # Run at Start of Pre-Market of Korea Market (AM 08:30)
     def sched_get_financial_data_kr():
