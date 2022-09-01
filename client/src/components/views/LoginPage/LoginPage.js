@@ -29,8 +29,8 @@ function LoginPage(props) {
 
       naverScript.onload = () => {
           const naverLogin = new window.naver.LoginWithNaverId({
-              clientId: REACT_APP_NAVER_CLIENT_ID,
-              callbackUrl: REACT_APP_NAVER_CALLBACK_URL,
+              clientId: process.env.REACT_APP_NAVER_CLIENT_ID,
+              callbackUrl: process.env.REACT_APP_NAVER_CALLBACK_URL,
               callbackHandle: true,
               isPopup: false,
               loginButton: {
