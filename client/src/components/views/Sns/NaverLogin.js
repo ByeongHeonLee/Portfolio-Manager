@@ -10,8 +10,8 @@ function NaverLogin(props){
     
     const { naver } = window;
     const naverLogin = new naver.LoginWithNaverId({
-        clientId: REACT_APP_NAVER_CLIENT_ID,
-        callbackUrl: REACT_APP_NAVER_CALLBACK_URL,
+        clientId: process.env.REACT_APP_NAVER_CLIENT_ID,
+        callbackUrl: process.env.REACT_APP_NAVER_CALLBACK_URL,
         callbackHandle: true,
         isPopup: false,
     });
