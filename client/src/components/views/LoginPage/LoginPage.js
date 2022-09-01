@@ -163,7 +163,7 @@ function LoginPage(props) {
                     로그인
                   </Button>
                   <div style={{height: '50px', textAlign: 'center', }}> ――――――――――― or ――――――――――― </div>
-                  <a href={KAKAO_AUTH_URL}>
+                  <a href={process.env.KAKAO_AUTH_URL}>
                     <div className={"kakao_btn"} />
                   </a>
                   <div ref={naverRef} id="naverIdLogin"></div>
