@@ -5,7 +5,7 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { Form, Icon, Input, Button, Checkbox, Typography } from 'antd';
 import { useDispatch } from "react-redux";
-import { KAKAO_AUTH_URL, NAVER_CLIENT_ID, NAVER_CALLBACK_URL } from "../../views/Sns/Snskey"
+// import { KAKAO_AUTH_URL, NAVER_CLIENT_ID, NAVER_CALLBACK_URL } from "../../views/Sns/Snskey"
 import './Loginbtn.css';
 
 const { Title } = Typography;
