@@ -11,8 +11,8 @@ function KakaoLogin(props) {
     const code = new URL(window.location.href).searchParams.get("code");
     const tokenbodyData = {
         grant_type : "authorization_code",
-        client_id : KAKAO_CLIENT_ID,                  //process.env.REACT_APP_REST_API_KEY,
-        redirect_uri : KAKAO_REDIRECT_URI,            //process.env.REACT_APP_REDIRECTURI_DEVELOP,
+        client_id : REACT_APP_KAKAO_CLIENT_ID,                  //process.env.REACT_APP_REST_API_KEY,
+        redirect_uri : REACT_APP_KAKAO_REDIRECT_URI,            //process.env.REACT_APP_REDIRECTURI_DEVELOP,
         code : code
     }
     const tokenqueryStringBody = Object.keys(tokenbodyData)
