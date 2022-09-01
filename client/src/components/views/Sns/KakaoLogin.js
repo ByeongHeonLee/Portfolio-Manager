@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { loginUser } from "../../../_actions/user_actions";
 import { registerUser } from '../../../_actions/user_actions';
 import { message } from 'antd';
-import { KAKAO_CLIENT_ID, KAKAO_REDIRECT_URI } from './Snskey'
+//import { KAKAO_CLIENT_ID, KAKAO_REDIRECT_URI } from './Snskey'
 
 function KakaoLogin(props) {
     const dispatch = useDispatch();
