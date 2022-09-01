@@ -1,5 +1,5 @@
 
-# dataHandler.py
+# financialsCollector.py
 # https://www.data.go.kr (공공데이터포털)
 
 # Author  : Byeong Heon Lee
@@ -8,24 +8,22 @@
 
 
 # Required Modules
-import os
 import requests
 import json
-import configparser
 import xml.etree.ElementTree as ET
 
-from email.mime import base
-from tkinter import CURRENT
-from pytz import timezone
-from datetime   import datetime, timedelta
+from pytz        import timezone
+from datetime    import datetime, timedelta
+from dataManager import *
 
 
 
 # * * *   Date Strings   * * *
-YESTERDAY    = datetime.strftime(datetime.now(timezone('Asia/Seoul')) - timedelta(1), "%Y%m%d") # Yesterday (Format:"YYYYMMDD")
-TODAY        = datetime.strftime(datetime.now(timezone('Asia/Seoul'))               , "%Y%m%d") # Yesterday (Format:"YYYYMMDD")
-TOMORROW     = datetime.strftime(datetime.now(timezone('Asia/Seoul')) + timedelta(1), "%Y%m%d") # Yesterday (Format:"YYYYMMDD")
-CURRENT_YEAR = datetime.strftime(datetime.now(timezone('Asia/Seoul'))               , "%Y")     # This year (Format:"YYYY")
+YESTERDAY    = datetime.strftime(datetime.now(timezone('Asia/Seoul')) - timedelta(1)  , "%Y%m%d") # Yesterday (Format:"YYYYMMDD")
+TODAY        = datetime.strftime(datetime.now(timezone('Asia/Seoul'))                 , "%Y%m%d") # Yesterday (Format:"YYYYMMDD")
+TOMORROW     = datetime.strftime(datetime.now(timezone('Asia/Seoul')) + timedelta(1)  , "%Y%m%d") # Yesterday (Format:"YYYYMMDD")
+LAST_YEAR    = datetime.strftime(datetime.now(timezone('Asia/Seoul')) - timedelta(365), "%Y")     # Last year (Format:"YYYY")
+CURRENT_YEAR = datetime.strftime(datetime.now(timezone('Asia/Seoul'))                 , "%Y")     # This year (Format:"YYYY")
 
 
 
@@ -46,9 +44,9 @@ URL_ISSUCO_CUSTNO_BY_SHORT_ISIN = "http://api.seibro.or.kr/openapi/service/CorpS
 # The number of Maximum Items in Korea Stock Exchange (KOSPI/KOSDAQ/KONEX)
 # http://data.krx.co.kr/contents/MDC/MAIN/main/index.cmd
 KOSPI_ITEMS  = 939
-KOSDAQ_ITEMS = 1579
+KOSDAQ_ITEMS = 1577
 KONEX_ITEMS  = 125
-ALL_ITEMS = KOSPI_ITEMS + KOSDAQ_ITEMS + KONEX_ITEMS
+ALL_STOCKS   = KOSPI_ITEMS + KOSDAQ_ITEMS + KONEX_ITEMS
 
 # The number of Maximum Corporations in Korea
 ALL_CORPS = 160000
@@ -56,46 +54,6 @@ ALL_CORPS = 160000
 
 
 # * * *   Functions   * * *
-
-def set_query_url(service_url : str, params : dict):
-
-    # Set URL with Parameters
-    request_url = service_url + '?'    
-    for k, v in params.items():
-        request_url += str(k) + '=' + str(v) + '&'
-
-    return request_url[:-1] # Eliminate last '&' character 
-
-def filter_params(data_list:list, params:list):
-    filtered_list=[]
-
-    for data in data_list:
-        new_dict = dict()
-
-        for k, v in data.items():
-            if k in params:
-                new_dict[k] = v
-            else:
-                continue
-        
-        filtered_list.append(new_dict)
-
-    return filtered_list
-
-def left_join_by_key(ldata:list, rdata:list, key:str):
-    merged_list = []
-
-    for data in ldata:
-        merged_list.append(data)
-
-    for item in merged_list:
-        for data in rdata:
-            if item[key] == data[key]:
-                for k, v in data.items():
-                    item[k] = v
-
-    return merged_list
-
 def get_corp_outline(serviceKey:str, pageNo=1, numOfRows=1, resultType="json", basDt="", crno="", corpNm=""):
     """
     금융위원회_기업기본정보_기업개요조회 검색 결과를 반환한다.
@@ -111,7 +69,7 @@ def get_corp_outline(serviceKey:str, pageNo=1, numOfRows=1, resultType="json", b
     corpNm     (str) : 법인의 명칭 (Default: "")
 
     [Returns]
-    item : 한국 주식시장에 상장된 종목들의 기업개요정보 (dict)
+    item : 한국 주식시장에 상장된 종목들의 기업개요정보 (list of dict)
         basDt               (str) : 기준일자 (YYYYMMDD)
         crno                (str) : 법인등록번호
         corpNm              (str) : 법인명
@@ -168,6 +126,10 @@ def get_corp_outline(serviceKey:str, pageNo=1, numOfRows=1, resultType="json", b
     header = json.loads(response_corp_outline.text)["response"]["header"]
     body = json.loads(response_corp_outline.text)["response"]["body"]
     item = body["items"]["item"] # Information of each corporation
+
+    # Assertion
+    if len(item) == 0:
+        return None
     
     # Print Result to Console
     print("Running: Get Corp Outline")
@@ -180,7 +142,7 @@ def get_corp_outline(serviceKey:str, pageNo=1, numOfRows=1, resultType="json", b
 
     return item
 
-def get_stoc_issu_stat(serviceKey:str, pageNo=1, numOfRows=ALL_ITEMS, resultType="json", basDt=YESTERDAY, crno="", stckIssuCmpyNm=""):
+def get_stoc_issu_stat(serviceKey:str, pageNo=1, numOfRows=1, resultType="json", basDt=YESTERDAY, crno="", stckIssuCmpyNm=""):
     """
     금융위원회_주식발행정보: 주식발행현황조회 검색 결과를 반환한다.
     * 금융위원회_주식발행정보: 주식발행현황조회 (https://www.data.go.kr/tcs/dss/selectApiDataDetailView.do?publicDataPk=15043423)
@@ -195,7 +157,7 @@ def get_stoc_issu_stat(serviceKey:str, pageNo=1, numOfRows=ALL_ITEMS, resultType
     stckIssuCmpyNm (str) : 주식발행회사명이 일치하는 데이터를 검색 (Default: "")
 
     [Returns]
-    item : 한국 주식시장에 상장된 종목들의 기본정보 (dict)
+    item : 한국 주식시장에 상장된 종목들의 기본정보 (list of dict)
         basDt          (str) : YYYYMMDD, 조회의 기준일, 통상 거래일
         crno           (str) : 종목의 법인등록번호
         stckIssuCmpyNm (str) : 주식 발행 회사명
@@ -222,6 +184,10 @@ def get_stoc_issu_stat(serviceKey:str, pageNo=1, numOfRows=ALL_ITEMS, resultType
     body = json.loads(response_stoc_issu_stat.text)["response"]["body"]
     item = body["items"]["item"] # Information of each stock items
     
+    # Assertion
+    if len(item) == 0:
+        return None
+    
     # Print Result to Console
     print("Running: Get Stoc Issu Stat")
     print("Result Code : %s" % header["resultCode"])   # 결과코드
@@ -233,7 +199,7 @@ def get_stoc_issu_stat(serviceKey:str, pageNo=1, numOfRows=ALL_ITEMS, resultType
 
     return item
 
-def get_krx_listed_info(serviceKey:str, pageNo=1, numOfRows=ALL_ITEMS, resultType="json", basDt=YESTERDAY, beginBasDt="", endBasDt="", likeBasDt="", likeSrtnCd="", isinCd="", likeIsinCd="", itmsNm="", likeItmsNm="", crno="", corpNm="", likeCorpNm=""):
+def get_krx_listed_info(serviceKey:str, pageNo=1, numOfRows=100, resultType="json", basDt=YESTERDAY, beginBasDt="", endBasDt="", likeBasDt="", likeSrtnCd="", isinCd="", likeIsinCd="", itmsNm="", likeItmsNm="", crno="", corpNm="", likeCorpNm=""):
     """
     금융위원회_KRX상장종목정보 검색 결과를 반환한다.
     * 금융위원회_KRX상장종목정보 (https://www.data.go.kr/data/15094775/openapi.do)
@@ -296,8 +262,13 @@ def get_krx_listed_info(serviceKey:str, pageNo=1, numOfRows=ALL_ITEMS, resultTyp
     body = json.loads(response_krx_listed_info.text)["response"]["body"]
     item = body["items"]["item"] # Information of each stock items
 
+    # Assertion
+    if len(item) == 0:
+        return None
+
+    # Make new pair (Short ISIN Code made by srtnCd)
     for data in item:
-        data["shotnIsin"] = data["srtnCd"][1:]
+        data["shotnIsin"] = data["srtnCd"][1:] 
     
     # Print Result to Console
     print("Running: Get KRX Listed Info")
@@ -331,7 +302,7 @@ def get_krx_listed_info(serviceKey:str, pageNo=1, numOfRows=ALL_ITEMS, resultTyp
 
     return item
 
-def get_item_basi_info(serviceKey:str, pageNo=1, numOfRows=ALL_ITEMS, resultType="json", basDt=YESTERDAY, crno="", corpNm="", stckIssuCmpyNm=""):
+def get_item_basi_info(serviceKey:str, pageNo=1, numOfRows=1, resultType="json", basDt=YESTERDAY, crno="", corpNm="", stckIssuCmpyNm=""):
     """
     금융위원회_주식발행정보: 종목기본정보조회 검색 결과를 반환한다.
     * 금융위원회_KRX상장종목정보 (https://www.data.go.kr/tcs/dss/selectApiDataDetailView.do?publicDataPk=15043423)
@@ -348,11 +319,11 @@ def get_item_basi_info(serviceKey:str, pageNo=1, numOfRows=ALL_ITEMS, resultType
 
     [Returns]
     item : 한국 주식시장에 상장된 종목들의 기본정보 (dict)
-        basDt           (str) : YYYYMMDD, 조회의 기준일, 통상 거래일
-        crno            (str) : 종목의 법인등록번호
-        isinCd          (str) : ISIN코드
-        stckIssuCmpyNm  (str) : 주식발행회사명
-        isinCdNm        (str) : ISIN코드명
+        basDt          (str) : YYYYMMDD, 조회의 기준일, 통상 거래일
+        crno           (str) : 종목의 법인등록번호
+        isinCd         (str) : ISIN코드
+        stckIssuCmpyNm (str) : 주식발행회사명
+        isinCdNm       (str) : ISIN코드명
         scrsItmsKcd    (str) : 유가증권종목종류코드
         scrsItmsKcdNm  (str) : 유가증권종목종류코드명
         stckParPrc     (str) : 주식액면가
@@ -384,6 +355,10 @@ def get_item_basi_info(serviceKey:str, pageNo=1, numOfRows=ALL_ITEMS, resultType
     body = json.loads(response_item_basi_info.text)["response"]["body"]
     item = body["items"]["item"] # Information of each corporation
     
+    # Assertion
+    if len(item) == 0:
+        return None
+
     # Print Result to Console
     print("Running: Get Item Basi Info")
     print("Result Code : %s" % header["resultCode"])   # 결과코드
@@ -395,7 +370,7 @@ def get_item_basi_info(serviceKey:str, pageNo=1, numOfRows=ALL_ITEMS, resultType
 
     return item
 
-def get_summ_fina_stat(serviceKey:str, pageNo=1, numOfRows=ALL_CORPS, resultType="json", crno="", bizYear="2021", type="ALL"):
+def get_summ_fina_stat(serviceKey:str, pageNo=1, numOfRows=2, resultType="json", crno="", bizYear=LAST_YEAR, type="ALL"):
     """
     금융위원회_기업 재무정보: 요약재무제표조회 검색 결과를 반환한다.
     * 금융위원회_기업 재무정보: 요약재무제표조회 (https://www.data.go.kr/tcs/dss/selectApiDataDetailView.do?publicDataPk=15043459)
@@ -410,7 +385,7 @@ def get_summ_fina_stat(serviceKey:str, pageNo=1, numOfRows=ALL_CORPS, resultType
     6. type       (str) : 재무제표 유형 (전체: "ALL", 연결: "CONSOLIDATED", 요약: "SEPARATE") (Default: ALL)
 
     [Returns]
-    item : 한국 주식시장에 상장된 종목들의 기업개요정보 (dict)
+    item : 한국 주식시장에 상장된 종목들의 기업개요정보 (list of dict)
          0. resultCode    (str) : 결과코드
          1. resultMsg     (str) : 결과메시지
          2. numOfRows     (int) : 한 페이지 결과 수
@@ -449,6 +424,10 @@ def get_summ_fina_stat(serviceKey:str, pageNo=1, numOfRows=ALL_CORPS, resultType
     header = json.loads(response_summ_fina_stat.text)["response"]["header"]
     body = json.loads(response_summ_fina_stat.text)["response"]["body"]
     item = body["items"]["item"] # Information of each corporation
+
+    # Assertion
+    if len(item) == 0:
+        return None
     
     # Print Result to Console (Logging)
     print("Running: Get Summ Fina Stat")
@@ -459,25 +438,18 @@ def get_summ_fina_stat(serviceKey:str, pageNo=1, numOfRows=ALL_CORPS, resultType
     print("totalCount : %d" % body["totalCount"])      # 전체 결과 수
     print() # Newline
 
-    
-    # To Distinguish between Types of Financial Statements (ALL, CONSOLIDATED, SEPARATE)
-    result = []
-
+    # Return depends on Option 'type'
     if type == "CONSOLIDATED":
-        for data in item:
-            if data["fnclDcd"] in ["110", "ifrs_ConsolidatedMember", "999"]:
-                result.append(data)
+        if item[0]["fnclDcd"] in ["110", "ifrs_ConsolidatedMember", "999"]:
+            return item
                 
     elif type == "SEPARATE":
-        for data in item:
-            if data["fnclDcd"] in ["120", "ifrs_SeparateMember", "999"]:
-                result.append(data)
+        if item[0]["fnclDcd"] in ["120", "ifrs_SeparateMember", "999"]:
+            return item
 
     else: # Default is "ALL"
         return item
     
-    return result
-
 def get_issuco_basic_info(serviceKey:str, issucoCustno=""):
     """
     한국예탁결제원_기업정보서비스: 기업기본정보 기업개요 조회 검색 결과를 반환한다.
@@ -530,7 +502,16 @@ def get_issuco_basic_info(serviceKey:str, issucoCustno=""):
     root = ET.fromstring(response_issuco_basic_info.text)
     header = root.find("header")
     body = root.find("body")
+    
+    # Assertion
+    # if len(item) == 0:
+        # return None
+    
     items = body.find("item") # Information of each index item
+
+    # Assertion
+    if items is None:
+        return None
 
     item = dict()
     for data in items:
@@ -575,6 +556,10 @@ def get_issuco_custno_by_short_isin(serviceKey:str, shortIsin:str):
     body = root.find("body")
     items = body.find("item") # Information of each index item
 
+    # Assertion
+    if items is None: 
+        return None
+
     item = dict()
     for data in items:
         item[data.tag] = data.text
@@ -587,7 +572,7 @@ def get_issuco_custno_by_short_isin(serviceKey:str, shortIsin:str):
 
     return item
 
-def get_stock_price_info(serviceKey:str, pageNo=1, numOfRows=ALL_ITEMS, resultType="json", basDt=YESTERDAY, beginBasDt="", endBasDt="", likeBasDt="", likeSrtnCd="", isinCd="", likeIsinCd="", itmsNm="", likeItmsNm="", mrktCls="", beginVs="", endVs="", beginFltRt="", endFltRt="", beginTrqu="", endTrqu="", beginTrPrc="", endTrPrc="", beginLstgStCnt="", endLstgStCnt="", beginMrktTotAmt="", endMrktTotAmt=""):
+def get_stock_price_info(serviceKey:str, pageNo=1, numOfRows=1, resultType="json", basDt=YESTERDAY, beginBasDt="", endBasDt="", likeBasDt="", likeSrtnCd="", isinCd="", likeIsinCd="", itmsNm="", likeItmsNm="", mrktCls="", beginVs="", endVs="", beginFltRt="", endFltRt="", beginTrqu="", endTrqu="", beginTrPrc="", endTrPrc="", beginLstgStCnt="", endLstgStCnt="", beginMrktTotAmt="", endMrktTotAmt=""):
     """
     금융위원회_주식시세정보: 주식시세 검색 결과를 반환한다.
     * 금융위원회_주식시세정보: 주식시세 (https://www.data.go.kr/tcs/dss/selectApiDataDetailView.do?publicDataPk=15094808)
@@ -677,6 +662,10 @@ def get_stock_price_info(serviceKey:str, pageNo=1, numOfRows=ALL_ITEMS, resultTy
     body = json.loads(response_stock_price_info.text)["response"]["body"]
     item = body["items"]["item"] # Information of each stock item
 
+    # Assertion
+    if len(item) == 0:
+        return None
+
     # Print Result to Console (Logging)
     print("Running: Get Stock Price Info")
     print("Result Code : %s" % header["resultCode"])   # 결과코드
@@ -688,7 +677,7 @@ def get_stock_price_info(serviceKey:str, pageNo=1, numOfRows=ALL_ITEMS, resultTy
 
     return item
 
-def get_stock_market_index(serviceKey:str, pageNo=1, numOfRows=ALL_ITEMS, resultType="json", basDt="", beginBasDt="", endBasDt="", likeBasDt="", idxNm="", likeIdxNm="", beginEpyItmsCnt="", endEpyItmsCnt="", beginFltRt="", endFltRt="", beginTrqu="", endTrqu="", beginTrPrc="", endTrPrc="", beginLstgMrktTotAmt="", endLstgMrktTotAmt="", beginLsYrEdVsFltRg="", endLsYrEdVsFltRg="", beginLsYrEdVsFltRt="", endLsYrEdVsFltRt=""):
+def get_stock_market_index(serviceKey:str, pageNo=1, numOfRows=1, resultType="json", basDt="", beginBasDt="", endBasDt="", likeBasDt="", idxNm="", likeIdxNm="", beginEpyItmsCnt="", endEpyItmsCnt="", beginFltRt="", endFltRt="", beginTrqu="", endTrqu="", beginTrPrc="", endTrPrc="", beginLstgMrktTotAmt="", endLstgMrktTotAmt="", beginLsYrEdVsFltRg="", endLsYrEdVsFltRg="", beginLsYrEdVsFltRt="", endLsYrEdVsFltRt=""):
     """
     금융위원회_지수시세정보: 주가지수시세 검색 결과를 반환한다.
     * 금융위원회_지수시세정보: 주가지수시세 (https://www.data.go.kr/tcs/dss/selectApiDataDetailView.do?publicDataPk=15094807)
@@ -780,6 +769,10 @@ def get_stock_market_index(serviceKey:str, pageNo=1, numOfRows=ALL_ITEMS, result
     body = json.loads(response_stock_market_index.text)["response"]["body"]
     item = body["items"]["item"] # Information of each index item
 
+    # Assertion
+    if len(item) == 0:
+        return None
+
     # Print Result to Console (Logging)
     print("Running: Get Stock Price Info")
     print("Result Code : %s" % header["resultCode"])   # 결과코드
@@ -790,66 +783,63 @@ def get_stock_market_index(serviceKey:str, pageNo=1, numOfRows=ALL_ITEMS, result
     print() # Newline
 
     return item
-    
-def get_stock_index_kr():
-    pass
 
-
-def get_financial_data_kr(serviceKey:str):
-    financial_data = []
-    key = "crno"
+def get_financials_kr(serviceKey:str):
+    list_financial_data = []
 
     # 금융위원회_KRX상장종목정보
-    list_krx_listed_info = get_krx_listed_info(serviceKey=serviceKey)
-    list_krx_listed_info = filter_params(list_krx_listed_info, ["srtnCd", "isinCd", "mrktCtg", "itmsNm", "crno", "corpNm"])
+    list_financial_data = get_krx_listed_info(serviceKey=serviceKey)
+    list_financial_data = filter_params(list_financial_data, ["srtnCd", "isinCd", "mrktCtg", "itmsNm", "crno", "corpNm", "shotnIsin"])
 
-    # 금융위원회_기업기본정보: 기업개요조회
-    # corp_outline_item = get_corp_outline(serviceKey=serviceKey, numOfRows=ALL_CORPS)
-    # corp_outline_item = filter_params(corp_outline_item, ["crno", "corpNm", "corpEnsnNm", "corpRegMrktDcd", "corpRegMrktDcdNm", "corpDcd", "corpDcdNm", "bzno", "enpHmpgUrl", "sicNm", "enpEstbDt", "smenpYn", "enpEmpeCnt", "empeAvgCnwkTermCtt", "enpPn1AvgSlryAmt"])
-    # financial_data = left_join_by_key(list_krx_listed_info, corp_outline_item, "crno")
+    for financial_data in list_financial_data:
+        # Logging
+        print("Collecting data for %s" % financial_data["corpNm"])
 
-    # 한국예탁결제원_기업정보서비스: 기업기본정보 기업개요 조회
-    list_issuco_basic_info_item = []
-    for krx_listed_info_item in list_krx_listed_info:   
-        issucoCustno = get_issuco_custno_by_short_isin(serviceKey=serviceKey, shortIsin=krx_listed_info_item["srtnCd"][1:])
-        issuco_basic_info_item = get_issuco_basic_info(serviceKey=serviceKey, issucoCustno=issucoCustno)
-        list_issuco_basic_info_item.append(issuco_basic_info_item)
-    financial_data = left_join_by_key(list_krx_listed_info, list_issuco_basic_info_item, "shotnIsin")
-    
-    # 금융위원회_주식발행정보: 주식발행현황조회
-    list_stoc_issu_stat = get_stoc_issu_stat(serviceKey=serviceKey)
-    list_stoc_issu_stat = filter_params(list_stoc_issu_stat, ["crno", "stckIssuCmpyNm", "onskTisuCnt", "pfstTisuCnt"])
-    financial_data = left_join_by_key(list_krx_listed_info, list_stoc_issu_stat, "crno")
+        # 금융위원회_기업기본정보: 기업개요조회
+        corp_outline = get_corp_outline(serviceKey=serviceKey, crno=financial_data["crno"])
+        if corp_outline is not None:
+            financial_data.update(corp_outline[0])
 
-    # 금융위원회_주식발행정보: 종목기본정보조회
-    list_item_basi_info = get_item_basi_info(serviceKey=serviceKey)
-    list_item_basi_info = filter_params(list_item_basi_info, ["crno", "isinCd", "stckIssuCmpyNm", "isinCdNm", "scrsItmsKcd", "scrsItmsKcdNm", "stckParPrc", "issuStckCnt", "lstgDt"])
-    financial_data = left_join_by_key(list_krx_listed_info, list_item_basi_info, "crno")
+        # 한국예탁결제원_기업정보서비스: 기업기본정보 기업개요 조회
+        issucoCustno = get_issuco_custno_by_short_isin(serviceKey=serviceKey, shortIsin=financial_data["shotnIsin"])
+        issuco_basic_info = get_issuco_basic_info(serviceKey=serviceKey, issucoCustno=issucoCustno["issucoCustno"])
+        if issuco_basic_info is not None:
+            financial_data.update(issuco_basic_info)
 
-    # 금융위윈회_기업 재무정보: 요약재무제표조회
-    list_summ_fina_stat = get_summ_fina_stat(serviceKey=serviceKey, type="SEPARATE")
-    list_summ_fina_stat = filter_params(list_summ_fina_stat, ["crno", "bizYear", "fnclDcd", "fnclDcdNm", "enpSaleAmt", "enpBzopPft", "iclsPalClcAmt", "enpCrtmNpf", "enpTastAmt", "enpTdbtAmt", "enpTcptAmt", "enpCptlAmt", "fnclDebtRto"])
-    financial_data = left_join_by_key(list_krx_listed_info, list_summ_fina_stat, "crno")
+        # 금융위원회_주식발행정보: 주식발행현황조회
+        stoc_issu_stat = get_stoc_issu_stat(serviceKey=serviceKey, crno=financial_data["crno"])
+        if stoc_issu_stat is not None:
+            financial_data.update(stoc_issu_stat[0])
+        
+        # 금융위원회_주식발행정보: 종목기본정보조회
+        item_basi_info = get_item_basi_info(serviceKey=serviceKey, crno=financial_data["crno"])
+        if item_basi_info is not None:
+            financial_data.update(item_basi_info[0])
 
-    return financial_data
+        # 금융위윈회_기업 재무정보: 요약재무제표조회
+        summ_fina_stat = get_summ_fina_stat(serviceKey=serviceKey, numOfRows="", crno=financial_data["crno"], type="ALL")
+        if summ_fina_stat is not None:
+            financial_data.update(summ_fina_stat[0])
 
-def get_financial_data_us():
-    pass
+    return list_financial_data
 
 def test():
-    serviceKey="<service_key>"
+
+    # Configurations for test
+    serviceKey           ="<your api key>" # 공공데이터포털 서비스키
+    samsung_crno         = "1301110006246" # 삼성전자 법인등록번호
+    samsung_issucoCustno = "593"           # 삼성전자 발행회사번호
+    samsung_shortIsin    = "005930"        # 삼성전자 단축 ISIN 코드
 
     # result = get_krx_listed_info(serviceKey)
-    # result = get_corp_outline(serviceKey=serviceKey, crno="1301110006246")
-    # result = get_issuco_basic_info(serviceKey=serviceKey, issucoCustno="593")
-    # result = get_issuco_custno_by_short_isin(serviceKey=serviceKey, shortIsin="430700")
-    # result = get_stoc_issu_stat(serviceKey)
+    # result = get_corp_outline(serviceKey=serviceKey, crno=samsung_crno)
+    # result = get_issuco_basic_info(serviceKey=serviceKey, issucoCustno=samsung_issucoCustno)
+    # result = get_issuco_custno_by_short_isin(serviceKey=serviceKey, shortIsin=samsung_shortIsin)
+    # result = get_stoc_issu_stat(serviceKey=serviceKey, crno=samsung_crno)
     # result = get_item_basi_info(serviceKey)    
-    # result = get_summ_fina_stat(serviceKey=serviceKey, type="CONSOLIDATED")
-    # result = get_financial_data_kr(serviceKey)
+    # result = get_summ_fina_stat(serviceKey=serviceKey, type="ALL", crno=samsung_crno)
+    result = get_financials_kr(serviceKey)
 
-    # result = get_stock_price_info(serviceKey=serviceKey)
-    # result = get_stock_market_index(serviceKey=serviceKey)
-
-    with open("test.json", "w", encoding="utf-8") as json_file:
-        json_file.write(str(result)) # Start of .json file
+    with open("financial_data.json", "w", encoding="utf-8") as json_file:
+        json_file.write(str(result)) # Write to json file
+        

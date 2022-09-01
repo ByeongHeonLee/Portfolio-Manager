@@ -13,7 +13,7 @@ from mongodbHandler import MongoDBHandler   # Mongo DB Handler
 from influxdbHandler import InfluxDBHandler # Influx DB Handler
 
 # Data Crawler Modules
-from dataHandler import get_financial_data_kr
+from financialsCollector import get_financials_kr
 # from influxdbHandler import InfluxDBHandler
 
 # Main logic
@@ -30,15 +30,13 @@ if __name__ == "__main__":
 
     # Run at Start of Pre-Market of Korea Market (AM 08:30)
     def sched_get_financial_data_kr():
-        print("Start: get_financial_data_kr")
+        print("Start: get_financials_kr")
         # mongodb.delete_items({}, "stock", "financial_info")
-        serviceKey = "uZEPxYU1hcKy6To5Hex%2ByxoSPBqrjzpFi9DeHCmI3b%2FovyQR3HbAcBQQG1RtKJpp5vRJ7ChiL%2B4HqCwEsXjoJQ%3D%3D"
-        items = get_financial_data_kr(serviceKey=serviceKey)
-        # items = get_financial_data_kr(serviceKey=os.getenv("KR_PUBLIC_DATA_PORTAL_KEY"))
+        # mongodb.insert_items(items, "stock", "financial_info")
+        items = get_financials_kr(serviceKey=os.getenv("KR_PUBLIC_DATA_PORTAL_KEY"))
         with open("../../client/src/components/views/KosPage/data/fianacial_data.json", "w", encoding="utf-8") as json_file:
             json_file.write(items)
-        # mongodb.insert_items(items, "stock", "financial_info")
-        print("End: get_financial_data_kr")
+        print("End: get_financials_kr")
     sched.add_job(sched_get_financial_data_kr, 'cron', day_of_week='mon-fri', hour='16', minute='56', id='financial_info')
     
     # Run

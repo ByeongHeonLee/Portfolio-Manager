@@ -6,14 +6,14 @@ function Search({ details }) {
 
   const [searchField, setSearchField] = useState("");
 
-  const filteredPersons = details.filter(
-    person => {
+  const filteredStocks = details.filter(
+    stock => {
       return (
-        person
+        stock
         .itmsNm
         .toLowerCase()
         .includes(searchField.toLowerCase()) ||
-        person
+        stock
         .mrktCtg
         .toLowerCase()
         .includes(searchField.toLowerCase())
@@ -28,7 +28,7 @@ function Search({ details }) {
   function searchList() {
     return (
       <Scroll>
-        <SearchList filteredPersons={filteredPersons} />
+        <SearchList filteredStocks={filteredStocks} />
       </Scroll>
     );
   }
@@ -36,7 +36,7 @@ function Search({ details }) {
   return (
     <section className="garamond">
       <div className="navy georgia ma0 grow">
-        <h2 className="f2">Search your course</h2>
+        <h2 className="f2">종목명을 입력하세요</h2>
       </div>
       <div className="pa2">
         <input 

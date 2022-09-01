@@ -1,10 +1,7 @@
-//코스피 코스닥 주가정보 페이지
-//ex)시총순위 나열
-
 import React from 'react';
 import Search from './Search';
 // const mongoose = require('mongoose')
-import krx_stock_info from './data/krx_stock_info.json';
+import financials_kr from './data/financials_kr.json';
 
 // mongoose.connect(config.mongoURI_stock_info, {
 //   useNewUrlParser: true,
@@ -16,8 +13,8 @@ import krx_stock_info from './data/krx_stock_info.json';
 
 function KosPage() {
   return (
-    <div className="tc bg-green ma0 pa4 min-vh-100">
-      <Search details={krx_stock_info}/>
+    <div className="stock search bar">
+      <Search details={financials_kr}/>
     </div>
   );
 }

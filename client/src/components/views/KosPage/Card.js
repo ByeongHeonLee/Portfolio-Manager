@@ -1,11 +1,11 @@
 import React from 'react';
 
-function Card({person}) {
+function Card({stock}) {
   return(
-    <div className="tc bg-light-green dib br3 pa3 ma2 grow bw2 shadow-5">
+    <div className="searched stock list">
       <div>
-        <h2>{person.itmsNm}</h2>
-        <p>{person.mrktCtg}</p>
+        <h2>{stock.itmsNm}</h2>
+        <p>{stock.mrktCtg}</p>
       </div>
     </div>
   );
