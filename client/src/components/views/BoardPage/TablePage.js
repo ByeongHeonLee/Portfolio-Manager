@@ -73,7 +73,7 @@ function TablePage() {
         _id: `${post._id}`,   
     })
   })
-  
+  const reversedData = data.map(item => item).reverse();
   
 
 
@@ -122,7 +122,7 @@ function TablePage() {
     <div style={{width: '85%', margin: '3rem auto'}}>
       <Title level={2}>종목 토론 게시판</Title>
       <hr />
-      <Table dataSource={data} columns={columns} />
+      <Table dataSource={reversedData} columns={columns} />
       <Button type="primary" size="large" href="/board/post" style={{ border: '1px solid #d7d7da', backgroundColor:'white', color: 'Black'}}><Icon type='edit'/>글쓰기</Button>
     </div>  
   )
