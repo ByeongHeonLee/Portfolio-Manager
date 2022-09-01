@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { loginUser } from "../../../_actions/user_actions";
 import { registerUser } from '../../../_actions/user_actions';
 import { message } from 'antd';
-import {NAVER_CLIENT_ID, NAVER_CALLBACK_URL} from '../Sns/Snskey'
+// import {NAVER_CLIENT_ID, NAVER_CALLBACK_URL} from '../Sns/Snskey'
 
 function NaverLogin(props){
     const dispatch = useDispatch();
