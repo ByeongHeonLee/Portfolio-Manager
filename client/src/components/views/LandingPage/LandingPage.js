@@ -19,9 +19,9 @@ function LandingPage() {
       <div className="app">
         <h1
           id="head"
-          //style={{ fontSize: "4rem", marginTop: "-200px", marginBottom: "5px" }}
+          style={{ fontSize: "4rem", marginTop: "0px", marginBottom: "0px" }}
         >
-          PortFolio.com
+          PORTFOLIO.COM
         </h1>
         <span id="fullimg" style={{ height: "400px" }}></span>
       </div>

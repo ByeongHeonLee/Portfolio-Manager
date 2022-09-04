@@ -2,10 +2,10 @@ import React from 'react';
 
 function Card({stock}) {
   return(
-    <div className="searched stock list">
+    <div className="searchedStockItem">
       <div>
-        <h2>{stock.itmsNm}</h2>
-        <p>{stock.mrktCtg}</p>
+        <h2>[{stock.mrktCtg}]   {stock.itmsNm}</h2>
+        <h2>({stock.shotnIsin})</h2>
       </div>
     </div>
   );

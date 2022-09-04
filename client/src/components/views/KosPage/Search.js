@@ -34,17 +34,17 @@ function Search({ details }) {
   }
 
   return (
-    <section className="garamond">
-      <div className="navy georgia ma0 grow">
-        <h2 className="f2">종목명을 입력하세요</h2>
-      </div>
-      <div className="pa2">
+    <section className="wrap">
+      <div className="search">
         <input 
-          className="pa3 bb br3 grow b--none bg-lightest-blue ma3"
+          className="searchTerm"
           type = "search" 
-          placeholder = "Search People" 
+          placeholder = "종목명을 입력하세요" 
           onChange = {handleChange}
         />
+        <button class="searchButton">
+            <i class="fa fa-search"></i>
+          </button>
       </div>
       {searchList()}
     </section>
