@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Icon } from 'antd';
 import Scroll from './Scroll';
 import SearchList from './SearchList';
 
@@ -42,9 +43,7 @@ function Search({ details }) {
           placeholder = "종목명을 입력하세요" 
           onChange = {handleChange}
         />
-        <button class="searchButton">
-            <i class="fa fa-search"></i>
-          </button>
+        <Icon className="searchButton" type="search" style={{ color: 'rgba(00,B4,CC,.25)' }} />
       </div>
       {searchList()}
     </section>

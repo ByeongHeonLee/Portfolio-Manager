@@ -31,13 +31,17 @@ if __name__ == "__main__":
     # Run at Start of Pre-Market of Korea Market (AM 08:30)
     def sched_get_financial_data_kr():
         print("Start: get_financials_kr")
+
+        # Write on DB
         # mongodb.delete_items({}, "stock", "financial_info")
         # mongodb.insert_items(items, "stock", "financial_info")
+
+        # Write on File
         items = get_financials_kr(serviceKey=os.getenv("KR_PUBLIC_DATA_PORTAL_KEY"))
         with open("../../client/src/components/views/KosPage/data/fianacial_data.json", "w", encoding="utf-8") as json_file:
             json_file.write(items)
         print("End: get_financials_kr")
-    sched.add_job(sched_get_financial_data_kr, 'cron', day_of_week='mon-fri', hour='16', minute='56', id='financial_info')
+    sched.add_job(sched_get_financial_data_kr, 'cron', day_of_week='mon-fri', hour='08', minute='30', id='financial_info')
     
     # Run
     sched.start()

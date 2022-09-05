@@ -264,6 +264,7 @@ def get_krx_listed_info(serviceKey:str, pageNo=1, numOfRows=100, resultType="jso
 
     # Assertion
     if len(item) == 0:
+        print("Error")
         return None
 
     # Make new pair (Short ISIN Code made by srtnCd)
@@ -831,14 +832,14 @@ def test():
     samsung_issucoCustno = "593"           # 삼성전자 발행회사번호
     samsung_shortIsin    = "005930"        # 삼성전자 단축 ISIN 코드
 
-    # result = get_krx_listed_info(serviceKey)
-    # result = get_corp_outline(serviceKey=serviceKey, crno=samsung_crno)
-    # result = get_issuco_basic_info(serviceKey=serviceKey, issucoCustno=samsung_issucoCustno)
-    # result = get_issuco_custno_by_short_isin(serviceKey=serviceKey, shortIsin=samsung_shortIsin)
-    # result = get_stoc_issu_stat(serviceKey=serviceKey, crno=samsung_crno)
+    # result = get_krx_listed_info(serviceKey=serviceKey, crno=samsung_crno)
+    # result = get_corp_outline(serviceKey=serviceKey)
+    # result = get_issuco_basic_info(serviceKey=serviceKey,)
+    # result = get_issuco_custno_by_short_isin(serviceKey=serviceKey,)
+    # result = get_stoc_issu_stat(serviceKey=serviceKey,)
     # result = get_item_basi_info(serviceKey)    
     # result = get_summ_fina_stat(serviceKey=serviceKey, type="ALL", crno=samsung_crno)
-    result = get_financials_kr(serviceKey)
+    # result = get_financials_kr(serviceKey)
 
     with open("financial_data.json", "w", encoding="utf-8") as json_file:
         json_file.write(str(result)) # Write to json file
