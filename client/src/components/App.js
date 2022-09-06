@@ -14,6 +14,7 @@ import SimulatePage from './views/SimulatePage/SimulatePage';
 import Postdetailpage from './views/BoardPage/PostDetailpage';
 import MyaccountPage from './views/MyaccountPage/MyaccountPage';
 import KosPage from './views/KosPage/KosPage';
+import WorldIndex from './views/WorldIndex/WorldIndex';
 //import Percent from './views/Percent/Percent';
 import NewsPage from './views/NewsPage/NewsPage';
 import KakaoLogin from './views/Sns/KakaoLogin';
@@ -40,7 +41,7 @@ function App() {
           <Route exact path="/login" component={Auth(LoginPage, false)} />
           <Route exact path="/register" component={Auth(RegisterPage, false)} />
           <Route exact path="/myAccount" component={Auth(MyaccountPage, true)} />
-          <Route exact path="/kos" component={Auth(KosPage, null)} />
+          <Route exact path="/worldIndex" component={Auth(KosPage, null)} />
           <Route exact path="/news" component={Auth(NewsPage, null)} />
           <Route exact path="/oauth/callback/kakao" component={Auth(KakaoLogin, false)} />
           <Route exact path="/oauth/callback/naver" component={Auth(NaverLogin, false)} />

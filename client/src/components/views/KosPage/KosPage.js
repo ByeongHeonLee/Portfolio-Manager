@@ -16,6 +16,7 @@ function KosPage() {
     <div className="stock search bar">
       <Search details={financials_kr}/>
     </div>
+        
   );
 }
 

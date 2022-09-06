@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import { Row, Col } from "antd";
 
 import DataImages from "./Sections/DataImages";
-import DataInfo from "./Sections/DataInfo"; //추가
+import DataInfo from "./Sections/DataInfo";
 import Data from './data/financials_kr.json';
 
 function ShowDetailData() {
@@ -40,7 +40,7 @@ function ShowDetailData() {
 
           <Col lg={12} sm={24}>
             {/* DataInfo */}
-            <DataInfo detailData={Data} /> //추가
+            <DataInfo detailData={Data} />
           </Col>
         </Row>
       </div>
