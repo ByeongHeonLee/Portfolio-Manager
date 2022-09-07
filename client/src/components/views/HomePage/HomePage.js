@@ -1,4 +1,5 @@
 import React from 'react'
+import './HomePage.css'
 import Search from "../KosPage/Search";
 import financials_kr from "../KosPage/data/financials_kr.json";
 
