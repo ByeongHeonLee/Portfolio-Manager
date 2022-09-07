@@ -10,7 +10,7 @@ function HomePage() {
       <div className="app">
         <h1
           id="head"
-          style={{ fontSize: "4rem", marginTop: "0px", marginBottom: "0px" }}
+          style={{ fontSize: "4rem", marginTop: "0px", marginBottom: "300px" }}
         >
           PORTFOLIO.COM
         </h1>
