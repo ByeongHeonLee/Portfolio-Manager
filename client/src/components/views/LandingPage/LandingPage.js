@@ -23,7 +23,6 @@ function LandingPage() {
         >
           PORTFOLIO.COM
         </h1>
-        <span id="fullimg" style={{ height: "400px" }}></span>
       </div>
 
       <div className="tc bg-green ma0 pa4 min-vh-100">
