@@ -12,7 +12,7 @@ function RightMenu(props) {
   const logoutHandler = () => {
     axios.get(`${USER_SERVER}/logout`).then(response => {
       if (response.status === 200) {
-        props.history.push("/");
+        props.history.push("/home");
       } else {
         alert('로그아웃 오류')
       }
