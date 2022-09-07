@@ -19,7 +19,7 @@ export default function (SpecificComponent, option, adminRoute = null) {
                 //Not Loggined in Status 
                 if (!response.payload.isAuth) {
                     if (option) {
-                        props.history.push('/')
+                        props.history.push('/home')
                         if(SpecificComponent===BoardPage || SpecificComponent===TablePage || SpecificComponent===SimulatePage){
                             message.error("로그인이 필요한 서비스입니다.")
                         }
