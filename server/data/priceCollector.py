@@ -237,10 +237,17 @@ def test():
     samsung_issucoCustno = "593"           # 삼성전자 발행회사번호
     samsung_shortIsin    = "005930"        # 삼성전자 단축 ISIN 코드
 
-    # result = get_stock_price_info(serviceKey=serviceKey)
-    result = get_stock_market_index(serviceKey=serviceKey, idxNm="코스피 200")
+    result = []
 
-    with open("price_data.json", "w", encoding="utf-8") as json_file:
+    # result = get_stock_price_info(serviceKey=serviceKey)
+    for idxNm in ["코스피", "코스닥", "KRX 100", "KTOP 30", "KRX 자동차", "KRX 반도체", "KRX 헬스케어", "KRX 은행", "KRX 에너지화학", "KRX 철강", "KRX 방송통신", "KRX 건설", "KRX 증권", "KRX 기계장비", "KRX 보험", "KRX 운송", "KRX 경기소비재", "KRX 필수소비재", "KRX 정보기술", "KRX 유틸리티"]:
+        stock_market_index = get_stock_market_index(serviceKey=serviceKey, idxNm=idxNm)
+        result.append(stock_market_index[0])
+        print("Done: ", idxNm)
+
+    # result = get_stock_market_index(serviceKey=serviceKey, numOfRows=1000)
+
+    with open("indexes_kr.json", "w", encoding="utf-8") as json_file:
         json_file.write(str(result)) # Write to json file
 
 test()
