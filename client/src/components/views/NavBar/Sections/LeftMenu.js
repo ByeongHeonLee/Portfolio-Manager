@@ -19,9 +19,9 @@ function LeftMenu(props) {
         <Menu.Item key="board">
           <a href="/board">토론게시판</a>
         </Menu.Item>
-        <Menu.Item key="sim">
+        {/* <Menu.Item key="sim">
           <a href="/simulate">모의투자</a>
-        </Menu.Item>
+        </Menu.Item> */}
   </Menu>
   )
 }
