@@ -100,7 +100,8 @@ function Postdetailpage(props) {
                             </List.Item>
                             
                             <hr />
-                            <img style={{ width: '50%' }} src={`http://localhost:5000/${PostDetail.filePath}`} />
+                            {/*<img style={{ width: '50%' }} src={`http://localhost:5000/${PostDetail.filePath}`} />*/}
+                            <img style={{ width: '50%' }} src={`https://portfolio-dot-com.herokuapp.com/${PostDetail.filePath}`} />
                             <p style={{ fontSize: '1.5rem' }}>
                                 {PostDetail.description}
                             </p>
