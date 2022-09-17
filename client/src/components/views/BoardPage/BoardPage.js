@@ -118,8 +118,11 @@ function BoardPage(props) {
             </div>
             <br />
                 {FilePath&&
-                    <div>
+                 {/*<div>
                         <img src={`http://localhost:5000/${FilePath}`} style={{ width: '400px', height: '300px'}} alt="미리보기"></img>
+                    </div>*/}
+                    <div>
+                        <img src={`https://portfolio-dot-com.herokuapp.com/${FilePath}`} style={{ width: '400px', height: '300px'}} alt="미리보기"></img>
                     </div>
                 }
             <br />
