@@ -551,17 +551,22 @@ def get_issuco_custno_by_short_isin(serviceKey:str, shortIsin:str):
 
     return item
 
-def get_financials_kr(serviceKey:str):
+def get_financials_kr(serviceKey:str, numOfRow:int=ALL_STOCKS_KR):
     list_financial_data = []
 
     # 금융위원회_KRX상장종목정보
     # list_financial_data = get_krx_listed_info(serviceKey=serviceKey, numOfRows=ALL_STOCKS_KR)
-    list_financial_data = get_krx_listed_info(serviceKey=serviceKey, numOfRows=ALL_STOCKS_KR)
+    list_financial_data = get_krx_listed_info(serviceKey=serviceKey, numOfRows=numOfRow)
     list_financial_data = filter_params(list_financial_data, ["srtnCd", "isinCd", "mrktCtg", "itmsNm", "crno", "corpNm", "shotnIsin"])
 
+    item_id = 1
     for financial_data in list_financial_data:
         # Logging
         print("Collecting data for %s" % financial_data["corpNm"])
+
+        # Give Index
+        financial_data['id'] = item_id
+        item_id += 1
         
         try:
             # 금융위원회_기업기본정보: 기업개요조회
@@ -605,10 +610,10 @@ def get_financials_kr(serviceKey:str):
             if financial_data.get("isinCd", None) is not None:
                 stock_price_info = get_stock_price_info(serviceKey=serviceKey, isinCd=financial_data["isinCd"])
                 if stock_price_info is not None:
-                    financial_data.update(stock_price_info[0])
+                    financial_data.update(stock_price_info)
             time.sleep(INTERVAL_API_CALL)
-        except:
-            print("Error Detected")
+        except Exception as err_msg:
+            print("Error Detected:", err_msg)
             continue
 
     return list_financial_data
@@ -616,7 +621,8 @@ def get_financials_kr(serviceKey:str):
 def test():
 
     # Configurations for test
-    serviceKey           ="<your api key>" # 공공데이터포털 서비스키
+    # serviceKey           ="<your api key>" # 공공데이터포털 서비스키
+    serviceKey="uZEPxYU1hcKy6To5Hex%2ByxoSPBqrjzpFi9DeHCmI3b%2FovyQR3HbAcBQQG1RtKJpp5vRJ7ChiL%2B4HqCwEsXjoJQ%3D%3D"
     samsung_crno         = "1301110006246" # 삼성전자 법인등록번호
     samsung_issucoCustno = "593"           # 삼성전자 발행회사번호
     samsung_shortIsin    = "005930"        # 삼성전자 단축 ISIN 코드
@@ -629,8 +635,9 @@ def test():
     # result = get_item_basi_info(serviceKey=serviceKey, crno=samsung_crno)    
     # result = get_summ_fina_stat(serviceKey=serviceKey, type="ALL", crno=samsung_crno)
 
-    result = get_financials_kr(serviceKey=serviceKey)
+    result = get_financials_kr(serviceKey=serviceKey, numOfRow=50)
 
     with open("financials_kr.json", "w", encoding="utf-8") as json_file:
         json_file.write(str(result)) # Write to json file
-        
+
+test()
