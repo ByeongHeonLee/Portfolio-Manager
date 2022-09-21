@@ -50,21 +50,22 @@ def get_stock_price_info(serviceKey:str, pageNo=1, numOfRows=1, resultType="json
     endMrktTotAmt   (str) : 시가총액이 검색값보다 작은 데이터를 검색 (Default: "")
 
     [Returns]
-    basDt      (string) : 기준일자
-    srtnCd     (string) : 종목 코드보다 짧으면서 유일성이 보장되는 코드(6자리)
-    isinCd     (string) : 국제 채권 식별 번호. 유가증권(채권)의 국제인증 고유번호
-    itmsNm     (string) : 유가증권 국제인증 고유번호 코드 이름
-    mrktCtg    (string) : 주식의 시장 구분 (KOSPI/KOSDAQ/KONEX 중 1)
-    clpr       (string) : 정규시장의 매매시간종료시까지 형성되는 최종가격
-    vs         (number) : 전일 대비 등락
-    fltRt      (number) : 전일 대비 등락에 따른 비율
-    mkp        (number) : 정규시장의 매매시간개시후 형성되는 최초가격
-    hipr       (number) : 하루 중 가격의 최고치
-    lopr       (number) : 하루 중 가격의 최저치
-    trqu       (number) : 체결수량의 누적 합계
-    trPrc      (number) : 거래건 별 체결가격 * 체결수량의 누적 합계
-    lstgStCnt  (number) : 종목의 상장주식수
-    mrktTotAmt (number) : 종가 * 상장주식수
+    item : 한국 주식시장에 상장된 종목들의 주식시세정보 (dict)
+        basDt      (string) : 기준일자
+        srtnCd     (string) : 종목 코드보다 짧으면서 유일성이 보장되는 코드(6자리)
+        isinCd     (string) : 국제 채권 식별 번호. 유가증권(채권)의 국제인증 고유번호
+        itmsNm     (string) : 유가증권 국제인증 고유번호 코드 이름
+        mrktCtg    (string) : 주식의 시장 구분 (KOSPI/KOSDAQ/KONEX 중 1)
+        clpr       (string) : 정규시장의 매매시간종료시까지 형성되는 최종가격
+        vs         (number) : 전일 대비 등락
+        fltRt      (number) : 전일 대비 등락에 따른 비율
+        mkp        (number) : 정규시장의 매매시간개시후 형성되는 최초가격
+        hipr       (number) : 하루 중 가격의 최고치
+        lopr       (number) : 하루 중 가격의 최저치
+        trqu       (number) : 체결수량의 누적 합계
+        trPrc      (number) : 거래건 별 체결가격 * 체결수량의 누적 합계
+        lstgStCnt  (number) : 종목의 상장주식수
+        mrktTotAmt (number) : 종가 * 상장주식수
     """
         
     # Parameter Setting
@@ -106,53 +107,8 @@ def get_stock_price_info(serviceKey:str, pageNo=1, numOfRows=1, resultType="json
     item = body["items"]["item"] # Information of each stock item
 
     # Assertion
-    if len(item) == 0 or item is None:
+    if len(item) == 0:
         return None
-
-    # Formatting on Field 'fltRt' (전일 대비 등락에 따른 비율)
-    item = item[0]
-    item['fltRt'] = str(item['fltRt'])
-
-    # Case: -d.dd% (Already Complete)
-    if (len(item['fltRt']) == 5):
-        pass
-
-    # Case: -.dd || d.dd || -d.d
-    elif(len(item['fltRt']) == 4):
-        # Case: -.dd
-        if (item['fltRt'][0:2] == "-."):
-            item['fltRt'] = "-0" + item['fltRt'][1:]
-        # Case: d.dd
-        elif (item['fltRt'][0] != "-"):
-            item['fltRt'] = "+" + item['fltRt'][:]
-        # Case: -d.d
-        elif (item['fltRt'][0] == "-"):
-            item['fltRt'] += "0"
-
-    # Case: .dd || -.d || d.d
-    elif(len(item['fltRt']) == 3):
-        # Case: .dd
-        if (item['fltRt'][0] == "."):
-            item['fltRt'] = "+0" + item['fltRt'][:]
-        # Case: -.d
-        elif (item['fltRt'][0:2] == "-."):
-            item['fltRt'] = "-0" + item['fltRt'][1:] + "0"
-        # Case: d.d
-        elif (item['fltRt'][1] == "."):
-            item['fltRt'] = "+" + item['fltRt'][:] + "0"
-                    
-    # Case: .d
-    elif(len(item['fltRt']) == 2):
-        # Case: .d
-        if (item['fltRt'][0] == "."):
-            item['fltRt'] = "+0" + item['fltRt'][:] + "0"
-
-    # Case: 0
-    elif (item['fltRt'] == "0"):
-        item['fltRt'] = "0.00"
-
-    # Add Percentage Symbol
-    item['fltRt'] += "%"
 
     # Print Result to Console (Logging)
     print("Running: Get Stock Price Info")
@@ -207,7 +163,7 @@ def get_stock_market_index(serviceKey:str, pageNo=1, numOfRows=1, resultType="js
         epyItmsCnt     (number) : 지수가 채용한 종목 수
         clpr           (number) : 정규시장의 매매시간종료시까지 형성되는 최종가격
         vs             (number) : 전일 대비 등락
-        fltRt          (string) : 전일 대비 등락에 따른 비율
+        fltRt          (number) : 전일 대비 등락에 따른 비율
         mkp            (number) : 정규시장의 매매시간개시후 형성되는 최초가격
         hipr           (number) : 하루 중 지수의 최고치
         lopr           (number) : 하루 중 지수의 최저치
@@ -258,7 +214,7 @@ def get_stock_market_index(serviceKey:str, pageNo=1, numOfRows=1, resultType="js
     item = body["items"]["item"] # Information of each index item
 
     # Assertion
-    if len(item) == 0 or item is None:
+    if len(item) == 0:
         return None
 
     # Print Result to Console (Logging)
@@ -275,32 +231,16 @@ def get_stock_market_index(serviceKey:str, pageNo=1, numOfRows=1, resultType="js
 def test():
 
     # Configurations for test
-    serviceKey           = "<your api key>" # 공공데이터포털 서비스키
-    krx_indexes         = ["코스피",         # 한국거래소 주요지수
-                           "코스닥",
-                           "KRX 100",
-                           "KTOP 30",
-                           "KRX 자동차",
-                           "KRX 반도체",
-                           "KRX 헬스케어",
-                           "KRX 은행",
-                           "KRX 에너지화학",
-                           "KRX 철강",
-                           "KRX 방송통신",
-                           "KRX 건설",
-                           "KRX 증권",
-                           "KRX 기계장비",
-                           "KRX 보험",
-                           "KRX 운송",
-                           "KRX 경기소비재",
-                           "KRX 필수소비재",
-                           "KRX 정보기술",
-                           "KRX 유틸리티"]  
+    # serviceKey           ="<your api key>" # 공공데이터포털 서비스키
+    serviceKey = "uZEPxYU1hcKy6To5Hex%2ByxoSPBqrjzpFi9DeHCmI3b%2FovyQR3HbAcBQQG1RtKJpp5vRJ7ChiL%2B4HqCwEsXjoJQ%3D%3D"
+    samsung_crno         = "1301110006246" # 삼성전자 법인등록번호
+    samsung_issucoCustno = "593"           # 삼성전자 발행회사번호
+    samsung_shortIsin    = "005930"        # 삼성전자 단축 ISIN 코드
 
     result = []
 
     # result = get_stock_price_info(serviceKey=serviceKey)
-    for idxNm in krx_indexes:
+    for idxNm in ["코스피", "코스닥", "KRX 100", "KTOP 30", "KRX 자동차", "KRX 반도체", "KRX 헬스케어", "KRX 은행", "KRX 에너지화학", "KRX 철강", "KRX 방송통신", "KRX 건설", "KRX 증권", "KRX 기계장비", "KRX 보험", "KRX 운송", "KRX 경기소비재", "KRX 필수소비재", "KRX 정보기술", "KRX 유틸리티"]:
         stock_market_index = get_stock_market_index(serviceKey=serviceKey, idxNm=idxNm)
         result.append(stock_market_index[0])
         print("Done: ", idxNm)
@@ -309,3 +249,5 @@ def test():
 
     with open("indexes_kr.json", "w", encoding="utf-8") as json_file:
         json_file.write(str(result)) # Write to json file
+
+test()

@@ -14,7 +14,6 @@ import SimulatePage from './views/SimulatePage/SimulatePage';
 import Postdetailpage from './views/BoardPage/PostDetailpage';
 import MyaccountPage from './views/MyaccountPage/MyaccountPage';
 import KosPage from './views/KosPage/KosPage';
-import Detail from './views/KosPage/Detail';
 import Index from './views/Index/Index';
 //import Percent from './views/Percent/Percent';
 import NewsPage from './views/NewsPage/NewsPage';
@@ -33,9 +32,8 @@ function App() {
       <NavBar />
       <div style={{ paddingTop: '69px', minHeight: 'calc(100vh - 80px)' }}>
         <Switch>
-          <Route exact path="/" component={Auth(LandingPage, null)} />
           <Route exact path="/home" component={Auth(HomePage, null)} />
-          <Route exact path="/detail/:id" component={Auth(Detail, null)} />
+          <Route exact path="/" component={Auth(LandingPage, true)} />
           <Route exact path="/board" component={Auth(TablePage, true)} />
           <Route exact path="/board/post" component={Auth(BoardPage, true)} />
           <Route exact path="/board/:postId" component={Auth(Postdetailpage, true)} />

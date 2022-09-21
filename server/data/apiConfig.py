@@ -10,7 +10,7 @@ from pytz        import timezone
 from datetime    import datetime, timedelta
 
 # * * *   Network Configuration   * * *
-INTERVAL_API_CALL = 0.05 # 0.05 Second = 50ms
+INTERVAL_API_CALL = 0.05 # 0.1 Second = 100ms
 
 # * * *   Date Strings   * * *
 YESTERDAY             = datetime.strftime(datetime.now(timezone('Asia/Seoul')) - timedelta(1)  , "%Y%m%d") # Yesterday (Format:"YYYYMMDD")
