@@ -564,7 +564,7 @@ def get_financials_kr(serviceKey:str):
         print("Collecting data for %s" % financial_data["corpNm"])
 
         # Give Index
-        financial_data[id] = item_id
+        financial_data['id'] = item_id
         item_id += 1
         
         try:
