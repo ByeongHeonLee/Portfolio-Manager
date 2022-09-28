@@ -555,7 +555,7 @@ def get_financials_kr(serviceKey:str):
     list_financial_data = []
 
     # 금융위원회_KRX상장종목정보
-    list_financial_data = get_krx_listed_info(serviceKey=serviceKey, numOfRows=ALL_STOCKS_KR)
+    list_financial_data = get_krx_listed_info(serviceKey=serviceKey, numOfRows=100)
     list_financial_data = filter_params(list_financial_data, ["srtnCd", "isinCd", "mrktCtg", "itmsNm", "crno", "corpNm", "shotnIsin"])
 
     item_id = 1
@@ -637,4 +637,3 @@ def test():
 
     with open("financials_kr.json", "w", encoding="utf-8") as json_file:
         json_file.write(str(result)) # Write to json file
-        

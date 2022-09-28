@@ -38,8 +38,8 @@ if __name__ == "__main__":
 
         # Write on File
         items = get_financials_kr(serviceKey=os.getenv("KR_PUBLIC_DATA_PORTAL_KEY"))
-        with open("../../client/src/components/views/KosPage/data/fianacial_data.json", "w", encoding="utf-8") as json_file:
-            json_file.write(items)
+        with open("./client/src/components/views/KosPage/data/fianacial_data.json", "w", encoding="utf-8") as json_file:
+            json_file.write(str(items))
         print("End: get_financials_kr")
     sched.add_job(sched_get_financial_data_kr, 'cron', day_of_week='mon-fri', hour='08', minute='30', id='financial_info')
     

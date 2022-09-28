@@ -1,51 +1,40 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { useParams } from "react-router-dom";
-import { Row, Col } from "antd";
-
-import DataImages from "./Sections/DataImages";
-import DataInfo from "./Sections/DataInfo";
-import Data from './data/financials_kr.json';
+import React from "react"
+import {useParams} from "react-router-dom"
+import stockData from "./data/financials_kr.json"
 
 function ShowDetailData() {
-  const { dataId } = useParams();
-
-  //콘솔에서 확인한 정보 넣기
-  const [Data, setData] = useState({});
-
-  useEffect(() => {
-    axios.get(`/api/data/data_id?id=${dataId}&type=single`).then((response) => {
-      if (response.data.success) {
-        console.log(response.data);
-        setData(response.data.data[0]);
-      } else {
-        alert("상세 정보 가져오기를 실패했습니다.");
-      }
-    });
-  }, []);
-
-  return (
-    <div>
-      <div style={{ width: "100%", padding: "3rem 4rem" }}>
-        <br />
-        <div stye={{ display: "flex", justifyContent: "center" }}>
-          <h1>{Data.title}</h1>
+    const {id} = useParams()
+    const stock = stockData.find(prod => prod.id == id)
+    
+    return (
+        <div>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+            <h2>[기본정보]</h2>
+            <p>시장 구분 : {stock.mrktCtg}</p>
+            <p>종목명 : {stock.itmsNm}</p>
+            <p>ISIN : {stock.isinCd}</p>
+            <p>기업 홈페이지 : {stock.enpHmpgUrl}</p>
+            <br/>
+            <h2>[재무정보]</h2>
+            <p>재무제표부채비율 : {stock.fnclDebtRto}</p>
+            <p>기업자본금액 : {stock.enpCptlAmt}</p>
+            <p>당기순이익 : {stock.enpCrtmNpf}</p>
+            <p>영업이익 : {stock.enpBzopPft}</p>
+            <p>매출금액 : {stock.enpSaleAmt}</p>
+            <p>주식 액면가 : {stock.stckParPrc}</p>
+            <p>발행 주식수 : {stock.issuStckCnt}</p>
+            <p>상장일자 : {stock.lstgDt}</p>
+            <br/>
+            <h2>[전일 주가정보]</h2>
+            <p>시가 : {stock.mkp}</p>
+            <p>종가 : {stock.clpr}</p>
+            <p>고가 : {stock.hipr}</p>
+            <p>저가 : {stock.lopr}</p>
         </div>
-        <br />
-        <Row gutter={[16, 16]}>
-          {/* <Col lg={12} sm={24}> */}
-            {/* DataImages */}
-            {/* <DataImages detailData={Data} />
-          </Col> */}
-
-          <Col lg={12} sm={24}>
-            {/* DataInfo */}
-            <DataInfo detailData={Data} />
-          </Col>
-        </Row>
-      </div>
-    </div>
-  );
+    )
 }
 
-export default ShowDetailData;
+export default ShowDetailData
