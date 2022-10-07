@@ -20,7 +20,7 @@ import Index from './views/Index/Index';
 import NewsPage from './views/NewsPage/NewsPage';
 import KakaoLogin from './views/Sns/KakaoLogin';
 import NaverLogin from './views/Sns/NaverLogin';
-
+import fullPage from './views/FullPage/FullPage';
 import './App.css'
 
 //null   Anyone Can go inside
@@ -47,6 +47,7 @@ function App() {
           <Route exact path="/news" component={Auth(NewsPage, null)} />
           <Route exact path="/oauth/callback/kakao" component={Auth(KakaoLogin, false)} />
           <Route exact path="/oauth/callback/naver" component={Auth(NaverLogin, false)} />
+          <Route exact path="/full" component={Auth(fullPage, null)} />
         </Switch>
       </div>
     </Suspense>
