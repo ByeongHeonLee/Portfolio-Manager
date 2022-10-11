@@ -38,9 +38,21 @@
 
   .section-area2 {
     background-color : rgb(255, 255, 255);
-    background-image: url('../../../images/랜딩2.png');
+    background-image: url('../../../images/landingpage_2.png');
     background-size: cover;
+    background-position: 50% 50%;
+    position: relative;
   }
+
+  .search_bar {
+    background-image: url('../../../images/search_bar.png');
+    width: 630px;
+    height: 120px;
+    top: 50%;
+    left: 26%;
+    position: absolute;
+  }
+
   .section-area3 {
     background-color : rgb(255, 255, 255);
   }
@@ -98,13 +110,31 @@
     height: 70px;
     animation: type 1.5s steps(70,end) forwards;
   } 
+  .section-area2 h1 {
+    color: black;
+    font-weight: 600;
+    font-size: 50px;  
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 440px;
+    height: 70px;
+    animation: type 2.8s steps(40,end) forwards;
+    margin-top: 4%;
+    margin-left: 28%;
+    animation-delay: 2s;
+    animation-iteration-count: infinite;
+  } 
   
   @keyframes type {
     0% {
       width: 0;
     }
-    1%, 99%{
+    1%, 50%{
       border-right: 1px solid black;
+    }
+    51%, 99%{
+      border-right: none;
     }
     100%{
       border-right: none;
