@@ -3,6 +3,7 @@ import { FullPage, Slide } from 'react-full-page';
 import { Icon, Button } from 'antd';
 import './FullPage.css'
 import man_img from '../../../images/character.png'
+import searchbar_img from '../../../images/search_bar.png'
 
 export default class fullPage extends React.Component {
   render() {
@@ -17,7 +18,10 @@ export default class fullPage extends React.Component {
               </Slide>
               <Slide>
               <div className="section-common section-area2">
-                <Button type="primary" size="large" href="/" 
+                <div className='search_bar'>
+                  <h1>삼성전자</h1>
+                </div>
+                <Button type="primary" size="large" href="/search" 
                   style={{ border: '1px solid rgb(0, 88, 202)', backgroundColor:'rgb(0, 88, 202)', color: 'white', top: '75%', left: '70%',
                   borderRadius: '20px', padding: '8px', height:'60px', width: '200px', fontSize: '20px', fontWeight: 'bolder' }}>
                     검색하러 가기</Button>
