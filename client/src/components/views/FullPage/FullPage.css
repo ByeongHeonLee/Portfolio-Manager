@@ -60,6 +60,31 @@
     background-position: 50% 50%;
     position: relative;
   }
+
+  .kospi_img {
+    width: 153px;
+    height: 50px;
+    margin-top: 64px;
+    margin-left: 25%;
+    animation:text 1s ease-in Infinite Alternate;
+  }
+
+  .kosdaq_img {
+    width: 217px;
+    height: 50px;
+    margin-top: 65px;
+    margin-left: 7%;
+    animation:text 1s ease-in Infinite Alternate;
+  }
+
+  .krx_img {
+    width: 109px;
+    height: 50px;
+    margin-top: 65px;
+    margin-left: 7%;
+    animation:text 1s ease-in Infinite Alternate;
+  }
+
   .section-area4 {
     background-color : rgb(255, 255, 255);
   }
@@ -112,7 +137,7 @@
     overflow: hidden;
     width: 370px;
     height: 70px;
-    animation: type 1.5s steps(70,end) forwards;
+    animation: type1 1.5s steps(70,end) forwards;
   } 
   .section-area2 h1 {
     color: black;
@@ -123,14 +148,26 @@
     overflow: hidden;
     width: 440px;
     height: 70px;
-    animation: type 2.8s steps(40,end) forwards;
+    animation: type2 2.8s steps(40,end) forwards;
     margin-top: 4%;
     margin-left: 28%;
     animation-delay: 2s;
     animation-iteration-count: infinite;
   } 
   
-  @keyframes type {
+  @keyframes type1 {
+    0% {
+      width: 0;
+    }
+    1%, 99%{
+      border-right: 1px solid black;
+    }
+    100%{
+      border-right: none;
+    }
+  }
+
+  @keyframes type2 {
     0% {
       width: 0;
     }
@@ -182,4 +219,10 @@
     }
   }
 
-  
+  @keyframes text {
+    0% {
+    }
+    to {
+      height:64px
+    } 
+  }
