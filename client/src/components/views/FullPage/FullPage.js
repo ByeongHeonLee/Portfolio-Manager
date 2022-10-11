@@ -29,7 +29,10 @@ export default class fullPage extends React.Component {
               </Slide>
               <Slide>
               <div className="section-common section-area3">
-                3
+                <Button type="primary" size="large" href="/index" 
+                  style={{ border: '1px solid rgb(0, 88, 202)', backgroundColor:'rgb(0, 88, 202)', color: 'white', top: '75%', left: '70%',
+                  borderRadius: '20px', padding: '8px', height:'60px', width: '200px', fontSize: '20px', fontWeight: 'bolder' }}>
+                    지수 확인하기</Button>
               </div>
               </Slide>
               <Slide>
