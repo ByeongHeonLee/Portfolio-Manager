@@ -33,7 +33,7 @@ function App() {
       <NavBar />
       <div style={{ paddingTop: '69px', minHeight: 'calc(100vh - 80px)' }}>
         <Switch>
-        <Route exact path="/" component={Auth(LandingPage, null)} />
+        <Route exact path="/search" component={Auth(LandingPage, null)} />
           <Route exact path="/home" component={Auth(HomePage, null)} />
           <Route exact path="/detail/:id" component={Auth(DetailData, null)} />
           <Route exact path="/board" component={Auth(TablePage, true)} />
@@ -47,7 +47,7 @@ function App() {
           <Route exact path="/news" component={Auth(NewsPage, null)} />
           <Route exact path="/oauth/callback/kakao" component={Auth(KakaoLogin, false)} />
           <Route exact path="/oauth/callback/naver" component={Auth(NaverLogin, false)} />
-          <Route exact path="/full" component={Auth(fullPage, null)} />
+          <Route exact path="/" component={Auth(fullPage, null)} />
         </Switch>
       </div>
     </Suspense>
