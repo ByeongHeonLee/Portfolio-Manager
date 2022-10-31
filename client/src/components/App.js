@@ -34,7 +34,7 @@ function App() {
       <div style={{ paddingTop: '69px', minHeight: 'calc(100vh - 80px)' }}>
         <Switch>
         <Route exact path="/search" component={Auth(LandingPage, null)} />
-          <Route exact path="/home" component={Auth(fullPage, null)} />
+          <Route exact path="/home" component={Auth(HomePage, null)} />
           <Route exact path="/detail/:id" component={Auth(DetailData, null)} />
           <Route exact path="/board" component={Auth(TablePage, true)} />
           <Route exact path="/board/post" component={Auth(BoardPage, true)} />
