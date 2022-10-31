@@ -74,7 +74,7 @@ export default class fullPage extends React.Component {
                     로그인</Button>
 
                   <h1 style={{marginLeft: '120px', marginTop: '370px', fontSize: '20px', fontWeight: 'bolder', color: 'white'}}>
-                    login with. <img src={kakao_img}></img><img src={naver_img}></img>
+                    login with. <img src={kakao_img}></img><img src={naver_img} style={{marginLeft: '10px'}}></img>
                   </h1>
                   <h1 style={{marginLeft: '-1050px', marginTop: '580px', fontSize: '15px', fontWeight: '400', color: 'white'}}>
                     포트폴리오닷컴<br/><br/> 홍익대학교<br/> 컴퓨터공학과 졸업프로젝트<br/>
