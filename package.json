@@ -4,8 +4,8 @@
   "description": "Portfolio.com: the stock information community",
   "main": "index.js",
   "engine": {
-    "node": "16.17.0",
-    "npm": "8.15.0"
+    "node": "18.12.0",
+    "npm": "8.19.2"
   },
   "scripts": {
     "start": "node server/index.js",
