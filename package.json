@@ -4,8 +4,8 @@
   "description": "Portfolio.com: the stock information community",
   "main": "index.js",
   "engine": {
-    "node": "18.12",
-    "npm": "8.19"
+    "node": "16.17",
+    "npm": "8.15"
   },
   "scripts": {
     "start": "node server/index.js",
@@ -27,7 +27,6 @@
     "moment": "^2.24.0",
     "mongoose": "^5.4.20",
     "multer": "^1.4.4",
-    "npm": "^8.19.2",
     "react-dropzone": "^12.1.0",
     "react-redux": "^5.0.7",
     "saslprep": "^1.0.3",
