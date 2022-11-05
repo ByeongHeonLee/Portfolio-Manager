@@ -65,7 +65,10 @@ router.post("/getPostDetail", (req, res) => {
     .populate('writer')
     .exec((err, postDetail) => {
         if(err) return res.status(400).send(err)
-        return res.status(200).json({ success: true, postDetail })
+        else{
+            postDetail.views++;
+            return res.status(200).json({ success: true, postDetail })
+        }
     })
 });
 
