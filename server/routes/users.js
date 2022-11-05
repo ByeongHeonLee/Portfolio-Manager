@@ -86,14 +86,13 @@ router.post('/DeletePost', (req, res) => {
     })
 })
 
+router.post('/upViews', (req, res) => {
+    Board.findOneAndUpdate({_id: req.body.postId }, { views: req.body.views }, (err, doc) => {
+        if(err) return res.status(400).json({ success: false, err })
+        res.status(200).json({ success: true })
+    })
+})
 
-// router.post('/upViews', (req, res) => {
-//     console.log( req.body.postId )
-//     Board.findOneAndUpdate({_id: req.body.postId }, { views: 1 }, (err, doc) => {
-//         if(err) return res.status(400).json({ success: false, err })
-//         res.status(200).json({ success: true })
-//     })
-// })
 
 
 //=================================
