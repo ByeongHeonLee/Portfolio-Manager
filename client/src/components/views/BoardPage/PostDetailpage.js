@@ -20,20 +20,19 @@ function Postdetailpage(props) {
     const [Comments, setComments] = useState([])
     console.log(postId)
     useEffect(() => {
-
-        // Axios.post('/api/users/upViews', variable)
-        // .then(response => {
-        //     if(response.data.success) {
-        //         console.log()
-        //     } else {
-        //         alert('조회수 증가 실패')
-        //     }
-        // })
-
-    
-        Axios.post('/api/users/getPostDetail', variable)
+         Axios.post('/api/users/getPostDetail', variable)
         .then(response => {
             if(response.data.success) {
+                console.log(response.data.postDetail)
+                const vari = { postId: response.data.postDetail._id, views: response.data.postDetail.views}
+                Axios.post('/api/users/upViews', vari)
+                .then(response => {
+                    if(response.data.success) {
+                        console.log()
+                    } else {
+                        alert('조회수 증가 실패')
+                    }
+                })
                 setPostDetail(response.data.postDetail)
             } else {
                 alert('게시글 정보를 가져오지 못했습니다.')
