@@ -53,6 +53,10 @@ export default class fullPage extends React.Component {
               </Slide>
               <Slide>
               <div className="section-common section-area5">
+                <div className='postDetail'>
+                  <h1>저도 다시 회복중입니다 ㅠㅠ 정말 다행!</h1>
+                  <div className='like_img' />
+                </div>
                 <Button type="primary" size="large" href="/board" 
                   style={{ border: '1px solid rgb(0, 88, 202)', backgroundColor:'rgb(0, 88, 202)', color: 'white', top: '75%', left: '70%',
                   borderRadius: '20px', padding: '8px', height:'60px', width: '200px', fontSize: '20px', fontWeight: 'bolder' }}>
