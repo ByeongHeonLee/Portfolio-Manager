@@ -110,6 +110,26 @@
     background-position: 50% 50%;
     position: relative;
   }
+  .postDetail {
+    background-image: url('../../../images/post.png');
+    width: 630px;
+    height: 570px;
+    top: 10%;
+    left: 5%;
+    position: absolute;
+  }
+
+  .like_img {
+    animation: like 5s linear;
+    animation-iteration-count: infinite;
+    background-image: url('../../../images/like.png');
+    width: 60px;
+    height: 44px;
+    top: 10.5%;
+    left: 71%;
+    position: absolute;
+  }
+  
   .section-area6 {
     background-color : rgb(0, 88, 202);
     position: relative;
@@ -177,6 +197,21 @@
     animation-delay: 2s;
     animation-iteration-count: infinite;
   } 
+  .section-area5 h1 {
+    color: black;
+    font-weight: 400;
+    font-size: 20px;  
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 600px;
+    height: 33px;
+    animation: type3 9s steps(100,end) forwards;
+    margin-top: 79%;
+    margin-left: 3%;
+    animation-delay: 2s;
+    animation-iteration-count: infinite;
+  } 
   
   @keyframes type1 {
     0% {
@@ -198,6 +233,21 @@
       border-right: 1px solid black;
     }
     51%, 99%{
+      border-right: none;
+    }
+    100%{
+      border-right: none;
+    }
+  }
+
+  @keyframes type3 {
+    0% {
+      width: 0;
+    }
+    1%, 61%{
+      border-right: 1px solid black;
+    }
+    62%, 99%{
       border-right: none;
     }
     100%{
@@ -266,6 +316,23 @@
     }
     100%{
       transform: scale(1.3) rotate(2turn);
+      opacity: 0;
+    }
+  }
+
+  @keyframes like {
+    0%,24%{
+      transform: scale(0);
+    }
+    25%{
+      transform: scale(1);
+    }
+    80%{
+      transform: scale(1.1);
+      opacity: 1;
+    }
+    100%{
+      transform: scale(1.2);
       opacity: 0;
     }
   }
