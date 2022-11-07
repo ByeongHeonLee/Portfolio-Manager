@@ -133,6 +133,7 @@
   .section-area6 {
     background-color : rgb(0, 88, 202);
     position: relative;
+    z-index: 2;
   }
     
    .slide-navigation button:nth-child(1) {
