@@ -170,6 +170,7 @@ function LoginPage(props) {
                   <div ref={naverRef} id="naverIdLogin"></div>
                   <button onClick={handleClick} className={"naver_btn"}>
                   </button>
+                  최초 간편로그인시, 자동으로 회원가입을 진행합니다. 회원가입 후 버튼을 다시 한번 눌러 로그인하세요🙂
                 </div>
                 {/* Or <a href="/register">회원가입</a> */}
               </Form.Item>
