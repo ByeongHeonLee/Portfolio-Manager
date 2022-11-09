@@ -6,6 +6,7 @@ import { Table } from 'antd';
 // import indexes_kr from './data/indexes_kr.json'; // 지수 데이터
 
 const {Pool} = require('pg');
+
 const pg = new Pool({
   user:'byeong_heon',
   host:process.env.PGHOST,
@@ -21,8 +22,8 @@ pg.connect(err => {
   }
 })
 
-pg.query("SELECT * FROM info_world_index info, price_world_index price WHERE info.ticker = price.ticker AND base_date = (SELECT base_date FROM (SELECT * FROM price_world_index price ORDER BY base_date DESC) temp LIMIT 1);", (err, res) => {
-  if (!err) console.log(res);
+pg.query("SELECT * FROM info_world_index info, price_world_index price WHERE info.ticker = price.ticker AND base_date = (SELECT base_date FROM (SELECT * FROM price_world_index price ORDER BY base_date DESC) temp LIMIT 1);", (err, result) => {
+  if (!err) console.log(result);
   else console.log(err);
   pg.end();
 });
@@ -67,7 +68,7 @@ function Index() {
   return (
     <div>
       <a/>
-        <Table dataSource={res} columns={columns} />
+        <Table dataSource={result} columns={columns} />
     </div>
   )
 }
