@@ -6204,6 +6204,11 @@
   dependencies:
     "string-convert" "^0.2.0"
 
+"json3@3.2.4":
+  "integrity" "sha512-F2R+w8lYbeme21HBvmfTXK3ogopKze5Abjb0cF5mEsZ4KJmDwzR6oO8XsUrrBP0yzpqBRYImh32ci6JKFrte7Q=="
+  "resolved" "https://registry.npmjs.org/json3/-/json3-3.2.4.tgz"
+  "version" "3.2.4"
+
 "json5@^1.0.1":
   "integrity" "sha512-aKS4WQjPenRxiQsC93MNfjx+nbF4PAdYzmd/1JIj8HYzqfbu86beTuNgXDzPknWk0n0uARlyewZo4s++ES36Ow=="
   "resolved" "https://registry.npmjs.org/json5/-/json5-1.0.1.tgz"
@@ -7094,6 +7099,13 @@
   "version" "3.1.0"
   dependencies:
     "find-up" "^3.0.0"
+
+"polyfill@^0.1.0":
+  "integrity" "sha512-EL2FdBj6IBG41Fxd4IoEX3fCDKccLmtlYMS5cCUR4k/rmrc0vRSLLqbgWIy7OQi2oQfNxipQYCckiebomiohyg=="
+  "resolved" "https://registry.npmjs.org/polyfill/-/polyfill-0.1.0.tgz"
+  "version" "0.1.0"
+  dependencies:
+    "json3" "3.2.4"
 
 "postcss-attribute-case-insensitive@^5.0.2":
   "integrity" "sha512-XIidXV8fDr0kKt28vqki84fRK8VW8eTuIa4PChv2MqKuT6C9UjmSKzen6KaWhWEoYvwxFCa7n/tC1SZ3tyq4SQ=="
