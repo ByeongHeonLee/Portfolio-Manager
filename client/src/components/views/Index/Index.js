@@ -3,30 +3,7 @@
 import React from 'react';
 import { Table } from 'antd';
 
-// import indexes_kr from './data/indexes_kr.json'; // 지수 데이터
-
-const {Pool} = require('pg');
-
-const pg = new Pool({
-  user:'byeong_heon',
-  host:process.env.PGHOST,
-  database:'postgres',
-  password:process.env.PGPASSWORD,
-  port:5432
-})
-
-pg.connect(err => {
-  if(err) console.log(err);
-  else{
-    console.log("Postgres Connected...");
-  }
-})
-
-pg.query("SELECT * FROM info_world_index info, price_world_index price WHERE info.ticker = price.ticker AND base_date = (SELECT base_date FROM (SELECT * FROM price_world_index price ORDER BY base_date DESC) temp LIMIT 1);", (err, result) => {
-  if (!err) console.log(result);
-  else console.log(err);
-  pg.end();
-});
+import indexes_kr from './data/indexes_kr.json'; // 지수 데이터
 
 function Index() {
   // const dataSource = indexes_kr;
@@ -68,7 +45,7 @@ function Index() {
   return (
     <div>
       <a/>
-        <Table dataSource={result} columns={columns} />
+        <Table dataSource={indexes_kr} columns={columns} />
     </div>
   )
 }
