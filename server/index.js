@@ -8,20 +8,31 @@ const cookieParser = require("cookie-parser");
 
 const config = require("./config/key");
 
-// const mongoose = require("mongoose");
-// mongoose
-//   .connect(config.mongoURI, { useNewUrlParser: true })
-//   .then(() => console.log("DB connected"))
-//   .catch(err => console.error(err));
-
+// Creating Mongo DB Conncetion
 const mongoose = require("mongoose");
 const connect = mongoose.connect(config.mongoURI,
   {
     useNewUrlParser: true, useUnifiedTopology: true,
     useCreateIndex: true, useFindAndModify: false
   })
-  .then(() => console.log('MongoDB Connected...'))
+  .then(() => console.log('Mongo DB Connected...'))
   .catch(err => console.log(err));
+
+  // Creating Postgres DB Conncetion
+// const {Pool} = require('pg');
+// const pg = new Pool({
+//   user:'byeong_heon',
+//   host:'pm330.c68tjqdjajqc.us-east-1.rds.amazonaws.com',
+//   database:'postgres',
+//   password:'7760lorngn!',
+//   port:5432
+// })
+// pg.connect(err =>{
+//   if(err) console.log(err);
+//   else{
+//     console.log('PostgreSQL DB Connected...');
+//   }
+// })
 
 app.use(cors())
 

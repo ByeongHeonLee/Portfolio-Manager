@@ -1,10 +1,15 @@
 import React from "react"
 import {useParams} from "react-router-dom"
-import stockData from "./data/financials_kr.json"
+
+import info_stocks from "../data/info_stock.json"
+import info_financials from "../data/info_financials.json"
+import prices from "../data/prices.json"
 
 function ShowDetailData() {
-    const {id} = useParams()
-    const stock = stockData.find(prod => prod.id == id)
+    const {isin_code} = useParams()
+    const info_stock = info_stocks.find(prod => prod.isin_code == isin_code)
+    const info_financial = info_financials.find(prod => prod.isin_code == isin_code)
+    const price = prices.find(prod => prod.isin_code == isin_code)
     
     return (
         <div>
@@ -13,26 +18,27 @@ function ShowDetailData() {
           <br/>
           <br/>
             <h2>[기본정보]</h2>
-            <p>시장 구분 : {stock.mrktCtg}</p>
-            <p>종목명 : {stock.itmsNm}</p>
-            <p>ISIN : {stock.isinCd}</p>
-            <p>기업 홈페이지 : {stock.enpHmpgUrl}</p>
+            <p>시장 구분 : {info_stock.market_category}</p>
+            <p>종목명 : {info_stock.item_name}</p>
+            <p>ISIN : {info_stock.isin_code}</p>
+            <p>상장일 : {info_stock.listing_date}</p>
             <br/>
             <h2>[재무정보]</h2>
-            <p>재무제표부채비율 : {stock.fnclDebtRto}</p>
-            <p>기업자본금액 : {stock.enpCptlAmt}</p>
-            <p>당기순이익 : {stock.enpCrtmNpf}</p>
-            <p>영업이익 : {stock.enpBzopPft}</p>
-            <p>매출금액 : {stock.enpSaleAmt}</p>
-            <p>주식 액면가 : {stock.stckParPrc}</p>
-            <p>발행 주식수 : {stock.issuStckCnt}</p>
-            <p>상장일자 : {stock.lstgDt}</p>
+            <p>BPS : {info_financial.bps}</p>
+            <p>PER : {info_financial.per}</p>
+            <p>PBR : {info_financial.pbr}</p>
+            <p>EPS : {info_financial.eps}</p>
+            <p>DIV : {info_financial.div}</p>
+            <p>DPS : {info_financial.dps}</p>
             <br/>
             <h2>[전일 주가정보]</h2>
-            <p>시가 : {stock.mkp}</p>
-            <p>종가 : {stock.clpr}</p>
-            <p>고가 : {stock.hipr}</p>
-            <p>저가 : {stock.lopr}</p>
+            <p>시가 : {price.market_price}</p>
+            <p>종가 : {price.close_price}</p>
+            <p>고가 : {price.high_price}</p>
+            <p>저가 : {price.low_price}</p>
+            <p>등락 : {price.fluctuation}</p>
+            <p>등락률 : {price.fluctuation_rate}</p>
+            <p>거래량 : {price.volume}</p>
         </div>
     )
 }

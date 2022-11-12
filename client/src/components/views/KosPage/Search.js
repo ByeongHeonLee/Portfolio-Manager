@@ -11,11 +11,11 @@ function Search({ details }) {
     stock => {
       return (
         stock
-        .itmsNm
+        .item_name
         .toLowerCase()
         .includes(searchField.toLowerCase()) ||
         stock
-        .mrktCtg
+        .market_category
         .toLowerCase()
         .includes(searchField.toLowerCase())
       );

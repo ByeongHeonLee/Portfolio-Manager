@@ -5,10 +5,9 @@ function Card({stock}) {
     return (
       <div className="searchedStockItem">
         <div>
-         <Link to={`detail/${stock.id}`}>
-           <h2>[{stock.mrktCtg}] {stock.itmsNm} </h2>
-           <h2>({stock.shotnIsin})</h2>
-           <h2>{"￦ " + stock.clpr} ({stock.fltRt})</h2>
+         <Link to={`detail/${stock.isin_code}`}>
+           <h2>[{stock.market_category}] {stock.item_name} </h2>
+           <h2>({stock.short_isin_code})</h2>
          </Link>
        </div>
      </div>

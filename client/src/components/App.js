@@ -35,7 +35,7 @@ function App() {
         <Switch>
         <Route exact path="/search" component={Auth(LandingPage, null)} />
           <Route exact path="/home" component={Auth(fullPage, null)} />
-          <Route exact path="/detail/:id" component={Auth(DetailData, null)} />
+          <Route exact path="/detail/:isin_code" component={Auth(DetailData, null)} />
           <Route exact path="/board" component={Auth(TablePage, true)} />
           <Route exact path="/board/post" component={Auth(BoardPage, true)} />
           <Route exact path="/board/:postId" component={Auth(Postdetailpage, true)} />

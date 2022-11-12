@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, Icon } from "antd";
 import './LandingPage.css'
 import Search from "../KosPage/Search";
-import financials_kr from "../KosPage/data/financials_kr.json";
+import info_stock from "../data/info_stock.json";
 
 function LandingPage() {
   // const [Search, setSearch] = useState("");
@@ -25,7 +25,7 @@ function LandingPage() {
       </div>
 
       <div className="tc bg-green ma0 pa4 min-vh-100">
-        <Search details={financials_kr} />
+        <Search details={info_stock} />
       </div>
     </div>
   );
