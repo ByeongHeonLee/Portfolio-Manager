@@ -10,11 +10,11 @@ function LeftMenu(props) {
     {/* <Menu.Item key="mail">
       <a href="/">Home</a>
     </Menu.Item> */}
-        <Menu.Item key="worldIndex">
-          <a href="/index">지수</a>
+        <Menu.Item key="search">
+          <a href="/search">종목검색</a>
         </Menu.Item>
-        <Menu.Item key="news">
-          <a href="/news">오늘의소식</a>
+        <Menu.Item key="worldIndex">
+          <a href="/index">세계지수</a>
         </Menu.Item>
         <Menu.Item key="board">
           <a href="/board">토론게시판</a>
