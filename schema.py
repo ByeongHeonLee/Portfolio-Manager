@@ -99,6 +99,8 @@ TYPE_info_world_index = {
     'ticker'     : 'varchar',
     'nation'     : 'varchar',
     'index_name' : 'varchar',
+    'lat'        : 'double precision',
+    'lon'        : 'double precision',
 }
 
 # Columns of Table: price_world_index

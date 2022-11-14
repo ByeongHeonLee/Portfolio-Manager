@@ -19,7 +19,7 @@ from pytz        import timezone
 FILE_PATH = './client/src/components/views/data/'
 YESTERDAY             = datetime.strftime(datetime.now(timezone('Asia/Seoul')) - timedelta(1)  , "%Y%m%d") # Yesterday (Format:"YYYYMMDD")
 PREVIOUS_BUSINESS_DAY = datetime.strftime(datetime.now(timezone('Asia/Seoul')) - timedelta(3)  , "%Y%m%d") if datetime.now(timezone('Asia/Seoul')).weekday() == 0 else YESTERDAY # Previous Business Day (Format:"YYYYMMDD")
-BASE_DATE = '2022-11-04'
+BASE_DATE = '2022-11-13'
 
 
 
@@ -197,7 +197,7 @@ class PostgresCore():
 
         # SELECT Cluase in SQL
         if columns == 'ALL':
-            str_columns = "*"
+            str_columns = "DISTINCT *"
         elif type(list()) == type(columns):
             str_columns = ", ".join(columns)
             str_columns = "(" + str_columns + ")"
@@ -486,11 +486,37 @@ class PostgresCore():
         with open(FILE_PATH + "price_world_index.json", 'w', encoding='UTF-8') as file:
             json.dump(data_list, file, ensure_ascii=False)
 
+    def set_world_index(self):
+
+        condition = f"base_date = CAST('{'2022-11-11'}' AS date)"
+        res_info_world_index = self.find_item(table='info_world_index')
+        res_price_world_index = self.find_item(table='price_world_index', condition=condition)
+
+        data_list = list()
+
+        for row_info in res_info_world_index:
+            for row_price in res_price_world_index:
+
+                if row_info[0] == row_price[0]:
+
+                    data_dict = dict()
+                    data_dict['ticker'] = row_info[0]
+                    data_dict['index_name'] = row_info[2]
+                    data_dict['close_price'] = str(round(row_price[3],2))
+                    data_dict['lat'] = row_info[3]
+                    data_dict['lon'] = row_info[4]
+
+                    data_list.append(data_dict)
+
+        with open(FILE_PATH + "world_index.json", 'w', encoding='UTF-8') as file:
+            json.dump(data_list, file, ensure_ascii=False)
+
 pgdb = PostgresCore(user='byeong_heon', password='7760lorngn!')
 
 # pgdb.set_info_stock()
 # pgdb.set_info_financial()
 # pgdb.set_info_news()
 # pgdb.set_info_world_index()
-pgdb.set_prices()
+# pgdb.set_prices()
+pgdb.set_world_index()
 # pgdb.set_price_world_index()
