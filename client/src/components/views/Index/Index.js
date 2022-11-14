@@ -20,9 +20,6 @@ function Index() {
   var data = [{
     type: 'scattergeo',
     mode: 'markers+text',
-    // text: ["KOSPI", "NIKKEI",  "SHENZHEN", "SSE", "HANGSENG", "TSEC", "S&P500", "DOW JONES", "NASDAQ", "VIX","FTSE 100", "ESTX 50", "EURONEXT", "DAX", "CAC 40"],
-    // lon: [128.00, 138.24,116.5, 119.2, 120.1, 121.3, -118.3, -94.2, -74.1, -84.2,-2.1, 13.5, 2.1, 10.45, 4.3],
-    // lat: [37.5, 36.4, 37.1, 29.1, 22.1, 24.4, 39.1, 38.7,  42.5, 44.1,53.5, 41.9, 46.4, 52.8, 48.2],
     text: texts,
     lon: lons,
     lat: lats,
