@@ -46,7 +46,7 @@ var layout = {
     },
     width:1920,
     height:1500,
-    margin: {"r":10,"t":0,"l":10,"b":0},
+    margin: {"r":-5,"t":-430,"l":-5,"b":0},
     geo: {
         // scope: 'north america',
         resolution: 100,
