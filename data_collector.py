@@ -510,13 +510,3 @@ class PostgresCore():
 
         with open(FILE_PATH + "world_index.json", 'w', encoding='UTF-8') as file:
             json.dump(data_list, file, ensure_ascii=False)
-
-pgdb = PostgresCore(user='byeong_heon', password='7760lorngn!')
-
-# pgdb.set_info_stock()
-# pgdb.set_info_financial()
-# pgdb.set_info_news()
-# pgdb.set_info_world_index()
-# pgdb.set_prices()
-pgdb.set_world_index()
-# pgdb.set_price_world_index()
