@@ -1,6 +1,6 @@
 import React from "react"
 import {useParams} from "react-router-dom"
-
+import { Table } from 'antd';
 import info_stocks from "../data/info_stock.json"
 import info_financials from "../data/info_financials.json"
 import prices from "../data/prices.json"
@@ -48,6 +48,41 @@ function ShowDetailData() {
           등락률: price.fluctuation_rate,
         },
       ];
+    
+    const columns = [
+      {
+        title: '날짜',
+        dataIndex: 'date',
+        key: 'date',
+        align: 'center',
+        width: '10%',
+      },
+      {
+        title: '헤드라인',
+        dataIndex: 'headline',
+        key: 'headline',
+        align: 'left',
+        width: '50%',
+      },
+      {
+        title: '감성도',
+        dataIndex: 'sentiment',
+        key: 'sentiment',
+        align: 'center',
+        width: '10%',
+      },
+       
+    ];
+
+    const data = [];
+    newsList.map((news, index) => {
+      data.push({
+          key: index.toString(),
+          date: `${news.write_date}`,
+          headline: `${news.headline}`,
+          sentiment: `${(news.sentiment).toFixed(3)}`,
+      })
+    })
     
     return (
         <div class="container">
@@ -118,19 +153,9 @@ function ShowDetailData() {
                 <Legend />
                 <Line type="monotone" dataKey="등락률" stroke="#8884d8" strokeWidth={3} />
             </LineChart>
-          
-            <br/>
-            <h2>[관련뉴스]</h2>
-            <table>
-                <tbody>
-                    {newsList.map((news) => (
-                    <tr key={news.isin_code}>	  		
-                        <td>헤드라인: {news.headline}</td>	  		
-                        <td>감성도: {news.sentiment}</td>	  		
-                    </tr>
-                    ))}
-                </tbody>
-                </table>
+            <Table dataSource={data} columns={columns} size="small" title={() => '종목 관련 경제기사 감성도 판단👨‍🔬'}
+              footer={() => '감성도가 +1.0과 가까울수록 호재😆 -1.0과 가까울수록 악재😭'}
+              style={{width:'850px', marginTop:'40px', marginLeft: '418px'}}/>
         </div>
     )
 }
