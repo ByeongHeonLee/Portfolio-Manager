@@ -33,22 +33,14 @@ export default class fullPage extends React.Component {
               </Slide>
               <Slide>
               <div className="section-common section-area3">
-                <img src={kospi_img} className='kospi_img'></img>
-                <img src={kosdaq_img} className='kosdaq_img'></img>
-                <img src={krx_img} className='krx_img'></img>
+                <div className="title3">
+                  <h1 style={{color:'black'}}>세계 주요지수들을<br />지금 바로 확인할 수 있어요!</h1> 
+                </div>
+                <div className='worldmap' />
                 <Button type="primary" size="large" href="/index" 
-                  style={{ border: '1px solid rgb(0, 88, 202)', backgroundColor:'rgb(0, 88, 202)', color: 'white', top: '75%',
+                  style={{ border: '1px solid rgb(0, 88, 202)', backgroundColor:'rgb(0, 88, 202)', color: 'white', top: '75%', left: '70%',
                   borderRadius: '20px', padding: '8px', height:'60px', width: '200px', fontSize: '20px', fontWeight: 'bolder' }}>
                     지수 확인하기</Button>
-              </div>
-              </Slide>
-              <Slide>
-              <div className="section-common section-area4">
-                <div className='newspaper' />
-                <Button type="primary" size="large" href="/news" 
-                  style={{ border: '1px solid rgb(0, 88, 202)', backgroundColor:'rgb(0, 88, 202)', color: 'white', top: '65%', left: '38%',
-                  borderRadius: '20px', padding: '8px', height:'60px', width: '200px', fontSize: '20px', fontWeight: 'bolder' }}>
-                    관련 뉴스 보기</Button>
               </div>
               </Slide>
               <Slide>
