@@ -3,9 +3,6 @@ import { FullPage, Slide } from 'react-full-page';
 import { Icon, Button } from 'antd';
 import './FullPage.css'
 import man_img from '../../../images/character.png'
-import kospi_img from '../../../images/kospi_img.png'
-import kosdaq_img from '../../../images/kosdaq_img.png'
-import krx_img from '../../../images/krx_img.png'
 import kakao_img from '../../../images/kakao_logo.png'
 import naver_img from '../../../images/naver_logo.png'
 
