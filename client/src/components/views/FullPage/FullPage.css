@@ -58,6 +58,17 @@
     position: relative;
   }
 
+  .title3 {
+    font-weight: 800;
+    font-size: 50px;
+    z-index: 1;
+    width: 650px;
+    height: 150px;
+    margin-top: 75px;
+    margin-left: 30%;
+    position: absolute;
+  }
+
    .worldmap {
     animation: zoom-inout 12s ease-in Infinite Alternate;
     background-image: url('../../../images/worldmap.png');
