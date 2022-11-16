@@ -19,7 +19,7 @@ from pytz        import timezone
 FILE_PATH = './client/src/components/views/data/'
 YESTERDAY             = datetime.strftime(datetime.now(timezone('Asia/Seoul')) - timedelta(1)  , "%Y%m%d") # Yesterday (Format:"YYYYMMDD")
 PREVIOUS_BUSINESS_DAY = datetime.strftime(datetime.now(timezone('Asia/Seoul')) - timedelta(3)  , "%Y%m%d") if datetime.now(timezone('Asia/Seoul')).weekday() == 0 else YESTERDAY # Previous Business Day (Format:"YYYYMMDD")
-BASE_DATE = '2022-11-13'
+BASE_DATE = '2022-11-11'
 
 
 
@@ -463,32 +463,9 @@ class PostgresCore():
         with open(FILE_PATH + "prices.json", 'w', encoding='UTF-8') as file:
             json.dump(data_list, file, ensure_ascii=False)
 
-    def set_price_world_index(self):
-
-        response = self.find_item(table='price_world_index')
-        data_list = list()
-
-        for row in response:
-            data_dict = dict()
-            data_dict['ticker'] = row[0]
-            data_dict['base_date'] = row[1].strftime("%Y%m%d")
-            data_dict['market_price'] = row[2]
-            data_dict['close_price'] = row[3]
-            data_dict['adj_close_price'] = row[4]
-            data_dict['high_price'] = row[5]
-            data_dict['low_price'] = row[6]
-            data_dict['fluctuation'] = row[7]
-            data_dict['fluctuation_rate'] = row[8]
-            data_dict['volume'] = row[9]
-
-            data_list.append(data_dict)
-
-        with open(FILE_PATH + "price_world_index.json", 'w', encoding='UTF-8') as file:
-            json.dump(data_list, file, ensure_ascii=False)
-
     def set_world_index(self):
 
-        condition = f"base_date = CAST('{'2022-11-11'}' AS date)"
+        condition = f"base_date = CAST('{BASE_DATE}' AS date)"
         res_info_world_index = self.find_item(table='info_world_index')
         res_price_world_index = self.find_item(table='price_world_index', condition=condition)
 
@@ -510,3 +487,6 @@ class PostgresCore():
 
         with open(FILE_PATH + "world_index.json", 'w', encoding='UTF-8') as file:
             json.dump(data_list, file, ensure_ascii=False)
+
+pgdb = PostgresCore(user='byeong_heon', password='7760lorngn!')
+pgdb.set_world_index()

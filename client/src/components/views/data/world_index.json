@@ -1,10 +1,24 @@
 [
   {
+    "ticker": "^RUT",
+    "index_name": "Russell 2000",
+    "close_price": "1882.74",
+    "lat": 45.8,
+    "lon": -121.3
+  },
+  {
     "ticker": "^BFX",
     "index_name": "BEL 20",
     "close_price": "3662.94",
     "lat": 50.5,
     "lon": 4.33
+  },
+  {
+    "ticker": "^HSI",
+    "index_name": "HANG SENG INDEX",
+    "close_price": "17325.66",
+    "lat": 23.1,
+    "lon": 121.1
   },
   {
     "ticker": "^N100",
@@ -35,6 +49,13 @@
     "lon": 121.3
   },
   {
+    "ticker": "^NYA",
+    "index_name": "NYSE COMPOSITE (DJ)",
+    "close_price": "15352.69",
+    "lat": 34.5,
+    "lon": -84.1
+  },
+  {
     "ticker": "^N225",
     "index_name": "Nikkei 225",
     "close_price": "28263.57",
@@ -49,13 +70,6 @@
     "lon": 4.3
   },
   {
-    "ticker": "IMOEX.ME",
-    "index_name": "MOEX Russia Index",
-    "close_price": "2217.44",
-    "lat": 55.5,
-    "lon": 37.5
-  },
-  {
     "ticker": "^DJI",
     "index_name": "Dow Jones Industrial Average",
     "close_price": "33747.86",
@@ -63,11 +77,11 @@
     "lon": -94.2
   },
   {
-    "ticker": "^RUT",
-    "index_name": "Russell 2000",
-    "close_price": "1882.74",
-    "lat": 45.8,
-    "lon": -121.3
+    "ticker": "^GSPTSE",
+    "index_name": "S&P/TSX Composite index",
+    "close_price": "20111.5",
+    "lat": 60.0,
+    "lon": -115.0
   },
   {
     "ticker": "399001.SZ",
@@ -98,11 +112,11 @@
     "lon": -64.0
   },
   {
-    "ticker": "^HSI",
-    "index_name": "HANG SENG INDEX",
-    "close_price": "17325.66",
-    "lat": 23.1,
-    "lon": 121.1
+    "ticker": "IMOEX.ME",
+    "index_name": "MOEX Russia Index",
+    "close_price": "2217.44",
+    "lat": 55.5,
+    "lon": 37.5
   },
   {
     "ticker": "\\^FTSE",
@@ -124,20 +138,6 @@
     "close_price": "51959.2",
     "lat": 19.3,
     "lon": -99.1
-  },
-  {
-    "ticker": "^BUK100P",
-    "index_name": "Cboe UK 100",
-    "close_price": "732.67",
-    "lat": 51.5,
-    "lon": -1.1
-  },
-  {
-    "ticker": "^GSPTSE",
-    "index_name": "S&P/TSX Composite index",
-    "close_price": "20111.5",
-    "lat": 60.0,
-    "lon": -115.0
   },
   {
     "ticker": "000001.SS",
@@ -168,11 +168,11 @@
     "lon": -55.0
   },
   {
-    "ticker": "^NYA",
-    "index_name": "NYSE COMPOSITE (DJ)",
-    "close_price": "15352.69",
-    "lat": 34.5,
-    "lon": -84.1
+    "ticker": "^BUK100P",
+    "index_name": "Cboe UK 100",
+    "close_price": "732.67",
+    "lat": 51.5,
+    "lon": -1.1
   },
   {
     "ticker": "^XAX",
