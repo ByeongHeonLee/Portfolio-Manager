@@ -2,211 +2,232 @@
   {
     "ticker": "^RUT",
     "index_name": "Russell 2000",
-    "close_price": "1882.74",
+    "close_price": "1853.17",
     "lat": 45.8,
     "lon": -121.3
   },
   {
     "ticker": "^BFX",
     "index_name": "BEL 20",
-    "close_price": "3662.94",
+    "close_price": "3613.08",
     "lat": 50.5,
     "lon": 4.33
   },
   {
     "ticker": "^HSI",
     "index_name": "HANG SENG INDEX",
-    "close_price": "17325.66",
+    "close_price": "18350.88",
     "lat": 23.1,
     "lon": 121.1
   },
   {
     "ticker": "^N100",
     "index_name": "Euronext 100 Index",
-    "close_price": "1254.9",
+    "close_price": "1256.98",
     "lat": 46.4,
     "lon": 2.1
   },
   {
     "ticker": "^STOXX50E",
     "index_name": "ESTX 50 PR.EUR",
-    "close_price": "3868.5",
+    "close_price": "3882.78",
     "lat": 41.9,
     "lon": 13.5
   },
   {
     "ticker": "\\^STI",
     "index_name": "STI Index",
-    "close_price": "3228.33",
+    "close_price": "3270.8",
     "lat": 1.33,
     "lon": 103.8
   },
   {
     "ticker": "^TWII",
     "index_name": "TSEC weighted index",
-    "close_price": "14007.56",
+    "close_price": "14606.38",
     "lat": 24.4,
     "lon": 121.3
   },
   {
     "ticker": "^NYA",
     "index_name": "NYSE COMPOSITE (DJ)",
-    "close_price": "15352.69",
+    "close_price": "15265.25",
     "lat": 34.5,
     "lon": -84.1
   },
   {
     "ticker": "^N225",
     "index_name": "Nikkei 225",
-    "close_price": "28263.57",
+    "close_price": "27913.39",
     "lat": 36.4,
     "lon": 138.24
   },
   {
+    "ticker": "^NZ50",
+    "index_name": "S&P/NZX 50 INDEX GROSS",
+    "close_price": "11260.64",
+    "lat": -41.0,
+    "lon": 174.0
+  },
+  {
     "ticker": "^FCHI",
     "index_name": "CAC 40",
-    "close_price": "6594.62",
+    "close_price": "6607.22",
     "lat": 48.2,
     "lon": 4.3
   },
   {
     "ticker": "^DJI",
     "index_name": "Dow Jones Industrial Average",
-    "close_price": "33747.86",
+    "close_price": "33553.83",
     "lat": 38.7,
     "lon": -94.2
   },
   {
     "ticker": "^GSPTSE",
     "index_name": "S&P/TSX Composite index",
-    "close_price": "20111.5",
+    "close_price": "19958.0",
     "lat": 60.0,
     "lon": -115.0
   },
   {
     "ticker": "399001.SZ",
     "index_name": "Shenzhen Index",
-    "close_price": "11139.77",
+    "close_price": "11364.91",
     "lat": 37.1,
     "lon": 116.5
   },
   {
     "ticker": "^VIX",
     "index_name": "Vix",
-    "close_price": "22.52",
+    "close_price": "24.11",
     "lat": 44.1,
     "lon": -84.2
   },
   {
+    "ticker": "^AXJO",
+    "index_name": "S&P/ASX 200",
+    "close_price": "7135.7",
+    "lat": -30.0,
+    "lon": 125.0
+  },
+  {
     "ticker": "\\^KLSE",
     "index_name": "FTSE Bursa Malaysia KLCI",
-    "close_price": "1468.21",
+    "close_price": "1444.92",
     "lat": 2.5,
     "lon": 112.5
   },
   {
     "ticker": "^MERV",
     "index_name": "MERVAL",
-    "close_price": "150413.41",
+    "close_price": "154108.8",
     "lat": -34.0,
     "lon": -64.0
   },
   {
+    "ticker": "^AORD",
+    "index_name": "ALL ORDINARIES",
+    "close_price": "7339.0",
+    "lat": -33.0,
+    "lon": 138.0
+  },
+  {
     "ticker": "IMOEX.ME",
     "index_name": "MOEX Russia Index",
-    "close_price": "2217.44",
+    "close_price": "2227.19",
     "lat": 55.5,
     "lon": 37.5
   },
   {
     "ticker": "\\^FTSE",
     "index_name": "FTSE 100",
-    "close_price": "7318.0",
+    "close_price": "7351.2",
     "lat": 53.5,
     "lon": -2.1
   },
   {
     "ticker": "^GSPC",
     "index_name": "S&P 500",
-    "close_price": "3992.93",
+    "close_price": "3958.79",
     "lat": 39.1,
     "lon": -118.3
   },
   {
     "ticker": "^MXX",
     "index_name": "IPC MEXICO",
-    "close_price": "51959.2",
+    "close_price": "51544.94",
     "lat": 19.3,
     "lon": -99.1
   },
   {
     "ticker": "000001.SS",
     "index_name": "SSE Composite Index",
-    "close_price": "3087.29",
+    "close_price": "3141.71",
     "lat": 29.1,
     "lon": 119.2
   },
   {
     "ticker": "^JKSE",
     "index_name": "Jakarta Composite Index",
-    "close_price": "7089.21",
+    "close_price": "6990.57",
     "lat": -5.0,
     "lon": 120.0
   },
   {
     "ticker": "^KS11",
     "index_name": "KOSPI Composite Index",
-    "close_price": "2483.16",
+    "close_price": "2474.22",
     "lat": 37.5,
     "lon": 128.0
   },
   {
     "ticker": "^BVSP",
     "index_name": "IBOVESPA",
-    "close_price": "111820.0",
+    "close_price": "110243.0",
     "lat": -10.0,
     "lon": -55.0
   },
   {
+    "ticker": "^TA125.TA",
+    "index_name": "TA-125",
+    "close_price": "1954.61",
+    "lat": 31.5,
+    "lon": 34.75
+  },
+  {
     "ticker": "^BUK100P",
     "index_name": "Cboe UK 100",
-    "close_price": "732.67",
+    "close_price": "735.56",
     "lat": 51.5,
     "lon": -1.1
   },
   {
     "ticker": "^XAX",
     "index_name": "NYSE AMEX COMPOSITE INDEX",
-    "close_price": "4545.26",
+    "close_price": "4578.05",
     "lat": 43.2,
     "lon": -107.1
   },
   {
     "ticker": "^IXIC",
     "index_name": "NASDAQ Composite",
-    "close_price": "11323.33",
+    "close_price": "11183.66",
     "lat": 42.5,
     "lon": -74.1
   },
   {
     "ticker": "^GDAXI",
     "index_name": "DAX PERFORMANCE-INDEX",
-    "close_price": "14224.86",
+    "close_price": "14234.03",
     "lat": 52.8,
     "lon": 10.45
   },
   {
     "ticker": "^JN0U.JO",
     "index_name": "Top 40 USD Net TRI Index",
-    "close_price": "4137.74",
+    "close_price": "4135.05",
     "lat": -29.0,
     "lon": 24.0
-  },
-  {
-    "ticker": "^BSESN",
-    "index_name": "S&P BSE SENSEX",
-    "close_price": "61795.04",
-    "lat": 20.0,
-    "lon": 77.0
   }
 ]
